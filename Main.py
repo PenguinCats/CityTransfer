@@ -11,9 +11,9 @@ from utility.args_parser import parse_args
 from utility.log_helper import logging, logging_config
 from utility.data_loader import DataLoader
 
-cuda_available = False
-device = None
-n_gpu = 0
+CUDA_AVAILABLE = False
+DEVICE = None
+N_GPU = 0
 
 
 def system_init(system_args):
@@ -26,15 +26,15 @@ def system_init(system_args):
     logging_config(system_args.save_dir, no_console=False)
 
     # CUDA
-    global cuda_available, device, n_gpu
-    cuda_available = torch.cuda.is_available()
-    device = torch.device("cuda" if cuda_available else "cpu")
-    n_gpu = torch.cuda.device_count()
-    if n_gpu > 0:
+    global CUDA_AVAILABLE, DEVICE, N_GPU
+    CUDA_AVAILABLE = torch.cuda.is_available()
+    DEVICE = torch.device("cuda" if CUDA_AVAILABLE else "cpu")
+    N_GPU = torch.cuda.device_count()
+    if N_GPU > 0:
         torch.cuda.manual_seed_all(system_args.seed)
-    cuda_available = False
-    device = torch.device('cpu')
-    n_gpu = 0
+    CUDA_AVAILABLE = False
+    DEVICE = torch.device('cpu')
+    N_GPU = 0
 
     # other settings
     # 显示所有列
