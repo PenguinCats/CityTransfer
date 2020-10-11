@@ -17,6 +17,9 @@ def parse_args():
     parser.add_argument('--data_dir', nargs='?', default='datasets/',
                         help='Input datasets path.')
 
+    parser.add_argument('--enterprise', nargs='?', default=['luckin coffee瑞幸咖啡', 'CoCo都可', '星巴克'],
+                        help='Input enterprise to be transferred.')
+
     parser.add_argument('--rating_batch_size', type=int, default=1024,
                         help='Transfer Rating Prediction Model batch size.')
     parser.add_argument('--inter_batch_size', type=int, default=2048,

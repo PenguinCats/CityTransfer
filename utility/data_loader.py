@@ -25,10 +25,14 @@ class DataLoader(object):
 
         logging.info("[1/5]       load dianping data done.")
 
+        # check enterprise and get small category set
+        valid_small_category_set = self.check_enterprise(source_area_data, target_area_data)
+        logging.info("[2/5]       check enterprise and get small category set.")
+
         # split grid
         self.n_source_grid, self.n_target_grid, source_area_longitude_boundary, source_area_latitude_boundary, \
             target_area_longitude_boundary, target_area_latitude_boundary = self.split_grid()
-        logging.info("[2/5]       split grid done.")
+        logging.info("[3/5]       split grid done.")
 
         # distribute data into grids
         source_data_dict, target_data_dict = self.distribute_data(source_area_data, target_area_data,
@@ -36,12 +40,16 @@ class DataLoader(object):
                                                                   source_area_latitude_boundary,
                                                                   target_area_longitude_boundary,
                                                                   target_area_latitude_boundary)
-        logging.info("[3/5]       distribute data into grids done.")
+        logging.info("[4/5]       distribute data into grids done.")
 
         # extract geographic features
         source_geographic_features, target_geographic_features = self.extract_geographic_features(source_data_dict,
                                                                                                   target_data_dict)
-        logging.info("[4/5]       extract geographic features done.")
+        logging.info("[5/5]       extract geographic features done.")
+
+        # extract commercial features
+        self.extract_commercial_features(source_data_dict, target_data_dict, valid_small_category_set)
+        logging.info("[6/5]       extract commercial features done.")
 
     def load_dianping_data(self, dianping_data_path):
         dianping_data = pd.read_csv(dianping_data_path, usecols=[0, 1, 2, 14, 15, 17, 18, 23, 27])
@@ -69,8 +77,8 @@ class DataLoader(object):
         dianping_data['big_category'] = dianping_data['big_category'].map(lambda x: big_category_dict[x])
         dianping_data['small_category'] = dianping_data['small_category'].map(lambda x: small_category_dict[x])
 
-        # split into source data and target data.
-        # (shop_id, name, big_category, small_category, longitude, latitude, review_count, branchname)
+        #  split into source data and target data.
+        #  (shop_id, name, big_category, small_category, longitude, latitude, review_count, branchname)
         source_area_data = []
         target_area_data = []
         for row in dianping_data.itertuples():
@@ -84,6 +92,30 @@ class DataLoader(object):
 
         return source_area_data, target_area_data, big_category_dict, \
                big_category_dict_reverse, small_category_dict, small_category_dict_reverse
+
+    def check_enterprise(self, source_area_data, target_area_data):
+        #  columns = ['shop_id', 'name', 'big_category', 'small_category',
+        #             'longitude', 'latitude', 'review_count', 'branchname']
+
+        source_chains = collections.defaultdict(int)
+        target_chains = collections.defaultdict(int)
+
+        valid_small_category_set = set()
+        for item in source_area_data:
+            if item[1] in self.args.enterprise:
+                source_chains[item[1]] += 1
+                valid_small_category_set.add(item[3])
+        for item in target_area_data:
+            if item[1] in self.args.enterprise:
+                target_chains[item[1]] += 1
+                valid_small_category_set.add(item[3])
+
+        for name in self.args.enterprise:
+            if source_chains[name] == 0 or target_chains[name] == 0:
+                logging.error('品牌 {} 并非在原地区和目的地区都有门店'.format(name))
+                exit(1)
+
+        return valid_small_category_set
 
     def split_grid(self):
         source_area_longitude_boundary = np.append(np.arange(self.args.source_area_coordinate[0],
@@ -146,14 +178,13 @@ class DataLoader(object):
 
     def extract_geographic_features(self, source_data_dict, target_data_dict):
         traffic_convenience_corresponding_ids = [self.small_category_dict[x]
-                                                 if x in self.small_category_dict else None
-                                                 for x in ['公交车', '地铁站', '停车场']]
+                                                 for x in ['公交车', '地铁站', '停车场'] if x in self.small_category_dict]
 
-        def get_feature(info):
-            # columns = ['shop_id', 'name', 'big_category', 'small_category',
-            #            'longitude', 'latitude', 'review_count', 'branchname']
+        def get_feature(grid_info):
+            #  columns = ['shop_id', 'name', 'big_category', 'small_category',
+            #             'longitude', 'latitude', 'review_count', 'branchname']
 
-            n_grid_POI = len(info)
+            n_grid_POI = len(grid_info)
 
             human_flow = 0
             traffic_convenience = 0
@@ -176,10 +207,45 @@ class DataLoader(object):
         source_geographic_features = []
         target_geographic_features = []
         for index in range(self.n_source_grid):
-            grid_info = source_data_dict[index]
-            source_geographic_features.append(get_feature(grid_info))
+            source_geographic_features.append(get_feature(source_data_dict[index]))
         for index in range(self.n_target_grid):
-            grid_info = target_data_dict[index]
-            target_geographic_features.append(get_feature(grid_info))
+            target_geographic_features.append(get_feature(target_data_dict[index]))
 
         return source_geographic_features, target_geographic_features
+
+    def extract_commercial_features(self, source_data_dict, target_data_dict, valid_small_category_set):
+        #  由于房价数据不准确，目前没有使用
+        #  columns = ['shop_id', 'name', 'big_category', 'small_category',
+        #             'longitude', 'latitude', 'review_count', 'branchname']
+
+        def get_feature(grid_info):
+            # note that: When calculating competitiveness, we use small category (from valid_small_category_set).
+            #            When calculating Complementarity, we use big category.
+            #  enterprise size * commercial features size i.e. Density, Competitiveness, Complementarity
+
+            grid_feature = np.zeros((len(self.args.enterprise), 3))
+            Nc = 0
+            big_category_POI_count = np.zeros(self.n_big_category)
+            for POI in grid_info:
+                big_category_POI_count[POI[2]] += 1
+                if POI[3] in valid_small_category_set:
+                    Nc += 1
+                for idx, name in enumerate(self.args.enterprise):
+                    if POI[1] == name:
+                        # Equation (5)
+                        grid_info[idx][0] += 1
+
+            if Nc > 0:
+                # Equation (6)
+                grid_feature[:, 1] = -1 * (Nc - grid_feature[:, 0]) / Nc
+
+
+
+        source_commercial_features = []
+        target_commercial_features = []
+
+        for index in range(self.n_source_grid):
+            source_commercial_features.append(get_feature(source_data_dict[index]))
+        for index in range(self.n_target_grid):
+            target_commercial_features.append(get_feature(target_data_dict[index]))
+
