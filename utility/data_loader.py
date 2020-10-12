@@ -48,7 +48,8 @@ class DataLoader(object):
         logging.info("[5/5]       extract geographic features done.")
 
         # extract commercial features
-        self.extract_commercial_features(source_data_dict, target_data_dict, valid_small_category_set)
+        source_commercial_features, target_commercial_features = \
+            self.extract_commercial_features(source_data_dict, target_data_dict, valid_small_category_set)
         logging.info("[6/5]       extract commercial features done.")
 
     def load_dianping_data(self, dianping_data_path):
@@ -200,7 +201,7 @@ class DataLoader(object):
                 human_flow += POI[6]
 
             # Equation (1)
-            diversity = -1 * np.sum([(v/n_grid_POI)*np.log(v/n_grid_POI) if v != 0 else 0 for v in POI_count])
+            diversity = -1 * np.sum([(v/(1.0*n_grid_POI))*np.log(v/(1.0*n_grid_POI)) if v != 0 else 0 for v in POI_count])
 
             return np.concatenate(([diversity, human_flow, traffic_convenience], POI_count))
 
@@ -233,13 +234,17 @@ class DataLoader(object):
                 for idx, name in enumerate(self.args.enterprise):
                     if POI[1] == name:
                         # Equation (5)
-                        grid_info[idx][0] += 1
+                        grid_feature[idx][0] += 1
 
+            # Equation (6)
             if Nc > 0:
-                # Equation (6)
-                grid_feature[:, 1] = -1 * (Nc - grid_feature[:, 0]) / Nc
+                grid_feature[:, 1] = -1 * (Nc - grid_feature[:, 0]) / (1.0*Nc)
 
-
+            # Equation (7 & 8)
+            # Have PROBLEMS! What is t' and t? What is the meaning of the equations?
+            # rho = np.sum(big_category_POI_count > 0)
+            # rho = (rho * (rho-1)) / (self.n_big_category * (self.n_big_category - 1))
+            return grid_feature
 
         source_commercial_features = []
         target_commercial_features = []
@@ -248,4 +253,4 @@ class DataLoader(object):
             source_commercial_features.append(get_feature(source_data_dict[index]))
         for index in range(self.n_target_grid):
             target_commercial_features.append(get_feature(target_data_dict[index]))
-
+        return source_commercial_features, target_commercial_features
