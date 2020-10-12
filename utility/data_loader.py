@@ -52,6 +52,8 @@ class DataLoader(object):
             self.extract_commercial_features(source_data_dict, target_data_dict, valid_small_category_set)
         logging.info("[6/5]       extract commercial features done.")
 
+        print(len(source_commercial_features))
+
     def load_dianping_data(self, dianping_data_path):
         dianping_data = pd.read_csv(dianping_data_path, usecols=[0, 1, 2, 14, 15, 17, 18, 23, 27])
         dianping_data = dianping_data[dianping_data['status'] == 0].drop(columns='status')  # 筛出正常营业的店铺
