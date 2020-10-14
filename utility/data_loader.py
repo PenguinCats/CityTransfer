@@ -7,7 +7,7 @@ import pandas as pd
 import numpy as np
 import collections
 from utility.log_helper import logging
-
+from utility.utility_tool import pearson_correlation_coefficient
 
 class DataLoader(object):
     def __init__(self, args):
@@ -23,36 +23,52 @@ class DataLoader(object):
         self.n_big_category = len(self.big_category_dict)
         self.n_small_category = len(self.small_category_dict)
 
-        logging.info("[1/5]       load dianping data done.")
+        logging.info("[1 /10]       load dianping data done.")
 
         # check enterprise and get small category set
         valid_small_category_set = self.check_enterprise(source_area_data, target_area_data)
-        logging.info("[2/5]       check enterprise and get small category set.")
+        logging.info("[2 /10]       check enterprise and get small category set.")
 
         # split grid
         self.n_source_grid, self.n_target_grid, source_area_longitude_boundary, source_area_latitude_boundary, \
             target_area_longitude_boundary, target_area_latitude_boundary = self.split_grid()
-        logging.info("[3/5]       split grid done.")
+        logging.info("[3 /10]       split grid done.")
 
         # distribute data into grids
-        source_data_dict, target_data_dict = self.distribute_data(source_area_data, target_area_data,
-                                                                  source_area_longitude_boundary,
-                                                                  source_area_latitude_boundary,
-                                                                  target_area_longitude_boundary,
-                                                                  target_area_latitude_boundary)
-        logging.info("[4/5]       distribute data into grids done.")
+        source_data_dict, target_data_dict, source_grid_enterprise_data, target_grid_enterprise_data\
+            = self.distribute_data(source_area_data, target_area_data, source_area_longitude_boundary,
+                                   source_area_latitude_boundary, target_area_longitude_boundary,
+                                   target_area_latitude_boundary)
+        logging.info("[4 /10]       distribute data into grids done.")
 
         # extract geographic features
         source_geographic_features, target_geographic_features = self.extract_geographic_features(source_data_dict,
                                                                                                   target_data_dict)
-        logging.info("[5/5]       extract geographic features done.")
+        logging.info("[5 /10]       extract geographic features done.")
 
         # extract commercial features
         source_commercial_features, target_commercial_features = \
             self.extract_commercial_features(source_data_dict, target_data_dict, valid_small_category_set)
-        logging.info("[6/5]       extract commercial features done.")
+        logging.info("[6 /10]       extract commercial features done.")
 
-        print(len(source_commercial_features))
+        # combine features
+        source_feature, target_feature, self.feature_dim = \
+            self.combine_features(source_geographic_features, target_geographic_features,
+                                  source_commercial_features, target_commercial_features)
+        logging.info("[7 /10]       combine features done.")
+
+        # generate rating matrix for Transfer Rating Prediction Model
+        source_rating_matrix, target_rating_matrix = self.generate_rating_matrix(source_grid_enterprise_data,
+                                                                                 target_grid_enterprise_data)
+        logging.info("[8 /10]       generate rating matrix for Transfer Rating Prediction Model done.")
+
+        # generate delta set for Inter-City Knowledge Association
+        delta_set = self.generate_delta_set(source_feature, target_feature)
+        logging.info("[9 /10]       generate delta set for Inter-City Knowledge Association done.")
+
+        # generate training and testing data
+        self.generate_training_and_testing_data()
+        logging.info("[10/10]       generate training and testing data done.")
 
     def load_dianping_data(self, dianping_data_path):
         dianping_data = pd.read_csv(dianping_data_path, usecols=[0, 1, 2, 14, 15, 17, 18, 23, 27])
@@ -93,8 +109,8 @@ class DataLoader(object):
                     and self.args.target_area_coordinate[2] <= row.latitude <= self.args.target_area_coordinate[3]:
                 target_area_data.append(list(row)[1:])
 
-        return source_area_data, target_area_data, big_category_dict, \
-               big_category_dict_reverse, small_category_dict, small_category_dict_reverse
+        return source_area_data, target_area_data, big_category_dict, big_category_dict_reverse, \
+               small_category_dict, small_category_dict_reverse
 
     def check_enterprise(self, source_area_data, target_area_data):
         #  columns = ['shop_id', 'name', 'big_category', 'small_category',
@@ -142,13 +158,15 @@ class DataLoader(object):
         return n_source_grid, n_target_grid, source_area_longitude_boundary, source_area_latitude_boundary, \
                target_area_longitude_boundary, target_area_latitude_boundary
 
-    @staticmethod
-    def distribute_data(source_area_data, target_area_data,
+    def distribute_data(self, source_area_data, target_area_data,
                         source_area_longitude_boundary, source_area_latitude_boundary,
                         target_area_longitude_boundary, target_area_latitude_boundary):
+        #  columns = ['shop_id', 'name', 'big_category', 'small_category',
+        #             'longitude', 'latitude', 'review_count', 'branchname']
         source_data_dict = collections.defaultdict(list)
         target_data_dict = collections.defaultdict(list)
-
+        source_grid_enterprise_data = collections.defaultdict(list)
+        target_grid_enterprise_data = collections.defaultdict(list)
         for item in source_area_data:
             lon_index = 0
             for index, _ in enumerate(source_area_longitude_boundary[:-1]):
@@ -162,6 +180,8 @@ class DataLoader(object):
                     break
             grid_id = lon_index * (len(source_area_latitude_boundary) - 1) + lat_index
             source_data_dict[grid_id].append(item)
+            if item[1] in self.args.enterprise:
+                source_grid_enterprise_data[grid_id].append(item)
 
         for item in target_area_data:
             lon_index = 0
@@ -176,8 +196,10 @@ class DataLoader(object):
                     break
             grid_id = lon_index * (len(target_area_latitude_boundary) - 1) + lat_index
             target_data_dict[grid_id].append(item)
+            if item[1] in self.args.enterprise:
+                target_grid_enterprise_data[grid_id].append(item)
 
-        return source_data_dict, target_data_dict
+        return source_data_dict, target_data_dict, source_grid_enterprise_data, target_grid_enterprise_data
 
     def extract_geographic_features(self, source_data_dict, target_data_dict):
         traffic_convenience_corresponding_ids = [self.small_category_dict[x]
@@ -203,7 +225,8 @@ class DataLoader(object):
                 human_flow += POI[6]
 
             # Equation (1)
-            diversity = -1 * np.sum([(v/(1.0*n_grid_POI))*np.log(v/(1.0*n_grid_POI)) if v != 0 else 0 for v in POI_count])
+            diversity = -1 * np.sum([(v/(1.0*n_grid_POI))*np.log(v/(1.0*n_grid_POI))
+                                     if v != 0 else 0 for v in POI_count])
 
             return np.concatenate(([diversity, human_flow, traffic_convenience], POI_count))
 
@@ -214,7 +237,7 @@ class DataLoader(object):
         for index in range(self.n_target_grid):
             target_geographic_features.append(get_feature(target_data_dict[index]))
 
-        return source_geographic_features, target_geographic_features
+        return np.array(source_geographic_features), np.array(target_geographic_features)
 
     def extract_commercial_features(self, source_data_dict, target_data_dict, valid_small_category_set):
         #  由于房价数据不准确，目前没有使用
@@ -255,4 +278,75 @@ class DataLoader(object):
             source_commercial_features.append(get_feature(source_data_dict[index]))
         for index in range(self.n_target_grid):
             target_commercial_features.append(get_feature(target_data_dict[index]))
-        return source_commercial_features, target_commercial_features
+        return np.swapaxes(np.array(source_commercial_features), 0, 1), \
+               np.swapaxes(np.array(target_commercial_features), 0, 1)
+
+    def combine_features(self, source_geographic_features, target_geographic_features,
+                           source_commercial_features, target_commercial_features):
+        source_geographic_features = np.expand_dims(source_geographic_features, 0).repeat(len(self.args.enterprise),
+                                                                                          axis=0)
+        target_geographic_features = np.expand_dims(target_geographic_features, 0).repeat(len(self.args.enterprise),
+                                                                                          axis=0)
+        source_feature = np.concatenate((source_geographic_features, source_commercial_features), axis=2)
+        target_feature = np.concatenate((target_geographic_features, target_commercial_features), axis=2)
+
+        feature_dim = source_feature.shape[2]
+
+        # enterprise size * grid size * feature size
+        return source_feature, target_feature, feature_dim
+
+    def generate_rating_matrix(self, source_grid_enterprise_data, target_grid_enterprise_data):
+        # columns = ['shop_id', 'name', 'big_category', 'small_category',
+        #             'longitude', 'latitude', 'review_count', 'branchname']
+        source_rating_matrix = np.zeros((len(self.args.enterprise), self.n_source_grid))
+        target_rating_matrix = np.zeros((len(self.args.enterprise), self.n_target_grid))
+        for grid_id in range(self.n_source_grid):
+            for item in source_grid_enterprise_data[grid_id]:
+                for idx, name in enumerate(self.args.enterprise):
+                    if item[1] == name:
+                        source_rating_matrix[idx][grid_id] += item[6]
+
+        for grid_id in range(self.n_target_grid):
+            for item in target_grid_enterprise_data[grid_id]:
+                for idx, name in enumerate(self.args.enterprise):
+                    if item[1] == name:
+                        target_rating_matrix[idx][grid_id] += item[6]
+
+        return source_rating_matrix, target_rating_matrix
+
+    def generate_delta_set(self, source_feature, target_feature):
+        score = []
+        for idx, _ in enumerate(self.args.enterprise):
+            source_info = source_feature[idx]
+            target_info = target_feature[idx]
+            source_mean = np.mean(source_info, axis=1)[:, None]
+            target_mean = np.mean(target_info, axis=1)[:, None]
+            source_std = np.std(source_info, axis=1)[:, None]
+            target_std = np.std(target_info, axis=1)[:, None]
+            idx_score = (np.matmul((source_info-source_mean), (target_info-target_mean).T) / self.feature_dim) / \
+                        (np.matmul(source_std, target_std.T) + self.args.eps)
+            score.append(idx_score)
+        score = np.array(score)
+
+        delta_set = [[] for _ in self.args.enterprise]
+        for idx, _ in enumerate(self.args.enterprise):
+            for source_grid_id in range(self.n_source_grid):
+                sorted_index = np.argsort(-score[idx][source_grid_id])
+                for k in range(min(self.args.gamma, self.n_target_grid)):
+                    delta_set[idx].append([source_grid_id, sorted_index[k]])
+        for idx, _ in enumerate(self.args.enterprise):
+            for target_grid_id in range(self.n_target_grid):
+                sorted_index = np.argsort(-score[idx][:, target_grid_id])
+                for k in range(min(self.args.gamma, self.n_source_grid)):
+                    delta_set[idx].append([sorted_index[k], target_grid_id])
+
+        return delta_set
+
+    def generate_training_and_testing_data(self):
+        source_training_index = []
+        source_testing_index = []
+        target_training_index = []
+        target_testing_index = []
+
+        source_grid_ids = range(self.n_source_grid)
+        target_grid_ids = range(self.n_target_grid)

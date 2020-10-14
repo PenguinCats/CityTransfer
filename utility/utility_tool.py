@@ -4,9 +4,14 @@
 # @File    : utility_tool.py
 
 import os
+import numpy as np
 
 
 def ensure_dir_exist(dir_path):
     d = os.path.dirname(dir_path)
     if not os.path.exists(d):
         os.makedirs(d)
+
+
+def pearson_correlation_coefficient(v1, v2):
+    return np.mean(np.multiply((v1 - np.mean(v1)), (v2 - np.mean(v2)))) / (np.std(v1) * np.std(v2) + 1e-10)

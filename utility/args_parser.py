@@ -45,6 +45,8 @@ def parse_args():
     parser.add_argument('--mess_dropout', type=int, default=0.1,
                         help='Dropout probability w.r.t. message dropout. 0: no dropout.')
 
+    parser.add_argument('--gamma', type=int, default=8,
+                        help='gamma for generate delta set.')
     parser.add_argument('--lambda_1', type=float, default=1,
                         help='trade-off parameter for O1.')
     parser.add_argument('--lambda_2', type=float, default=0.5,
@@ -53,6 +55,8 @@ def parse_args():
                         help='trade-off parameter for O3.')
     parser.add_argument('--lambda_4', type=float, default=0.025,
                         help='trade-off parameter for O4.')
+    parser.add_argument('--eps', type=float, default=1e-9,
+                        help='eps4.')
 
     parser.add_argument('--lr', type=float, default=0.0001,
                         help='Learning rate.')
