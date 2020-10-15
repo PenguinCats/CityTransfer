@@ -7,7 +7,7 @@ import pandas as pd
 import numpy as np
 import collections
 from utility.log_helper import logging
-from utility.utility_tool import pearson_correlation_coefficient
+from utility.utility_tool import cal_pearson_correlation_coefficient
 
 class DataLoader(object):
     def __init__(self, args):
@@ -62,9 +62,9 @@ class DataLoader(object):
                                                                                  target_grid_enterprise_data)
         logging.info("[8 /10]       generate rating matrix for Transfer Rating Prediction Model done.")
 
-        # generate delta set for Inter-City Knowledge Association
-        delta_set = self.generate_delta_set(source_feature, target_feature)
-        logging.info("[9 /10]       generate delta set for Inter-City Knowledge Association done.")
+        # get PCCS and generate delta set
+        PCCS_score, delta_set_source, delta_set_target = self.generate_delta_set(source_feature, target_feature)
+        logging.info("[9 /10]       get PCCS and generate delta set done.")
 
         # generate training and testing data
         self.generate_training_and_testing_data()
@@ -315,6 +315,7 @@ class DataLoader(object):
         return source_rating_matrix, target_rating_matrix
 
     def generate_delta_set(self, source_feature, target_feature):
+        # Equation (13)
         score = []
         for idx, _ in enumerate(self.args.enterprise):
             source_info = source_feature[idx]
@@ -328,19 +329,22 @@ class DataLoader(object):
             score.append(idx_score)
         score = np.array(score)
 
-        delta_set = [[] for _ in self.args.enterprise]
+        delta_set_source = [[] for _ in self.args.enterprise]
+        delta_set_target = [[] for _ in self.args.enterprise]
         for idx, _ in enumerate(self.args.enterprise):
             for source_grid_id in range(self.n_source_grid):
                 sorted_index = np.argsort(-score[idx][source_grid_id])
                 for k in range(min(self.args.gamma, self.n_target_grid)):
-                    delta_set[idx].append([source_grid_id, sorted_index[k]])
+                    delta_set_source[idx].append(source_grid_id)
+                    delta_set_target[idx].append(sorted_index[k])
         for idx, _ in enumerate(self.args.enterprise):
             for target_grid_id in range(self.n_target_grid):
                 sorted_index = np.argsort(-score[idx][:, target_grid_id])
                 for k in range(min(self.args.gamma, self.n_source_grid)):
-                    delta_set[idx].append([sorted_index[k], target_grid_id])
+                    delta_set_source[idx].append(sorted_index[k])
+                    delta_set_target[idx].append(target_grid_id)
 
-        return delta_set
+        return score, delta_set_source, delta_set_target
 
     def generate_training_and_testing_data(self):
         source_training_index = []

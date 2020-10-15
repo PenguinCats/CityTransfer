@@ -54,7 +54,7 @@ def parse_args():
     parser.add_argument('--lambda_3', type=float, default=0.5,
                         help='trade-off parameter for O3.')
     parser.add_argument('--lambda_4', type=float, default=0.025,
-                        help='trade-off parameter for O4.')
+                        help='trade-off parameter for regular terms.')
     parser.add_argument('--eps', type=float, default=1e-9,
                         help='eps4.')
 

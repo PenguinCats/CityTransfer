@@ -10,6 +10,7 @@ import torch
 from utility.args_parser import parse_args
 from utility.log_helper import logging, logging_config
 from utility.data_loader import DataLoader
+from CityTransfer import CityTransfer
 
 CUDA_AVAILABLE = False
 DEVICE = None
@@ -51,3 +52,7 @@ if __name__ == '__main__':
     # load data
     data = DataLoader(args)
     logging.info("--------------load data done")
+
+    # miao
+    model = CityTransfer(args, data.feature_dim)
+    optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, weight_decay=args.lambda_4)
