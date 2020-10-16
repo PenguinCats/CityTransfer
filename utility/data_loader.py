@@ -6,8 +6,10 @@ import os
 import pandas as pd
 import numpy as np
 import collections
+import random
+import torch
+import torch.nn.functional as F
 from utility.log_helper import logging
-from utility.utility_tool import cal_pearson_correlation_coefficient
 
 class DataLoader(object):
     def __init__(self, args):
@@ -26,7 +28,8 @@ class DataLoader(object):
         logging.info("[1 /10]       load dianping data done.")
 
         # check enterprise and get small category set
-        valid_small_category_set = self.check_enterprise(source_area_data, target_area_data)
+        valid_small_category_set, self.target_enterprise_index = self.check_enterprise(source_area_data,
+                                                                                       target_area_data)
         logging.info("[2 /10]       check enterprise and get small category set.")
 
         # split grid
@@ -52,23 +55,28 @@ class DataLoader(object):
         logging.info("[6 /10]       extract commercial features done.")
 
         # combine features
-        source_feature, target_feature, self.feature_dim = \
+        self.source_feature, self.target_feature, self.feature_dim = \
             self.combine_features(source_geographic_features, target_geographic_features,
                                   source_commercial_features, target_commercial_features)
         logging.info("[7 /10]       combine features done.")
 
         # generate rating matrix for Transfer Rating Prediction Model
-        source_rating_matrix, target_rating_matrix = self.generate_rating_matrix(source_grid_enterprise_data,
-                                                                                 target_grid_enterprise_data)
+        self.source_rating_matrix, self.target_rating_matrix = self.generate_rating_matrix(source_grid_enterprise_data,
+                                                                                           target_grid_enterprise_data)
         logging.info("[8 /10]       generate rating matrix for Transfer Rating Prediction Model done.")
 
         # get PCCS and generate delta set
-        PCCS_score, delta_set_source, delta_set_target = self.generate_delta_set(source_feature, target_feature)
+        self.PCCS_score, self.delta_set_source, self.delta_set_target = self.generate_delta_set(self.source_feature,
+                                                                                                self.target_feature)
         logging.info("[9 /10]       get PCCS and generate delta set done.")
 
-        # generate training and testing data
-        self.generate_training_and_testing_data()
-        logging.info("[10/10]       generate training and testing data done.")
+        # generate training and testing index
+        self.source_grid_ids, self.target_grid_ids = self.generate_training_and_testing_index()
+        logging.info("[10/10]       generate training and testing index done.")
+
+        # change data to tensor
+        self.source_feature = F.sigmoid(torch.Tensor(self.source_feature))  # not sure
+        self.target_feature = F.sigmoid(torch.Tensor(self.target_feature))  # not sure
 
     def load_dianping_data(self, dianping_data_path):
         dianping_data = pd.read_csv(dianping_data_path, usecols=[0, 1, 2, 14, 15, 17, 18, 23, 27])
@@ -134,7 +142,15 @@ class DataLoader(object):
                 logging.error('品牌 {} 并非在原地区和目的地区都有门店'.format(name))
                 exit(1)
 
-        return valid_small_category_set
+        target_enterprise_index = -1
+        for idx, name in enumerate(self.args.enterprise):
+            if name == self.args.target_enterprise:
+                target_enterprise_index = idx
+        if target_enterprise_index < 0:
+            logging.error('目标企业{}必须在所选择的几家连锁企业中'.format(self.args.target_enterprise))
+            exit(1)
+
+        return valid_small_category_set, target_enterprise_index
 
     def split_grid(self):
         source_area_longitude_boundary = np.append(np.arange(self.args.source_area_coordinate[0],
@@ -218,11 +234,11 @@ class DataLoader(object):
             for POI in grid_info:
                 # Equation (3)
                 if POI[3] in traffic_convenience_corresponding_ids:
-                    traffic_convenience += 1
+                    traffic_convenience -= 1
                 # Equation (4)
                 POI_count[POI[2]] += 1
                 # Equation (2)
-                human_flow += POI[6]
+                human_flow -= POI[6]
 
             # Equation (1)
             diversity = -1 * np.sum([(v/(1.0*n_grid_POI))*np.log(v/(1.0*n_grid_POI))
@@ -346,11 +362,11 @@ class DataLoader(object):
 
         return score, delta_set_source, delta_set_target
 
-    def generate_training_and_testing_data(self):
-        source_training_index = []
-        source_testing_index = []
-        target_training_index = []
-        target_testing_index = []
+    def generate_training_and_testing_index(self):
+        source_grid_ids = np.arange(self.n_source_grid).tolist()
+        target_grid_ids = np.arange(self.n_target_grid).tolist()
+        random.shuffle(source_grid_ids)
+        random.shuffle(target_grid_ids)
+        return source_grid_ids, target_grid_ids
 
-        source_grid_ids = range(self.n_source_grid)
-        target_grid_ids = range(self.n_target_grid)
+    # def get_grid_info(self, grid_index, grid_type):

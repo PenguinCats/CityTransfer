@@ -6,8 +6,8 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import numpy as np
 import argparse
+from utility.log_helper import logging
 
 
 class AutoEncoder(nn.Module):
@@ -54,12 +54,10 @@ class CityTransfer(nn.Module):
             encoded_x, decoded_x = self.auto_encoder[0](origin_feature)  # target
         return encoded_x, decoded_x
 
-    def cal_auto_encoder_loss(self, source_feature, target_feature):
-        _, decoded_source = self.encode(source_feature, 's')
-        _, decoded_target = self.encode(target_feature, 't')
+    def cal_auto_encoder_loss(self, grid_feature, ae_type):
+        _, decoded_grid = self.encode(grid_feature, ae_type)
         # Equation (19)
-        loss_ae = F.mse_loss(source_feature, decoded_source, reduction='sum') + \
-                  F.mse_loss(target_feature, decoded_target, reduction='sum')
+        loss_ae = F.mse_loss(grid_feature, decoded_grid, reduction='sum')
         return loss_ae
 
     def cal_inter_city_loss(self, score, source_feature, target_feature):
@@ -70,19 +68,33 @@ class CityTransfer(nn.Module):
         return loss
 
     def cal_prediction_score(self, enterprise_index, grid_index, grid_feature, grid_type):
+        encoded_feature, _ = self.encode(grid_feature, grid_type)
         enterprise_feature = self.u[enterprise_index]
         enterprise_bias = self.b[enterprise_index]
         if grid_type == 's':
             grid_bias = self.e_source[grid_index].reshape(-1, len(grid_index))
         else:
             grid_bias = self.e_target[grid_index].reshape(-1, len(grid_index))
-        score = enterprise_bias + grid_bias + torch.matmul(enterprise_feature, grid_feature.T)
+        # Equation (10 & 11)
+        score = enterprise_bias + grid_bias + torch.matmul(enterprise_feature, encoded_feature.T)
         return score
 
+    def cal_prediction_loss(self, enterprise_index, grid_index, grid_feature, grid_type, real_score):
+        score = self.cal_prediction_score(enterprise_index, grid_index, grid_feature, grid_type)
+        # Equation (12)
+        loss = F.mse_loss(score, real_score, reduction='sum')
+        return loss
 
     def forward(self, mode, *inputs):
         if mode == 'cal_auto_encoder_loss':
             return self.cal_auto_encoder_loss(*inputs)
+        elif mode == 'cal_inter_city_loss':
+            return self.cal_inter_city_loss(*inputs)
+        elif mode == 'cal_prediction_loss':
+            return self.cal_prediction_loss(*inputs)
+        else:
+            logging.error('run parameters!')
+            exit(1)
 
 
 if __name__ == "__main__":
@@ -93,5 +105,9 @@ if __name__ == "__main__":
     c = CityTransfer(args, 5, 1000, 1000)
     aa = torch.Tensor([[0.15, 0.71, 0.5, 0.4, 0.3], [0.15, 0.71, 0.5, 0.4, 0.3], [0.15, 0.71, 0.5, 0.4, 0.3]])
     bb = torch.Tensor([[0.75, 0.61, 0.4, 0.9, 0.1], [0.75, 0.61, 0.4, 0.9, 0.1], [0.75, 0.61, 0.4, 0.9, 0.1]])
+    ab = torch.Tensor([[0.75, 0.61, 0.4, 0.9, 0.1], [0.75, 0.61, 0.4, 0.9, 0.1]])
     cc = torch.Tensor([[0.75, 0.61, 0.4, 0.9, 0.1, 0.61, 0.4, 0.9, 0.1], [0.2, 0.7, 0.4, 0.4, 0.1, 0.9, 0.4, 0.2, 0.1]])
-    res = c.cal_prediction_score([1, 2, 0], [30, 40], cc, 's')
+    dd = torch.Tensor([[0.8, 0.7], [0.3, 0.1], [0.6, 0.9]])
+    res = c.cal_prediction_loss([1, 2, 0], [30, 40], ab, 's', dd)
+    res2 = c.cal_prediction_score([1, 2, 0], [30, 40], ab, 't')
+    print(res2)
