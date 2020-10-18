@@ -13,6 +13,7 @@ from utility.log_helper import logging, logging_config
 from utility.data_loader import DataLoader
 from CityTransfer import CityTransfer
 
+DEBUG = True
 CUDA_AVAILABLE = False
 DEVICE = None
 N_GPU = 0
@@ -56,6 +57,8 @@ if __name__ == '__main__':
                     for i in range(0, len(data.source_grid_ids), args.batch_size)]
     target_batch = [data.target_grid_ids[i: i+args.batch_size]
                     for i in range(0, len(data.target_grid_ids), args.batch_size)]
+    delta_batch = [data.delta_list_ids[i: i+args.batch_size]
+                   for i in range(0, len(data.delta_list_ids), args.batch_size)]
     logging.info("--------------load data done.")
 
     # construct model and optimizer
@@ -89,7 +92,7 @@ if __name__ == '__main__':
             if (batch_iter % args.O3_print_every) == 0:
                 logging.info('AE Source Training: Epoch {:04d} Iter {:04d} / {:04d} | Time {:.1f}s '
                              '| Iter Loss {:.4f} | Iter Mean Loss {:.4f}'.
-                             format(epoch, batch_iter, len(source_batch), time() - time_iter,
+                             format(epoch, batch_iter, len(source_batch)-1, time() - time_iter,
                                     batch_loss.item(), ae_total_loss / (batch_iter+1)))
 
         ae_total_loss = 0
@@ -101,10 +104,41 @@ if __name__ == '__main__':
             batch_loss.backward()
             optimizer.step()
             ae_total_loss += batch_loss.item()
-            if (batch_iter % args.O3_print_every) == 0:
-                logging.info('AE Target Training: Epoch {:04d} Iter {:04d} / {:04d} | Time {:.1f}s '
-                             '| Iter Loss {:.4f} | Iter Mean Loss {:.4f}'.
-                             format(epoch, batch_iter, len(target_batch), time() - time_iter,
-                                    batch_loss.item(), ae_total_loss / (batch_iter+1)))
+            if DEBUG:
+                if (batch_iter % args.O3_print_every) == 0:
+                    logging.info('AE Target Training: Epoch {:04d} Iter {:04d} / {:04d} | Time {:.1f}s '
+                                 '| Iter Loss {:.4f} | Iter Mean Loss {:.4f}'.
+                                 format(epoch, batch_iter, len(target_batch)-1, time() - time_iter,
+                                        batch_loss.item(), ae_total_loss / (batch_iter+1)))
+
+        # update Inter-City Knowledge Association
+        inter_city_total_loss = 0
+        for batch_iter, batch_index in enumerate(delta_batch):
+            time_iter = time()
+            score, source_feature, target_feature = data.get_score_and_feature_for_inter_city(batch_index)
+            optimizer.zero_grad()
+            batch_loss = args.lambda_2 * model('cal_inter_city_loss', score, source_feature, target_feature)
+            batch_loss.backward()
+            optimizer.step()
+            inter_city_total_loss += batch_loss.item()
+            if DEBUG:
+                if (batch_iter % args.O3_print_every) == 0:
+                    logging.info('Inter-City Knowledge Training: Epoch {:04d} Iter {:04d} / {:04d} | Time {:.1f}s '
+                                 '| Iter Loss {:.4f} | Iter Mean Loss {:.4f}'.
+                                 format(epoch, batch_iter, len(delta_batch)-1, time() - time_iter,
+                                        batch_loss.item(), inter_city_total_loss / (batch_iter+1)))
+
+        # update Prediction Model
+        prediction_model_loss = 0
+        for batch_iter, batch_index in enumerate(source_batch):
+            time_iter = time()
+            data.get_feature_and_rel_score_for_prediction_model(batch_index, 's')
+            break
+
+        for batch_iter, batch_index in enumerate(target_batch):
+            time_iter = time()
+            data.get_feature_and_rel_score_for_prediction_model(batch_index, 't')
+            break
+        break
 
     logging.info("[!]-----------training done.")

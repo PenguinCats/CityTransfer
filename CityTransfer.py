@@ -64,7 +64,7 @@ class CityTransfer(nn.Module):
         encoded_source, _ = self.encode(source_feature, 's')
         encoded_target, _ = self.encode(target_feature, 't')
         # Equation (14)
-        loss = torch.sum(score * torch.sum(torch.pow(encoded_source - encoded_target, 2), dim=1))
+        loss = torch.sum(score * torch.sum(torch.pow(encoded_source - encoded_target, 2), dim=2))
         return loss
 
     def cal_prediction_score(self, enterprise_index, grid_index, grid_feature, grid_type):

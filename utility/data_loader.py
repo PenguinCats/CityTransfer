@@ -71,7 +71,7 @@ class DataLoader(object):
         logging.info("[9 /10]       get PCCS and generate delta set done.")
 
         # generate training and testing index
-        self.source_grid_ids, self.target_grid_ids = self.generate_training_and_testing_index()
+        self.source_grid_ids, self.target_grid_ids, self.delta_list_ids = self.generate_training_and_testing_index()
         logging.info("[10/10]       generate training and testing index done.")
 
         # change data to tensor
@@ -359,14 +359,39 @@ class DataLoader(object):
                 for k in range(min(self.args.gamma, self.n_source_grid)):
                     delta_set_source[idx].append(sorted_index[k])
                     delta_set_target[idx].append(target_grid_id)
-
+        delta_set_source = np.array(delta_set_source)
+        delta_set_target = np.array(delta_set_target)
         return score, delta_set_source, delta_set_target
 
     def generate_training_and_testing_index(self):
-        source_grid_ids = np.arange(self.n_source_grid).tolist()
-        target_grid_ids = np.arange(self.n_target_grid).tolist()
+        source_grid_ids = np.arange(self.n_source_grid)
+        target_grid_ids = np.arange(self.n_target_grid)
+        delta_list_ids = np.arange(len(self.delta_set_source[0]))
         random.shuffle(source_grid_ids)
         random.shuffle(target_grid_ids)
-        return source_grid_ids, target_grid_ids
+        random.shuffle(delta_list_ids)
+        return source_grid_ids, target_grid_ids, delta_list_ids
 
-    # def get_grid_info(self, grid_index, grid_type):
+    def get_score_and_feature_for_inter_city(self, delta_ids):
+        score, source_feature, target_feature = [], [], []
+        for idx, name in enumerate(self.args.enterprise):
+            if idx == self.target_enterprise_index:
+                continue
+            score.append(self.PCCS_score[idx][self.delta_set_source[idx][delta_ids],
+                                              self.delta_set_target[idx][delta_ids]])
+            source_feature.append(self.source_feature[idx][self.delta_set_source[idx][delta_ids]])
+            target_feature.append(self.target_feature[idx][self.delta_set_target[idx][delta_ids]])
+        score = torch.Tensor(score)
+        source_feature = torch.stack(source_feature, dim=0)
+        target_feature = torch.stack(target_feature, dim=0)
+        return score, source_feature, target_feature
+
+    def get_feature_and_rel_score_for_prediction_model(self, grid_index, grid_type):
+        if grid_type == 's':
+            feature = self.source_feature[:, self.source_grid_ids[grid_index]]
+        else:
+            enterprise_index = [idx for idx, _ in enumerate(self.args.enterprise)
+                                if idx != self.target_enterprise_index]
+            feature = self.target_feature[enterprise_index][:, self.target_grid_ids[grid_index]]
+
+        print(feature.shape)
