@@ -35,9 +35,6 @@ def system_init(system_args):
     N_GPU = torch.cuda.device_count()
     if N_GPU > 0:
         torch.cuda.manual_seed_all(system_args.seed)
-    CUDA_AVAILABLE = False
-    DEVICE = torch.device('cpu')
-    N_GPU = 0
 
     # other settings
     # 显示所有列
@@ -75,6 +72,16 @@ if __name__ == '__main__':
     ndcg_list = []
     logging.info("--------------initialize metrics done.")
 
+    # move to GPU
+    if CUDA_AVAILABLE:
+        model.to(DEVICE)
+        data.source_rating_matrix = data.source_rating_matrix.to(DEVICE)
+        data.target_rating_matrix = data.target_rating_matrix.to(DEVICE)
+        data.source_feature = data.source_feature.to(DEVICE)
+        data.target_feature = data.target_feature.to(DEVICE)
+        data.PCCS_score = data.PCCS_score.to(DEVICE)
+
+    # training
     logging.info("[!]-----------start training.")
     for epoch in range(args.n_epoch):
         model.train()
@@ -122,7 +129,7 @@ if __name__ == '__main__':
             optimizer.step()
             inter_city_total_loss += batch_loss.item()
             if DEBUG:
-                if (batch_iter % args.O3_print_every) == 0:
+                if (batch_iter % args.O2_print_every) == 0:
                     logging.info('Inter-City Knowledge Training: Epoch {:04d} Iter {:04d} / {:04d} | Time {:.1f}s '
                                  '| Iter Loss {:.4f} | Iter Mean Loss {:.4f}'.
                                  format(epoch, batch_iter, len(delta_batch)-1, time() - time_iter,
@@ -132,13 +139,35 @@ if __name__ == '__main__':
         prediction_model_loss = 0
         for batch_iter, batch_index in enumerate(source_batch):
             time_iter = time()
-            data.get_feature_and_rel_score_for_prediction_model(batch_index, 's')
-            break
+            feature, score = data.get_feature_and_rel_score_for_prediction_model(batch_index, 's')
+            optimizer.zero_grad()
+            batch_loss = model('cal_prediction_loss', data.all_enterprise_index, data.source_grid_ids[batch_index],
+                               feature, 's', score)
+            batch_loss.backward()
+            optimizer.step()
+            prediction_model_loss += batch_loss.item()
+            if DEBUG:
+                if (batch_iter % args.O1_print_every) == 0:
+                    logging.info('Prediction Model Source Training: Epoch {:04d} Iter {:04d} / {:04d} | Time {:.1f}s '
+                                 '| Iter Loss {:.4f} | Iter Mean Loss {:.4f}'.
+                                 format(epoch, batch_iter, len(source_batch) - 1, time() - time_iter,
+                                        batch_loss.item(), prediction_model_loss / (batch_iter + 1)))
 
+        prediction_model_loss = 0
         for batch_iter, batch_index in enumerate(target_batch):
             time_iter = time()
-            data.get_feature_and_rel_score_for_prediction_model(batch_index, 't')
-            break
-        break
+            feature, score = data.get_feature_and_rel_score_for_prediction_model(batch_index, 't')
+            optimizer.zero_grad()
+            batch_loss = model('cal_prediction_loss', data.portion_enterprise_index, data.target_grid_ids[batch_index],
+                               feature, 't', score)
+            batch_loss.backward()
+            optimizer.step()
+            prediction_model_loss += batch_loss.item()
+            if DEBUG:
+                if (batch_iter % args.O1_print_every) == 0:
+                    logging.info('Prediction Model Target Training: Epoch {:04d} Iter {:04d} / {:04d} | Time {:.1f}s '
+                                 '| Iter Loss {:.4f} | Iter Mean Loss {:.4f}'.
+                                 format(epoch, batch_iter, len(target_batch) - 1, time() - time_iter,
+                                        batch_loss.item(), prediction_model_loss / (batch_iter + 1)))
 
     logging.info("[!]-----------training done.")

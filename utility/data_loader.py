@@ -8,8 +8,9 @@ import numpy as np
 import collections
 import random
 import torch
-import torch.nn.functional as F
+from sklearn import preprocessing
 from utility.log_helper import logging
+
 
 class DataLoader(object):
     def __init__(self, args):
@@ -28,8 +29,8 @@ class DataLoader(object):
         logging.info("[1 /10]       load dianping data done.")
 
         # check enterprise and get small category set
-        valid_small_category_set, self.target_enterprise_index = self.check_enterprise(source_area_data,
-                                                                                       target_area_data)
+        valid_small_category_set, self.target_enterprise_index, self.all_enterprise_index, \
+            self.portion_enterprise_index = self.check_enterprise(source_area_data, target_area_data)
         logging.info("[2 /10]       check enterprise and get small category set.")
 
         # split grid
@@ -75,8 +76,8 @@ class DataLoader(object):
         logging.info("[10/10]       generate training and testing index done.")
 
         # change data to tensor
-        self.source_feature = F.sigmoid(torch.Tensor(self.source_feature))  # not sure
-        self.target_feature = F.sigmoid(torch.Tensor(self.target_feature))  # not sure
+        self.source_feature = torch.sigmoid(torch.Tensor(self.source_feature))  # not sure
+        self.target_feature = torch.sigmoid(torch.Tensor(self.target_feature))  # not sure
 
     def load_dianping_data(self, dianping_data_path):
         dianping_data = pd.read_csv(dianping_data_path, usecols=[0, 1, 2, 14, 15, 17, 18, 23, 27])
@@ -150,7 +151,11 @@ class DataLoader(object):
             logging.error('目标企业{}必须在所选择的几家连锁企业中'.format(self.args.target_enterprise))
             exit(1)
 
-        return valid_small_category_set, target_enterprise_index
+        all_enterprise_index = [idx for idx, _ in enumerate(self.args.enterprise)]
+        portion_enterprise_index = [idx for idx, _ in enumerate(self.args.enterprise)
+                                    if idx != target_enterprise_index]
+
+        return valid_small_category_set, target_enterprise_index, all_enterprise_index, portion_enterprise_index
 
     def split_grid(self):
         source_area_longitude_boundary = np.append(np.arange(self.args.source_area_coordinate[0],
@@ -170,6 +175,7 @@ class DataLoader(object):
 
         n_source_grid = (len(source_area_longitude_boundary) - 1) * (len(source_area_latitude_boundary) - 1)
         n_target_grid = (len(target_area_longitude_boundary) - 1) * (len(target_area_latitude_boundary) - 1)
+        logging.info('n_source_grid: {}, n_target_grid: {}'.format(n_source_grid, n_target_grid))
 
         return n_source_grid, n_target_grid, source_area_longitude_boundary, source_area_latitude_boundary, \
                target_area_longitude_boundary, target_area_latitude_boundary
@@ -328,6 +334,14 @@ class DataLoader(object):
                     if item[1] == name:
                         target_rating_matrix[idx][grid_id] += item[6]
 
+        min_max_scaler = preprocessing.MinMaxScaler(feature_range=(0, 5))
+        source_rating_matrix = min_max_scaler.fit_transform(source_rating_matrix)
+        target_rating_matrix = min_max_scaler.fit_transform(target_rating_matrix)
+        source_rating_matrix = torch.Tensor(source_rating_matrix)
+        target_rating_matrix = torch.Tensor(target_rating_matrix)
+        # print(source_rating_matrix)
+        # print(type(source_rating_matrix))
+        # exit(0)
         return source_rating_matrix, target_rating_matrix
 
     def generate_delta_set(self, source_feature, target_feature):
@@ -343,7 +357,8 @@ class DataLoader(object):
             idx_score = (np.matmul((source_info-source_mean), (target_info-target_mean).T) / self.feature_dim) / \
                         (np.matmul(source_std, target_std.T) + self.args.eps)
             score.append(idx_score)
-        score = np.array(score)
+        # score = np.array(score)
+        score = torch.Tensor(score)
 
         delta_set_source = [[] for _ in self.args.enterprise]
         delta_set_target = [[] for _ in self.args.enterprise]
@@ -381,17 +396,21 @@ class DataLoader(object):
                                               self.delta_set_target[idx][delta_ids]])
             source_feature.append(self.source_feature[idx][self.delta_set_source[idx][delta_ids]])
             target_feature.append(self.target_feature[idx][self.delta_set_target[idx][delta_ids]])
-        score = torch.Tensor(score)
+        # score = torch.Tensor(score)
+        score = torch.stack(score, dim=0)
         source_feature = torch.stack(source_feature, dim=0)
         target_feature = torch.stack(target_feature, dim=0)
+
         return score, source_feature, target_feature
 
     def get_feature_and_rel_score_for_prediction_model(self, grid_index, grid_type):
         if grid_type == 's':
             feature = self.source_feature[:, self.source_grid_ids[grid_index]]
+            score = self.source_rating_matrix[:, self.source_grid_ids[grid_index]]
+        elif grid_type == 't':
+            feature = self.target_feature[self.portion_enterprise_index][:, self.target_grid_ids[grid_index]]
+            score = self.target_rating_matrix[self.portion_enterprise_index][:, self.target_grid_ids[grid_index]]
         else:
-            enterprise_index = [idx for idx, _ in enumerate(self.args.enterprise)
-                                if idx != self.target_enterprise_index]
-            feature = self.target_feature[enterprise_index][:, self.target_grid_ids[grid_index]]
-
-        print(feature.shape)
+            logging.error('未定义类型')
+            exit(1)
+        return feature, score

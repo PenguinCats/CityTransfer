@@ -33,6 +33,12 @@ def parse_args():
     parser.add_argument('--test_batch_size', type=int, default=10000,
                         help='Test batch size (the shop number to test every batch).')
 
+    # parser.add_argument('--source_area_coordinate', nargs=8, type=float,
+    #                     default=[118.774311, 118.928619, 31.864258, 31.992135],
+    #                     help='Source area coordinate. [longitude1, longitude2, latitude1， latitude2]')
+    # parser.add_argument('--target_area_coordinate', nargs=8, type=float,
+    #                     default=[118.768014, 118.827563, 32.004111, 32.066481],
+    #                     help='Target area coordinate. [longitude1, longitude2, latitude1， latitude2]')
     parser.add_argument('--source_area_coordinate', nargs=8, type=float,
                         default=[118.768014, 118.827563, 32.004111, 32.066481],
                         help='Source area coordinate. [longitude1, longitude2, latitude1， latitude2]')
