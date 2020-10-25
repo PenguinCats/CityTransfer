@@ -11,6 +11,7 @@ from time import time
 from utility.args_parser import parse_args
 from utility.log_helper import logging, logging_config
 from utility.data_loader import DataLoader
+from utility.metrics import ndcg_at_k
 from CityTransfer import CityTransfer
 
 DEBUG = True
@@ -67,7 +68,6 @@ if __name__ == '__main__':
 
     # initialize metrics
     best_epoch = -1
-    epoch_list = []
     mse_list = []
     ndcg_list = []
     logging.info("--------------initialize metrics done.")
@@ -170,4 +170,33 @@ if __name__ == '__main__':
                                  format(epoch, batch_iter, len(target_batch) - 1, time() - time_iter,
                                         batch_loss.item(), prediction_model_loss / (batch_iter + 1)))
 
-    logging.info("[!]-----------training done.")
+        # evaluate prediction model
+        if (epoch % args.evaluate_every) == 0:
+            with torch.no_grad():
+                mse_epoch = []
+                ndcg_epoch = []
+                for batch_iter, batch_index in enumerate(target_batch):
+                    feature, real_score_batch = data.get_feature_and_rel_score_for_evaluate(batch_index)
+                    predict_score_batch = model('prediction', data.target_enterprise_index,
+                                                data.target_grid_ids[batch_index], feature)
+
+                    mse = torch.nn.functional.mse_loss(real_score_batch, predict_score_batch)
+                    mse_epoch.append(mse)
+
+                    real_score_batch_index = torch.argsort(real_score_batch, descending=True)
+                    predict_score_batch_index = torch.argsort(predict_score_batch, descending=True)
+                    print(real_score_batch_index)
+                    print(predict_score_batch_index)
+                    ndcg = ndcg_at_k(real_score_batch_index, predict_score_batch_index, args.K)
+                    ndcg_epoch.append(ndcg)
+
+                ndcg_epoch = np.sum(ndcg_epoch) / len(ndcg_epoch)
+                mse_epoch = np.sum(mse_epoch) / len(mse_epoch)
+                ndcg_list.append(ndcg_epoch)
+                mse_list.append(mse_epoch)
+
+                if DEBUG:
+                    logging.info('Evaluate: Epoch {:04d} | NDCG {:.4f} | MSE {:.4f}'.
+                                 format(epoch, ndcg_epoch, mse_epoch))
+
+logging.info("[!]-----------training done.")

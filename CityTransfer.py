@@ -13,10 +13,12 @@ from utility.log_helper import logging
 class AutoEncoder(nn.Module):
     def __init__(self, in_dim, out_dim):
         super(AutoEncoder, self).__init__()
-        self.W = nn.parameter.Parameter(torch.Tensor(out_dim, in_dim))
+        self.W = nn.Parameter(torch.Tensor(out_dim, in_dim))
         nn.init.xavier_uniform_(self.W, gain=nn.init.calculate_gain('sigmoid'))
-        self.y1 = nn.parameter.Parameter(torch.Tensor(out_dim))
-        self.y2 = nn.parameter.Parameter(torch.Tensor(in_dim))
+        self.y1 = nn.Parameter(torch.Tensor(out_dim))
+        nn.init.normal_(self.y1)
+        self.y2 = nn.Parameter(torch.Tensor(in_dim))
+        nn.init.normal_(self.y2)
         self.activation = nn.Sigmoid()
 
     def forward(self, x):
@@ -86,7 +88,7 @@ class CityTransfer(nn.Module):
             exit(1)
         # Equation (10 & 11)
         score = torch.matmul(enterprise_feature.unsqueeze(1), encoded_feature.permute(0, 2, 1)).squeeze(1) + \
-                enterprise_bias + grid_bias
+            enterprise_bias + grid_bias
         return score
 
     def cal_prediction_loss(self, enterprise_index, grid_index, grid_feature, grid_type, real_score):
@@ -96,6 +98,15 @@ class CityTransfer(nn.Module):
         loss = F.mse_loss(score, real_score, reduction='mean')
         return loss
 
+    def prediction(self, target_enterprise_index, grid_index, grid_feature):
+        encoded_feature, _ = self.encode(grid_feature, 't')
+        enterprise_feature = self.u[target_enterprise_index]
+        enterprise_bias = self.b[target_enterprise_index]
+        grid_bias = self.e_target[grid_index].reshape(-1, len(grid_index))
+
+        score = torch.matmul(enterprise_feature, encoded_feature.T) + enterprise_bias + grid_bias
+        return score
+
     def forward(self, mode, *inputs):
         if mode == 'cal_auto_encoder_loss':
             return self.cal_auto_encoder_loss(*inputs)
@@ -103,6 +114,8 @@ class CityTransfer(nn.Module):
             return self.cal_inter_city_loss(*inputs)
         elif mode == 'cal_prediction_loss':
             return self.cal_prediction_loss(*inputs)
+        elif mode == 'prediction':
+            return self.prediction(*inputs)
         else:
             logging.error('run parameters!')
             exit(1)

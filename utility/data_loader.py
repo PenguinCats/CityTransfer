@@ -414,3 +414,8 @@ class DataLoader(object):
             logging.error('未定义类型')
             exit(1)
         return feature, score
+
+    def get_feature_and_rel_score_for_evaluate(self, grid_index):
+        feature = self.target_feature[self.target_enterprise_index, self.target_grid_ids[grid_index]]
+        score = self.target_rating_matrix[self.target_enterprise_index, self.target_grid_ids[grid_index]]
+        return feature, score

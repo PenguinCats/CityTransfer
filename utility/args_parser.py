@@ -22,16 +22,16 @@ def parse_args():
     parser.add_argument('--target_enterprise', nargs='?', default='luckin coffee瑞幸咖啡',
                         help='Input target enterprise to be transferred.')
 
-    parser.add_argument('--batch_size', type=int, default=512,
+    parser.add_argument('--batch_size', type=int, default=50,
                         help='Training batch size.')
-    parser.add_argument('--rating_batch_size', type=int, default=512,
-                        help='Transfer Rating Prediction Model batch size.')
-    parser.add_argument('--inter_batch_size', type=int, default=512,
-                        help='Inter-City Knowledge Association batch size.')
-    parser.add_argument('--intra_batch_size', type=int, default=512,
-                        help='Intra-City Semantic Extraction.')
-    parser.add_argument('--test_batch_size', type=int, default=10000,
-                        help='Test batch size (the shop number to test every batch).')
+    # parser.add_argument('--rating_batch_size', type=int, default=512,
+    #                     help='Transfer Rating Prediction Model batch size.')
+    # parser.add_argument('--inter_batch_size', type=int, default=512,
+    #                     help='Inter-City Knowledge Association batch size.')
+    # parser.add_argument('--intra_batch_size', type=int, default=512,
+    #                     help='Intra-City Semantic Extraction.')
+    # parser.add_argument('--test_batch_size', type=int, default=10000,
+    #                     help='Test batch size (the shop number to test every batch).')
 
     # parser.add_argument('--source_area_coordinate', nargs=8, type=float,
     #                     default=[118.774311, 118.928619, 31.864258, 31.992135],
