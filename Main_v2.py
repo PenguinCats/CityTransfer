@@ -10,7 +10,7 @@ import torch
 from time import time
 from utility.args_parser import parse_args
 from utility.log_helper import logging, logging_config
-from utility.data_loader import DataLoader
+from utility.data_loader_V2 import DataLoader
 from utility.metrics import ndcg_at_k
 from CityTransfer import CityTransfer
 
@@ -55,8 +55,12 @@ if __name__ == '__main__':
                     for i in range(0, len(data.source_grid_ids), args.batch_size)]
     target_batch = [data.target_grid_ids[i: i+args.batch_size]
                     for i in range(0, len(data.target_grid_ids), args.batch_size)]
-    delta_batch = [data.delta_list_ids[i: i+args.batch_size]
-                   for i in range(0, len(data.delta_list_ids), args.batch_size)]
+    while len(source_batch) < len(target_batch):
+        random_i = random.randint(0, len(data.source_grid_ids))
+        source_batch.append(data.source_grid_ids[random_i: random_i+args.batch_size])
+    while len(target_batch) < len(source_batch):
+        random_i = random.randint(0, len(data.target_grid_ids))
+        target_batch.append(data.target_grid_ids[random_i: random_i+args.batch_size])
     logging.info("--------------load data done.")
 
     # construct model and optimizer
@@ -86,37 +90,21 @@ if __name__ == '__main__':
     for epoch in range(args.n_epoch):
         model.train()
 
-        # update AutoEncoder
-        ae_total_loss = 0
-        for batch_iter, batch_index in enumerate(source_batch):
-            time_iter = time()
-            grid_feature = data.source_feature[:, batch_index]
+        for batch_iter in range(len(source_batch)):
             optimizer.zero_grad()
-            batch_loss = args.lambda_3 * model('cal_auto_encoder_loss', grid_feature, 's')
-            batch_loss.backward()
-            optimizer.step()
-            ae_total_loss += batch_loss.item()
-            if (batch_iter % args.O3_print_every) == 0:
-                logging.info('AE Source Training: Epoch {:04d} Iter {:04d} / {:04d} | Time {:.1f}s '
-                             '| Iter Loss {:.4f} | Iter Mean Loss {:.4f}'.
-                             format(epoch, batch_iter, len(source_batch)-1, time() - time_iter,
-                                    batch_loss.item(), ae_total_loss / (batch_iter+1)))
+            total_loss = 0
 
-        ae_total_loss = 0
-        for batch_iter, batch_index in enumerate(target_batch):
-            time_iter = time()
-            grid_feature = data.target_feature[:, batch_index]
-            optimizer.zero_grad()
-            batch_loss = args.lambda_3 * model('cal_auto_encoder_loss', grid_feature, 't')
-            batch_loss.backward()
-            optimizer.step()
-            ae_total_loss += batch_loss.item()
-            if DEBUG:
-                if (batch_iter % args.O3_print_every) == 0:
-                    logging.info('AE Target Training: Epoch {:04d} Iter {:04d} / {:04d} | Time {:.1f}s '
-                                 '| Iter Loss {:.4f} | Iter Mean Loss {:.4f}'.
-                                 format(epoch, batch_iter, len(target_batch)-1, time() - time_iter,
-                                        batch_loss.item(), ae_total_loss / (batch_iter+1)))
+            batch_source_index = source_batch[batch_iter]
+            batch_target_index = target_batch[batch_iter]
+
+            source_grid_feature = data.source_feature[:, batch_source_index]
+            target_grid_feature = data.target_feature[:, batch_target_index]
+
+            ae_source_batch_loss = args.lambda_3 * model('cal_auto_encoder_loss', source_grid_feature, 's')
+            ae_target_batch_loss = args.lambda_3 * model('cal_auto_encoder_loss', target_grid_feature, 't')
+
+            total_loss += ae_source_batch_loss.item() + ae_target_batch_loss.item()
+
 
         # update Inter-City Knowledge Association
         inter_city_total_loss = 0

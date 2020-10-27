@@ -10,6 +10,7 @@ import random
 import torch
 from sklearn import preprocessing
 from utility.log_helper import logging
+from utility.utility_tool import _norm
 
 
 class DataLoader(object):
@@ -38,11 +39,16 @@ class DataLoader(object):
         logging.info("[3 /10]       split grid done.")
 
         # distribute data into grids
-        source_data_dict, target_data_dict, source_grid_enterprise_data, target_grid_enterprise_data\
+        source_data_dict, target_data_dict, source_grid_enterprise_data, target_grid_enterprise_data \
             = self.distribute_data(source_area_data, target_area_data, source_area_longitude_boundary,
                                    source_area_latitude_boundary, target_area_longitude_boundary,
                                    target_area_latitude_boundary)
         logging.info("[4 /10]       distribute data into grids done.")
+
+        # generate rating matrix for Transfer Rating Prediction Model
+        self.source_rating_matrix, self.target_rating_matrix = self.generate_rating_matrix(source_grid_enterprise_data,
+                                                                                           target_grid_enterprise_data)
+        logging.info("[8 /10]       generate rating matrix for Transfer Rating Prediction Model done.")
 
         # extract geographic features
         source_geographic_features, target_geographic_features = self.extract_geographic_features(source_data_dict,
@@ -60,23 +66,18 @@ class DataLoader(object):
                                   source_commercial_features, target_commercial_features)
         logging.info("[7 /10]       combine features done.")
 
-        # generate rating matrix for Transfer Rating Prediction Model
-        self.source_rating_matrix, self.target_rating_matrix = self.generate_rating_matrix(source_grid_enterprise_data,
-                                                                                           target_grid_enterprise_data)
-        logging.info("[8 /10]       generate rating matrix for Transfer Rating Prediction Model done.")
-
         # get PCCS and generate delta set
-        self.PCCS_score, self.delta_set_source, self.delta_set_target = self.generate_delta_set(self.source_feature,
-                                                                                                self.target_feature)
+        self.PCCS_score, self.delta_set_source, self.delta_set_target, delta_source_grid, delta_target_grid\
+            = self.generate_delta_set(self.source_feature, self.target_feature)
         logging.info("[9 /10]       get PCCS and generate delta set done.")
 
         # generate training and testing index
-        self.source_grid_ids, self.target_grid_ids, self.delta_list_ids = self.generate_training_and_testing_index()
+        self.source_grid_ids, self.target_grid_ids = self.generate_training_and_testing_index()
         logging.info("[10/10]       generate training and testing index done.")
 
         # change data to tensor
-        self.source_feature = torch.sigmoid(torch.Tensor(self.source_feature))  # not sure
-        self.target_feature = torch.sigmoid(torch.Tensor(self.target_feature))  # not sure
+        self.source_feature = torch.Tensor(self.source_feature)  # not sure
+        self.target_feature = torch.Tensor(self.target_feature)  # not sure
 
     def load_dianping_data(self, dianping_data_path):
         dianping_data = pd.read_csv(dianping_data_path, usecols=[0, 1, 2, 14, 15, 17, 18, 23, 27])
@@ -157,14 +158,16 @@ class DataLoader(object):
         return valid_small_category_set, target_enterprise_index, all_enterprise_index, portion_enterprise_index
 
     def split_grid(self):
-        source_area_longitude_boundary = np.append(np.arange(self.args.source_area_coordinate[0],
-                                                             self.args.source_area_coordinate[1],
-                                                             self.args.grid_size_longitude_degree),
-                                                   self.args.source_area_coordinate[1])
-        source_area_latitude_boundary = np.append(np.arange(self.args.source_area_coordinate[2],
-                                                            self.args.source_area_coordinate[3],
-                                                            self.args.grid_size_latitude_degree),
-                                                  self.args.source_area_coordinate[3])
+        # source_area_longitude_boundary = np.append(np.arange(self.args.source_area_coordinate[0],
+        #                                                      self.args.source_area_coordinate[1],
+        #                                                      self.args.grid_size_longitude_degree),
+        #                                            self.args.source_area_coordinate[1])
+        source_area_longitude_boundary = np.arange(self.args.source_area_coordinate[0],
+                                                   self.args.source_area_coordinate[1],
+                                                   self.args.grid_size_longitude_degree)
+        source_area_latitude_boundary = np.arange(self.args.source_area_coordinate[2],
+                                                  self.args.source_area_coordinate[3],
+                                                  self.args.grid_size_latitude_degree)
         target_area_longitude_boundary = np.arange(self.args.target_area_coordinate[0],
                                                    self.args.target_area_coordinate[1],
                                                    self.args.grid_size_longitude_degree)
@@ -177,7 +180,7 @@ class DataLoader(object):
         logging.info('n_source_grid: {}, n_target_grid: {}'.format(n_source_grid, n_target_grid))
 
         return n_source_grid, n_target_grid, source_area_longitude_boundary, source_area_latitude_boundary, \
-               target_area_longitude_boundary, target_area_latitude_boundary
+            target_area_longitude_boundary, target_area_latitude_boundary
 
     def distribute_data(self, source_area_data, target_area_data,
                         source_area_longitude_boundary, source_area_latitude_boundary,
@@ -246,7 +249,7 @@ class DataLoader(object):
                 human_flow -= POI[6]
 
             # Equation (1)
-            diversity = -1 * np.sum([(v/(1.0*n_grid_POI))*np.log(v/(1.0*n_grid_POI))
+            diversity = -1 * np.sum([(v / (1.0 * n_grid_POI)) * np.log(v / (1.0 * n_grid_POI))
                                      if v != 0 else 0 for v in POI_count])
 
             return np.concatenate(([diversity, human_flow, traffic_convenience], POI_count))
@@ -258,7 +261,28 @@ class DataLoader(object):
         for index in range(self.n_target_grid):
             target_geographic_features.append(get_feature(target_data_dict[index]))
 
-        return np.array(source_geographic_features), np.array(target_geographic_features)
+        source_geographic_features, target_geographic_features = \
+            np.array(source_geographic_features), np.array(target_geographic_features)
+
+        diversity_max = max(np.max(source_geographic_features[:, 0]), np.max(target_geographic_features[:, 0]))
+        diversity_min = min(np.min(source_geographic_features[:, 0]), np.min(target_geographic_features[:, 0]))
+        human_flow_max = max(np.max(source_geographic_features[:, 1]), np.max(target_geographic_features[:, 1]))
+        human_flow_min = min(np.min(source_geographic_features[:, 1]), np.min(target_geographic_features[:, 1]))
+        traffic_conv_max = max(np.max(source_geographic_features[:, 2]), np.max(target_geographic_features[:, 2]))
+        traffic_conv_min = min(np.min(source_geographic_features[:, 2]), np.min(target_geographic_features[:, 2]))
+        POI_cnt_max = max(np.max(source_geographic_features[:, 3:]), np.max(target_geographic_features[:, 3:]))
+        POI_cnt_min = min(np.min(source_geographic_features[:, 3:]), np.min(target_geographic_features[:, 3:]))
+
+        source_geographic_features[:, 0] = _norm(source_geographic_features[:, 0], diversity_max, diversity_min)
+        source_geographic_features[:, 1] = _norm(source_geographic_features[:, 1], human_flow_max, human_flow_min)
+        source_geographic_features[:, 2] = _norm(source_geographic_features[:, 2], traffic_conv_max, traffic_conv_min)
+        source_geographic_features[:, 3:] = _norm(source_geographic_features[:, 3:], POI_cnt_max, POI_cnt_min)
+        target_geographic_features[:, 0] = _norm(target_geographic_features[:, 0], diversity_max, diversity_min)
+        target_geographic_features[:, 1] = _norm(target_geographic_features[:, 1], human_flow_max, human_flow_min)
+        target_geographic_features[:, 2] = _norm(target_geographic_features[:, 2], traffic_conv_max, traffic_conv_min)
+        target_geographic_features[:, 3:] = _norm(target_geographic_features[:, 3:], POI_cnt_max, POI_cnt_min)
+
+        return source_geographic_features, target_geographic_features
 
     def extract_commercial_features(self, source_data_dict, target_data_dict, valid_small_category_set):
         #  由于房价数据不准确，目前没有使用
@@ -284,13 +308,14 @@ class DataLoader(object):
 
             # Equation (6)
             if Nc > 0:
-                grid_feature[:, 1] = -1 * (Nc - grid_feature[:, 0]) / (1.0*Nc)
+                grid_feature[:, 1] = -1 * (Nc - grid_feature[:, 0]) / (1.0 * Nc)
 
+            return grid_feature[:, :2]
             # Equation (7 & 8)
             # Have PROBLEMS! What is t' and t? What is the meaning of the equations?
             # rho = np.sum(big_category_POI_count > 0)
             # rho = (rho * (rho-1)) / (self.n_big_category * (self.n_big_category - 1))
-            return grid_feature
+            # return grid_feature
 
         source_commercial_features = []
         target_commercial_features = []
@@ -299,11 +324,20 @@ class DataLoader(object):
             source_commercial_features.append(get_feature(source_data_dict[index]))
         for index in range(self.n_target_grid):
             target_commercial_features.append(get_feature(target_data_dict[index]))
-        return np.swapaxes(np.array(source_commercial_features), 0, 1), \
-               np.swapaxes(np.array(target_commercial_features), 0, 1)
+
+        source_commercial_features = np.swapaxes(np.array(source_commercial_features), 0, 1)
+        target_commercial_features = np.swapaxes(np.array(target_commercial_features), 0, 1)
+
+        density_max = max(np.max(source_commercial_features[:, :, 0]), np.max(target_commercial_features[:, :, 0]))
+        density_min = min(np.min(source_commercial_features[:, :, 0]), np.min(target_commercial_features[:, :, 0]))
+
+        source_commercial_features[:, :, 0] = _norm(source_commercial_features[:, :, 0], density_max, density_min)
+        target_commercial_features[:, :, 0] = _norm(target_commercial_features[:, :, 0], density_max, density_min)
+
+        return source_commercial_features, target_commercial_features
 
     def combine_features(self, source_geographic_features, target_geographic_features,
-                           source_commercial_features, target_commercial_features):
+                         source_commercial_features, target_commercial_features):
         source_geographic_features = np.expand_dims(source_geographic_features, 0).repeat(len(self.args.enterprise),
                                                                                           axis=0)
         target_geographic_features = np.expand_dims(target_geographic_features, 0).repeat(len(self.args.enterprise),
@@ -353,7 +387,7 @@ class DataLoader(object):
             target_mean = np.mean(target_info, axis=1)[:, None]
             source_std = np.std(source_info, axis=1)[:, None]
             target_std = np.std(target_info, axis=1)[:, None]
-            idx_score = (np.matmul((source_info-source_mean), (target_info-target_mean).T) / self.feature_dim) / \
+            idx_score = (np.matmul((source_info - source_mean), (target_info - target_mean).T) / self.feature_dim) / \
                         (np.matmul(source_std, target_std.T) + self.args.eps)
             score.append(idx_score)
         # score = np.array(score)
@@ -361,30 +395,41 @@ class DataLoader(object):
 
         delta_set_source = [[] for _ in self.args.enterprise]
         delta_set_target = [[] for _ in self.args.enterprise]
+
+        delta_source_grid = [[[] for _ in range(self.n_source_grid)] for _ in self.args.enterprise]
+        delta_target_grid = [[[] for _ in range(self.n_target_grid)] for _ in self.args.enterprise]
+
         for idx, _ in enumerate(self.args.enterprise):
             for source_grid_id in range(self.n_source_grid):
                 sorted_index = np.argsort(-score[idx][source_grid_id])
                 for k in range(min(self.args.gamma, self.n_target_grid)):
                     delta_set_source[idx].append(source_grid_id)
                     delta_set_target[idx].append(sorted_index[k])
+                    delta_source_grid[idx][source_grid_id].append(sorted_index[k])
+                    # delta_target_grid[idx][sorted_index[k]].append(source_grid_id)
+
         for idx, _ in enumerate(self.args.enterprise):
             for target_grid_id in range(self.n_target_grid):
                 sorted_index = np.argsort(-score[idx][:, target_grid_id])
                 for k in range(min(self.args.gamma, self.n_source_grid)):
                     delta_set_source[idx].append(sorted_index[k])
                     delta_set_target[idx].append(target_grid_id)
+                    delta_target_grid[idx][target_grid_id].append(sorted_index[k])
+                    # delta_source_grid[idx][sorted_index[k]].append(target_grid_id)
+
         delta_set_source = np.array(delta_set_source)
         delta_set_target = np.array(delta_set_target)
-        return score, delta_set_source, delta_set_target
+        delta_source_grid = np.array(delta_source_grid)
+        delta_target_grid = np.array(delta_target_grid)
+
+        return score, delta_set_source, delta_set_target, delta_source_grid, delta_target_grid
 
     def generate_training_and_testing_index(self):
         source_grid_ids = np.arange(self.n_source_grid)
         target_grid_ids = np.arange(self.n_target_grid)
-        delta_list_ids = np.arange(len(self.delta_set_source[0]))
         random.shuffle(source_grid_ids)
         random.shuffle(target_grid_ids)
-        random.shuffle(delta_list_ids)
-        return source_grid_ids, target_grid_ids, delta_list_ids
+        return source_grid_ids, target_grid_ids
 
     def get_score_and_feature_for_inter_city(self, delta_ids):
         score, source_feature, target_feature = [], [], []

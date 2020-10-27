@@ -26,7 +26,7 @@ def parse_args():
                         help='Training batch size.')
     # parser.add_argument('--rating_batch_size', type=int, default=512,
     #                     help='Transfer Rating Prediction Model batch size.')
-    # parser.add_argument('--inter_batch_size', type=int, default=512,
+    # parser.add_argument('--inter_batch_size', type=int, default=512,`
     #                     help='Inter-City Knowledge Association batch size.')
     # parser.add_argument('--intra_batch_size', type=int, default=512,
     #                     help='Intra-City Semantic Extraction.')

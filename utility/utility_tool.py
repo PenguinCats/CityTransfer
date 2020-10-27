@@ -20,3 +20,10 @@ def cal_pearson_correlation_coefficient(v1, v2):
 
 def l2_loss_mean(x):
     return torch.mean(torch.sum(torch.pow(x, 2), dim=1, keepdim=False) / 2.)
+
+
+def _norm(data, mmax, mmin):
+    if mmax == mmin:
+        return 0
+    else:
+        return (data - mmin) / (mmax - mmin)
