@@ -22,7 +22,7 @@ def parse_args():
     parser.add_argument('--target_enterprise', nargs='?', default='luckin coffee瑞幸咖啡',
                         help='Input target enterprise to be transferred.')
 
-    parser.add_argument('--batch_size', type=int, default=50,
+    parser.add_argument('--batch_size', type=int, default=32,
                         help='Training batch size.')
     # parser.add_argument('--rating_batch_size', type=int, default=512,
     #                     help='Transfer Rating Prediction Model batch size.')
@@ -34,10 +34,16 @@ def parse_args():
     #                     help='Test batch size (the shop number to test every batch).')
 
     # parser.add_argument('--source_area_coordinate', nargs=8, type=float,
-    #                     default=[118.774311, 118.928619, 31.864258, 31.992135],
+    #                     default=[118.739776, 118.814792, 32.055803, 32.100893],
     #                     help='Source area coordinate. [longitude1, longitude2, latitude1， latitude2]')
     # parser.add_argument('--target_area_coordinate', nargs=8, type=float,
-    #                     default=[118.768014, 118.827563, 32.004111, 32.066481],
+    #                     default=[118.729991, 118.808783, 32.011709, 32.055803],
+    #                     help='Target area coordinate. [longitude1, longitude2, latitude1， latitude2]')
+    # parser.add_argument('--source_area_coordinate', nargs=8, type=float,
+    #                     default=[118.735647, 118.788862, 32.042283, 32.094942],
+    #                     help='Source area coordinate. [longitude1, longitude2, latitude1， latitude2]')
+    # parser.add_argument('--target_area_coordinate', nargs=8, type=float,
+    #                     default=[118.771352, 118.823537, 32.013759, 32.060615],
     #                     help='Target area coordinate. [longitude1, longitude2, latitude1， latitude2]')
     parser.add_argument('--source_area_coordinate', nargs=8, type=float,
                         default=[118.768014, 118.827563, 32.004111, 32.066481],
@@ -68,13 +74,15 @@ def parse_args():
     parser.add_argument('--eps', type=float, default=1e-9,
                         help='eps4.')
 
-    parser.add_argument('--lr', type=float, default=0.0001,
+    parser.add_argument('--lr', type=float, default=0.001,
                         help='Learning rate.')
     parser.add_argument('--n_epoch', type=int, default=10000,
                         help='Number of epoch.')
     parser.add_argument('--stopping_steps', type=int, default=10,
                         help='Number of epoch for early stopping')
 
+    parser.add_argument('--print_every', type=int, default=1,
+                        help='Iter interval of printing loss.')
     parser.add_argument('--O1_print_every', type=int, default=1,
                         help='Iter interval of printing O1 loss.')
     parser.add_argument('--O2_print_every', type=int, default=1,
@@ -88,6 +96,8 @@ def parse_args():
 
     parser.add_argument('--K', type=int, default=10,
                         help='Calculate metric@K when evaluating.')
+    parser.add_argument('--score_norm_max', type=int, default=400,
+                        help='score norm max.')
 
     args = parser.parse_args()
 

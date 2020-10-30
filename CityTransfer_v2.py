@@ -17,20 +17,20 @@ class AutoEncoder(nn.Module):
         self.mid_dim = math.ceil(math.sqrt(in_dim*out_dim))
         self.encoder = nn.Sequential(
             nn.Linear(in_dim, self.mid_dim),
-            nn.Sigmoid(),
-            nn.Linear(self.mid_dim, self.out_dim),
+            nn.Tanh(),
+            nn.Linear(self.mid_dim, out_dim),
         )
         self.decoder = nn.Sequential(
             nn.Linear(out_dim, self.mid_dim),
-            nn.Sigmoid(),
-            nn.Linear(self.mid_dim, self.in_dim),
+            nn.Tanh(),
+            nn.Linear(self.mid_dim, in_dim),
         )
 
     def forward(self, x):
         # Equation (15 & 16)
         encoded_x = self.encoder(x)
         # Equation (17 & 18)
-        decoded_x = self.encoder(encoded_x)
+        decoded_x = self.decoder(encoded_x)
         return encoded_x, decoded_x
 
 
@@ -58,7 +58,7 @@ class CityTransfer(nn.Module):
         if ae_type == 's':
             encoded_x, decoded_x = self.auto_encoder[0](origin_feature)  # source
         elif ae_type == 't':
-            encoded_x, decoded_x = self.auto_encoder[0](origin_feature)  # target
+            encoded_x, decoded_x = self.auto_encoder[1](origin_feature)  # target
         else:
             logging.error('未定义类型')
             exit(1)
@@ -67,16 +67,16 @@ class CityTransfer(nn.Module):
     def cal_auto_encoder_loss(self, grid_feature, ae_type):
         _, decoded_grid = self.encode(grid_feature, ae_type)
         # Equation (19)
-        # loss_ae = F.mse_loss(grid_feature, decoded_grid, reduction='sum')
-        loss_ae = F.mse_loss(grid_feature, decoded_grid, reduction='mean')
+        loss_ae = F.mse_loss(grid_feature, decoded_grid, reduction='sum')
+        # loss_ae = F.mse_loss(grid_feature, decoded_grid, reduction='mean')
         return loss_ae
 
     def cal_inter_city_loss(self, score, source_feature, target_feature):
         encoded_source, _ = self.encode(source_feature, 's')
         encoded_target, _ = self.encode(target_feature, 't')
         # Equation (14)
-        # loss = torch.sum(score * torch.sum(torch.pow(encoded_source - encoded_target, 2), dim=2))
-        loss = torch.mean(score * torch.mean(torch.pow(encoded_source - encoded_target, 2), dim=2))
+        loss = torch.sum(score * torch.sum(torch.pow(encoded_source - encoded_target, 2), dim=2))
+        # loss = torch.mean(score * torch.mean(torch.pow(encoded_source - encoded_target, 2), dim=2))
         return loss
 
     def cal_prediction_score(self, enterprise_index, grid_index, grid_feature, grid_type):
@@ -98,9 +98,11 @@ class CityTransfer(nn.Module):
 
     def cal_prediction_loss(self, enterprise_index, grid_index, grid_feature, grid_type, real_score):
         score = self.cal_prediction_score(enterprise_index, grid_index, grid_feature, grid_type)
+        # origin_index = torch.argsort(real_score, descending=True)
+        # predict_index = torch.argsort(score, descending=True)
         # Equation (12)
-        # loss = F.mse_loss(score, real_score, reduction='sum')
-        loss = F.mse_loss(score, real_score, reduction='mean')
+        loss = F.mse_loss(score, real_score, reduction='sum')
+        # loss = F.mse_loss(score, real_score, reduction='mean')
         return loss
 
     def prediction(self, target_enterprise_index, grid_index, grid_feature):
@@ -109,11 +111,11 @@ class CityTransfer(nn.Module):
         enterprise_bias = self.b[target_enterprise_index]
         grid_bias = self.e_target[grid_index].reshape(-1, len(grid_index))
 
-        score = torch.matmul(enterprise_feature, encoded_feature.T) + enterprise_bias + grid_bias
+        score = (torch.matmul(enterprise_feature, encoded_feature.T) + enterprise_bias + grid_bias).squeeze()
         return score
 
     def forward(self, mode, *inputs):
-        if mode == 'train':
+        if mode == 'cal_auto_encoder_loss':
             return self.cal_auto_encoder_loss(*inputs)
         elif mode == 'cal_inter_city_loss':
             return self.cal_inter_city_loss(*inputs)
@@ -122,7 +124,7 @@ class CityTransfer(nn.Module):
         elif mode == 'prediction':
             return self.prediction(*inputs)
         else:
-            logging.error('run parameters!')
+            logging.error('wrong parameters!')
             exit(1)
 
 

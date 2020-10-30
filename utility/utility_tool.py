@@ -27,3 +27,7 @@ def _norm(data, mmax, mmin):
         return 0
     else:
         return (data - mmin) / (mmax - mmin)
+
+
+def _trans_to_zero_to_five(data, mmax):
+    return 1.0 / (1 + np.exp(-(data-(mmax / 2.0)) * 10 / (1.0 * mmax)))

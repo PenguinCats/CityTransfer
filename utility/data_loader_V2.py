@@ -10,7 +10,7 @@ import random
 import torch
 from sklearn import preprocessing
 from utility.log_helper import logging
-from utility.utility_tool import _norm
+from utility.utility_tool import _norm, _trans_to_zero_to_five
 
 
 class DataLoader(object):
@@ -48,27 +48,27 @@ class DataLoader(object):
         # generate rating matrix for Transfer Rating Prediction Model
         self.source_rating_matrix, self.target_rating_matrix = self.generate_rating_matrix(source_grid_enterprise_data,
                                                                                            target_grid_enterprise_data)
-        logging.info("[8 /10]       generate rating matrix for Transfer Rating Prediction Model done.")
+        logging.info("[5 /10]       generate rating matrix for Transfer Rating Prediction Model done.")
 
         # extract geographic features
         source_geographic_features, target_geographic_features = self.extract_geographic_features(source_data_dict,
                                                                                                   target_data_dict)
-        logging.info("[5 /10]       extract geographic features done.")
+        logging.info("[6 /10]       extract geographic features done.")
 
         # extract commercial features
         source_commercial_features, target_commercial_features = \
             self.extract_commercial_features(source_data_dict, target_data_dict, valid_small_category_set)
-        logging.info("[6 /10]       extract commercial features done.")
+        logging.info("[7 /10]       extract commercial features done.")
 
         # combine features
         self.source_feature, self.target_feature, self.feature_dim = \
             self.combine_features(source_geographic_features, target_geographic_features,
                                   source_commercial_features, target_commercial_features)
-        logging.info("[7 /10]       combine features done.")
+        logging.info("[8 /10]       combine features done.")
 
         # get PCCS and generate delta set
-        self.PCCS_score, self.delta_set_source, self.delta_set_target, delta_source_grid, delta_target_grid\
-            = self.generate_delta_set(self.source_feature, self.target_feature)
+        self.PCCS_score, self.delta_source_grid, self.delta_target_grid = \
+            self.generate_delta_set(self.source_feature, self.target_feature)
         logging.info("[9 /10]       get PCCS and generate delta set done.")
 
         # generate training and testing index
@@ -366,15 +366,17 @@ class DataLoader(object):
                 for idx, name in enumerate(self.args.enterprise):
                     if item[1] == name:
                         target_rating_matrix[idx][grid_id] += item[6]
+        # score_max = max(np.max(source_rating_matrix), np.max(target_rating_matrix))
+        # score_min = min(np.min(source_rating_matrix), np.min(target_rating_matrix))
+        # source_rating_matrix = _norm(source_rating_matrix, score_max, score_min) * 5
+        # target_rating_matrix = _norm(target_rating_matrix, score_max, score_min) * 5
 
-        min_max_scaler = preprocessing.MinMaxScaler(feature_range=(0, 5))
-        source_rating_matrix = min_max_scaler.fit_transform(source_rating_matrix)
-        target_rating_matrix = min_max_scaler.fit_transform(target_rating_matrix)
+        source_rating_matrix = _norm(source_rating_matrix, self.args.score_norm_max, 0) * 5
+        target_rating_matrix = _norm(target_rating_matrix, self.args.score_norm_max, 0) * 5
+
         source_rating_matrix = torch.Tensor(source_rating_matrix)
         target_rating_matrix = torch.Tensor(target_rating_matrix)
-        # print(source_rating_matrix)
-        # print(type(source_rating_matrix))
-        # exit(0)
+
         return source_rating_matrix, target_rating_matrix
 
     def generate_delta_set(self, source_feature, target_feature):
@@ -393,9 +395,6 @@ class DataLoader(object):
         # score = np.array(score)
         score = torch.Tensor(score)
 
-        delta_set_source = [[] for _ in self.args.enterprise]
-        delta_set_target = [[] for _ in self.args.enterprise]
-
         delta_source_grid = [[[] for _ in range(self.n_source_grid)] for _ in self.args.enterprise]
         delta_target_grid = [[[] for _ in range(self.n_target_grid)] for _ in self.args.enterprise]
 
@@ -403,26 +402,23 @@ class DataLoader(object):
             for source_grid_id in range(self.n_source_grid):
                 sorted_index = np.argsort(-score[idx][source_grid_id])
                 for k in range(min(self.args.gamma, self.n_target_grid)):
-                    delta_set_source[idx].append(source_grid_id)
-                    delta_set_target[idx].append(sorted_index[k])
                     delta_source_grid[idx][source_grid_id].append(sorted_index[k])
-                    # delta_target_grid[idx][sorted_index[k]].append(source_grid_id)
 
         for idx, _ in enumerate(self.args.enterprise):
             for target_grid_id in range(self.n_target_grid):
                 sorted_index = np.argsort(-score[idx][:, target_grid_id])
                 for k in range(min(self.args.gamma, self.n_source_grid)):
-                    delta_set_source[idx].append(sorted_index[k])
-                    delta_set_target[idx].append(target_grid_id)
                     delta_target_grid[idx][target_grid_id].append(sorted_index[k])
-                    # delta_source_grid[idx][sorted_index[k]].append(target_grid_id)
+        # for idx in self.portion_enterprise_index:
+        #     for target_grid_id in range(self.n_target_grid):
+        #         sorted_index = np.argsort(-score[idx][:, target_grid_id])
+        #         for k in range(min(self.args.gamma, self.n_source_grid)):
+        #             delta_target_grid[idx][target_grid_id].append(sorted_index[k])
 
-        delta_set_source = np.array(delta_set_source)
-        delta_set_target = np.array(delta_set_target)
         delta_source_grid = np.array(delta_source_grid)
         delta_target_grid = np.array(delta_target_grid)
 
-        return score, delta_set_source, delta_set_target, delta_source_grid, delta_target_grid
+        return score, delta_source_grid, delta_target_grid
 
     def generate_training_and_testing_index(self):
         source_grid_ids = np.arange(self.n_source_grid)
@@ -431,16 +427,30 @@ class DataLoader(object):
         random.shuffle(target_grid_ids)
         return source_grid_ids, target_grid_ids
 
-    def get_score_and_feature_for_inter_city(self, delta_ids):
+    def get_score_and_feature_for_inter_city(self, batch_index, batch_type):
         score, source_feature, target_feature = [], [], []
-        for idx, name in enumerate(self.args.enterprise):
-            if idx == self.target_enterprise_index:
-                continue
-            score.append(self.PCCS_score[idx][self.delta_set_source[idx][delta_ids],
-                                              self.delta_set_target[idx][delta_ids]])
-            source_feature.append(self.source_feature[idx][self.delta_set_source[idx][delta_ids]])
-            target_feature.append(self.target_feature[idx][self.delta_set_target[idx][delta_ids]])
-        # score = torch.Tensor(score)
+
+        if batch_type == 's':
+            for idx in self.all_enterprise_index:
+                source_index = []
+                target_index = []
+                for index in batch_index:
+                    source_index.extend([index for _ in range(self.delta_source_grid[idx][index].shape[0])])
+                    target_index.extend(self.delta_source_grid[idx][index])
+                score.append(self.PCCS_score[idx][source_index, target_index])
+                source_feature.append(self.source_feature[idx][source_index])
+                target_feature.append(self.target_feature[idx][target_index])
+        else:
+            for idx in self.portion_enterprise_index:
+                source_index = []
+                target_index = []
+                for index in batch_index:
+                    source_index.extend(self.delta_target_grid[idx][index])
+                    target_index.extend([index for _ in range(self.delta_target_grid[idx][index].shape[0])])
+                score.append(self.PCCS_score[idx][source_index, target_index])
+                source_feature.append(self.source_feature[idx][source_index])
+                target_feature.append(self.target_feature[idx][target_index])
+
         score = torch.stack(score, dim=0)
         source_feature = torch.stack(source_feature, dim=0)
         target_feature = torch.stack(target_feature, dim=0)
@@ -449,17 +459,17 @@ class DataLoader(object):
 
     def get_feature_and_rel_score_for_prediction_model(self, grid_index, grid_type):
         if grid_type == 's':
-            feature = self.source_feature[:, self.source_grid_ids[grid_index]]
-            score = self.source_rating_matrix[:, self.source_grid_ids[grid_index]]
+            feature = self.source_feature[:, grid_index]
+            score = self.source_rating_matrix[:, grid_index]
         elif grid_type == 't':
-            feature = self.target_feature[self.portion_enterprise_index][:, self.target_grid_ids[grid_index]]
-            score = self.target_rating_matrix[self.portion_enterprise_index][:, self.target_grid_ids[grid_index]]
+            feature = self.target_feature[self.portion_enterprise_index][:, grid_index]
+            score = self.target_rating_matrix[self.portion_enterprise_index][:, grid_index]
         else:
             logging.error('未定义类型')
             exit(1)
         return feature, score
 
     def get_feature_and_rel_score_for_evaluate(self, grid_index):
-        feature = self.target_feature[self.target_enterprise_index, self.target_grid_ids[grid_index]]
-        score = self.target_rating_matrix[self.target_enterprise_index, self.target_grid_ids[grid_index]]
+        feature = self.target_feature[self.target_enterprise_index, grid_index]
+        score = self.target_rating_matrix[self.target_enterprise_index, grid_index]
         return feature, score
