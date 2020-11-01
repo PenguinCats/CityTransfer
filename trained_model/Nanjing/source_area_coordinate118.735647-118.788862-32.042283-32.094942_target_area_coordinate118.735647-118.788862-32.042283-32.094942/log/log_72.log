@@ -1,0 +1,49 @@
+2020-10-29 22:14:01,594 - root - INFO - Namespace(K=10, O1_print_every=1, O2_print_every=1, O3_print_every=1, O4_print_every=1, auto_encoder_dim=9, batch_size=32, city_name='Nanjing', data_dir='datasets/', enterprise=['luckin coffee瑞幸咖啡', 'CoCo都可', '星巴克'], eps=1e-09, evaluate_every=1, gamma=8, grid_size_latitude_degree=0.005, grid_size_longitude_degree=0.005, lambda_1=1, lambda_2=0.5, lambda_3=0.5, lambda_4=0.025, lr=0.001, mess_dropout=0.1, n_epoch=10000, print_every=1, save_dir='trained_model/Nanjing/source_area_coordinate118.735647-118.788862-32.042283-32.094942_target_area_coordinate118.735647-118.788862-32.042283-32.094942/', score_norm_max=400, seed=981125, source_area_coordinate=[118.735647, 118.788862, 32.042283, 32.094942], stopping_steps=10, target_area_coordinate=[118.771352, 118.823537, 32.013759, 32.060615], target_enterprise='luckin coffee瑞幸咖啡')
+2020-10-29 22:14:01,595 - root - INFO - --------------parse args and init done.
+2020-10-29 22:14:04,457 - root - INFO - [1 /10]       load dianping data done.
+2020-10-29 22:14:04,474 - root - INFO - [2 /10]       check enterprise and get small category set.
+2020-10-29 22:14:04,475 - root - INFO - n_source_grid: 100, n_target_grid: 90
+2020-10-29 22:14:04,475 - root - INFO - [3 /10]       split grid done.
+2020-10-29 22:14:05,107 - root - INFO - [4 /10]       distribute data into grids done.
+2020-10-29 22:14:05,107 - root - INFO - [5 /10]       generate rating matrix for Transfer Rating Prediction Model done.
+2020-10-29 22:14:05,178 - root - INFO - [6 /10]       extract geographic features done.
+2020-10-29 22:14:05,279 - root - INFO - [7 /10]       extract commercial features done.
+2020-10-29 22:14:05,279 - root - INFO - [8 /10]       combine features done.
+2020-10-29 22:14:05,350 - root - INFO - [9 /10]       get PCCS and generate delta set done.
+2020-10-29 22:14:05,351 - root - INFO - [10/10]       generate training and testing index done.
+2020-10-29 22:14:05,383 - root - INFO - --------------load data done.
+2020-10-29 22:14:05,386 - root - INFO - CityTransfer(
+  (auto_encoder): ModuleList(
+    (0): AutoEncoder(
+      (encoder): Sequential(
+        (0): Linear(in_features=21, out_features=14, bias=True)
+        (1): Tanh()
+        (2): Linear(in_features=14, out_features=9, bias=True)
+      )
+      (decoder): Sequential(
+        (0): Linear(in_features=9, out_features=14, bias=True)
+        (1): Tanh()
+        (2): Linear(in_features=14, out_features=21, bias=True)
+      )
+    )
+    (1): AutoEncoder(
+      (encoder): Sequential(
+        (0): Linear(in_features=21, out_features=14, bias=True)
+        (1): Tanh()
+        (2): Linear(in_features=14, out_features=9, bias=True)
+      )
+      (decoder): Sequential(
+        (0): Linear(in_features=9, out_features=14, bias=True)
+        (1): Tanh()
+        (2): Linear(in_features=14, out_features=21, bias=True)
+      )
+    )
+  )
+)
+2020-10-29 22:14:05,388 - root - INFO - --------------construct model and optimizer done.
+2020-10-29 22:14:05,389 - root - INFO - --------------initialize metrics done.
+2020-10-29 22:14:05,389 - root - INFO - [!]-----------start training.
+2020-10-29 22:14:05,402 - root - INFO - Training: Epoch 0000 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 2342.9175 | Iter Mean Loss 2342.9175
+2020-10-29 22:14:05,412 - root - INFO - Training: Epoch 0000 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 1893.8572 | Iter Mean Loss 2118.3873
+2020-10-29 22:14:05,423 - root - INFO - Training: Epoch 0000 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 1061.6855 | Iter Mean Loss 1766.1534
+2020-10-29 22:14:05,433 - root - INFO - Training: Epoch 0000 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 1223.5697 | Iter Mean Loss 1630.5075

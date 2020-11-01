@@ -21,6 +21,14 @@ def parse_args():
                         help='Input enterprise to be selected.')
     parser.add_argument('--target_enterprise', nargs='?', default='luckin coffee瑞幸咖啡',
                         help='Input target enterprise to be transferred.')
+    # parser.add_argument('--enterprise', nargs='?', default=['NIKE', 'New Balance', '李宁'],
+    #                     help='Input enterprise to be selected.')
+    # parser.add_argument('--target_enterprise', nargs='?', default='NIKE',
+    #                     help='Input target enterprise to be transferred.')
+    # parser.add_argument('--enterprise', nargs='?', default=['肯德基', '麦当劳', '汉堡王'],
+    #                     help='Input enterprise to be selected.')
+    # parser.add_argument('--target_enterprise', nargs='?', default='汉堡王',
+    #                     help='Input target enterprise to be transferred.')
 
     parser.add_argument('--batch_size', type=int, default=32,
                         help='Training batch size.')
@@ -33,24 +41,38 @@ def parse_args():
     # parser.add_argument('--test_batch_size', type=int, default=10000,
     #                     help='Test batch size (the shop number to test every batch).')
 
+    # Area 1
     # parser.add_argument('--source_area_coordinate', nargs=8, type=float,
     #                     default=[118.739776, 118.814792, 32.055803, 32.100893],
     #                     help='Source area coordinate. [longitude1, longitude2, latitude1， latitude2]')
     # parser.add_argument('--target_area_coordinate', nargs=8, type=float,
     #                     default=[118.729991, 118.808783, 32.011709, 32.055803],
     #                     help='Target area coordinate. [longitude1, longitude2, latitude1， latitude2]')
-    # parser.add_argument('--source_area_coordinate', nargs=8, type=float,
-    #                     default=[118.735647, 118.788862, 32.042283, 32.094942],
-    #                     help='Source area coordinate. [longitude1, longitude2, latitude1， latitude2]')
-    # parser.add_argument('--target_area_coordinate', nargs=8, type=float,
-    #                     default=[118.771352, 118.823537, 32.013759, 32.060615],
-    #                     help='Target area coordinate. [longitude1, longitude2, latitude1， latitude2]')
+
+    # Area 2
     parser.add_argument('--source_area_coordinate', nargs=8, type=float,
                         default=[118.768014, 118.827563, 32.004111, 32.066481],
                         help='Source area coordinate. [longitude1, longitude2, latitude1， latitude2]')
     parser.add_argument('--target_area_coordinate', nargs=8, type=float,
                         default=[118.774311, 118.928619, 31.864258, 31.992135],
                         help='Target area coordinate. [longitude1, longitude2, latitude1， latitude2]')
+
+    # Area 3
+    # parser.add_argument('--source_area_coordinate', nargs=8, type=float,
+    #                     default=[118.733768, 118.802089, 32.056531, 32.093186],
+    #                     help='Source area coordinate. [longitude1, longitude2, latitude1， latitude2]')
+    # parser.add_argument('--target_area_coordinate', nargs=8, type=float,
+    #                     default=[118.766555, 118.824749, 32.013893, 32.052457],
+    #                     help='Target area coordinate. [longitude1, longitude2, latitude1， latitude2]')
+
+    # Area 0
+    # parser.add_argument('--source_area_coordinate', nargs=8, type=float,
+    #                     default=[118.735647, 118.788862, 32.042283, 32.094942],
+    #                     help='Source area coordinate. [longitude1, longitude2, latitude1， latitude2]')
+    # parser.add_argument('--target_area_coordinate', nargs=8, type=float,
+    #                     default=[118.771352, 118.823537, 32.013759, 32.060615],
+    #                     help='Target area coordinate. [longitude1, longitude2, latitude1， latitude2]')
+
     parser.add_argument('--grid_size_longitude_degree', type=float, default=0.005,
                         help='Location grid size (by longitude degree).')
     parser.add_argument('--grid_size_latitude_degree', type=float, default=0.005,

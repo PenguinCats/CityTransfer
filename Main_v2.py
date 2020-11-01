@@ -12,7 +12,7 @@ from time import time
 from utility.args_parser import parse_args
 from utility.log_helper import logging, logging_config
 from utility.data_loader_V2 import DataLoader
-from utility.metrics_v2 import ndcf_at_k
+from utility.metrics_v2 import ndcf_at_k, ndcf_at_k_test
 from CityTransfer_v2 import CityTransfer
 
 DEBUG = True
@@ -185,7 +185,7 @@ if __name__ == '__main__':
                               data.target_grid_ids, feature)
 
         final_mse = torch.nn.functional.mse_loss(real_score, predict_score)
-        final_ndcg = ndcf_at_k(real_score, predict_score, args.K)
+        final_ndcg = ndcf_at_k_test(real_score, predict_score, args.K)
 
         logging.info('Test Result: NDCG {:.4f} | MSE {:.4f}'.format(final_ndcg, final_mse))
 

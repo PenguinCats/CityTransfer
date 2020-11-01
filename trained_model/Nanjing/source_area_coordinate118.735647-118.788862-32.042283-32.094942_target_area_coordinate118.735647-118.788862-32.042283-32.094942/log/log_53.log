@@ -1,0 +1,200 @@
+2020-10-29 18:40:12,149 - root - INFO - Namespace(K=10, O1_print_every=1, O2_print_every=1, O3_print_every=1, O4_print_every=1, auto_encoder_dim=9, batch_size=32, city_name='Nanjing', data_dir='datasets/', enterprise=['luckin coffee瑞幸咖啡', 'CoCo都可', '星巴克'], eps=1e-09, evaluate_every=1, gamma=8, grid_size_latitude_degree=0.005, grid_size_longitude_degree=0.005, lambda_1=1, lambda_2=0.5, lambda_3=0.5, lambda_4=0.025, lr=0.001, mess_dropout=0.1, n_epoch=10000, print_every=1, save_dir='trained_model/Nanjing/source_area_coordinate118.735647-118.788862-32.042283-32.094942_target_area_coordinate118.735647-118.788862-32.042283-32.094942/', score_norm_max=400, seed=981125, source_area_coordinate=[118.735647, 118.788862, 32.042283, 32.094942], stopping_steps=10, target_area_coordinate=[118.771352, 118.823537, 32.013759, 32.060615], target_enterprise='星巴克')
+2020-10-29 18:40:12,151 - root - INFO - --------------parse args and init done.
+2020-10-29 18:40:14,196 - root - INFO - [1 /10]       load dianping data done.
+2020-10-29 18:40:14,209 - root - INFO - [2 /10]       check enterprise and get small category set.
+2020-10-29 18:40:14,209 - root - INFO - n_source_grid: 100, n_target_grid: 90
+2020-10-29 18:40:14,209 - root - INFO - [3 /10]       split grid done.
+2020-10-29 18:40:14,664 - root - INFO - [4 /10]       distribute data into grids done.
+2020-10-29 18:40:14,664 - root - INFO - [5 /10]       generate rating matrix for Transfer Rating Prediction Model done.
+2020-10-29 18:40:14,716 - root - INFO - [6 /10]       extract geographic features done.
+2020-10-29 18:40:14,789 - root - INFO - [7 /10]       extract commercial features done.
+2020-10-29 18:40:14,789 - root - INFO - [8 /10]       combine features done.
+2020-10-29 18:40:14,848 - root - INFO - [9 /10]       get PCCS and generate delta set done.
+2020-10-29 18:40:14,848 - root - INFO - [10/10]       generate training and testing index done.
+2020-10-29 18:40:14,881 - root - INFO - --------------load data done.
+2020-10-29 18:40:14,883 - root - INFO - CityTransfer(
+  (auto_encoder): ModuleList(
+    (0): AutoEncoder(
+      (encoder): Sequential(
+        (0): Linear(in_features=21, out_features=14, bias=True)
+        (1): Tanh()
+        (2): Linear(in_features=14, out_features=9, bias=True)
+      )
+      (decoder): Sequential(
+        (0): Linear(in_features=9, out_features=14, bias=True)
+        (1): Tanh()
+        (2): Linear(in_features=14, out_features=21, bias=True)
+      )
+    )
+    (1): AutoEncoder(
+      (encoder): Sequential(
+        (0): Linear(in_features=21, out_features=14, bias=True)
+        (1): Tanh()
+        (2): Linear(in_features=14, out_features=9, bias=True)
+      )
+      (decoder): Sequential(
+        (0): Linear(in_features=9, out_features=14, bias=True)
+        (1): Tanh()
+        (2): Linear(in_features=14, out_features=21, bias=True)
+      )
+    )
+  )
+)
+2020-10-29 18:40:14,883 - root - INFO - --------------construct model and optimizer done.
+2020-10-29 18:40:14,883 - root - INFO - --------------initialize metrics done.
+2020-10-29 18:40:14,883 - root - INFO - [!]-----------start training.
+2020-10-29 18:40:14,890 - root - INFO - Training: Epoch 0000 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 2078.0876 | Iter Mean Loss 2078.0876
+2020-10-29 18:40:14,898 - root - INFO - Training: Epoch 0000 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 1457.3003 | Iter Mean Loss 1767.6940
+2020-10-29 18:40:14,905 - root - INFO - Training: Epoch 0000 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 1070.3811 | Iter Mean Loss 1535.2563
+2020-10-29 18:40:14,910 - root - INFO - Training: Epoch 0000 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 785.0388 | Iter Mean Loss 1347.7020
+2020-10-29 18:40:14,912 - root - INFO - Evaluate: Epoch 0000 | NDCG 0.0603 | MSE 10.2747
+2020-10-29 18:40:14,920 - root - INFO - Training: Epoch 0001 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1897.5382 | Iter Mean Loss 1897.5382
+2020-10-29 18:40:14,926 - root - INFO - Training: Epoch 0001 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 1285.9603 | Iter Mean Loss 1591.7493
+2020-10-29 18:40:14,933 - root - INFO - Training: Epoch 0001 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 924.2717 | Iter Mean Loss 1369.2568
+2020-10-29 18:40:14,938 - root - INFO - Training: Epoch 0001 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 708.9879 | Iter Mean Loss 1204.1895
+2020-10-29 18:40:14,940 - root - INFO - Evaluate: Epoch 0001 | NDCG 0.0520 | MSE 10.3064
+2020-10-29 18:40:14,947 - root - INFO - Training: Epoch 0002 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1754.2214 | Iter Mean Loss 1754.2214
+2020-10-29 18:40:14,953 - root - INFO - Training: Epoch 0002 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 1148.8293 | Iter Mean Loss 1451.5254
+2020-10-29 18:40:14,960 - root - INFO - Training: Epoch 0002 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 807.5162 | Iter Mean Loss 1236.8557
+2020-10-29 18:40:14,966 - root - INFO - Training: Epoch 0002 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 647.0497 | Iter Mean Loss 1089.4042
+2020-10-29 18:40:14,967 - root - INFO - Evaluate: Epoch 0002 | NDCG 0.0520 | MSE 10.3387
+2020-10-29 18:40:14,974 - root - INFO - Training: Epoch 0003 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1638.9526 | Iter Mean Loss 1638.9526
+2020-10-29 18:40:14,981 - root - INFO - Training: Epoch 0003 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 1038.9635 | Iter Mean Loss 1338.9581
+2020-10-29 18:40:14,987 - root - INFO - Training: Epoch 0003 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 714.6698 | Iter Mean Loss 1130.8620
+2020-10-29 18:40:14,993 - root - INFO - Training: Epoch 0003 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 597.1431 | Iter Mean Loss 997.4323
+2020-10-29 18:40:14,995 - root - INFO - Evaluate: Epoch 0003 | NDCG 0.0467 | MSE 10.3713
+2020-10-29 18:40:15,003 - root - INFO - Training: Epoch 0004 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1547.1490 | Iter Mean Loss 1547.1490
+2020-10-29 18:40:15,010 - root - INFO - Training: Epoch 0004 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 951.9132 | Iter Mean Loss 1249.5311
+2020-10-29 18:40:15,016 - root - INFO - Training: Epoch 0004 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 641.6710 | Iter Mean Loss 1046.9111
+2020-10-29 18:40:15,023 - root - INFO - Training: Epoch 0004 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 557.3659 | Iter Mean Loss 924.5248
+2020-10-29 18:40:15,024 - root - INFO - Evaluate: Epoch 0004 | NDCG 0.0430 | MSE 10.4037
+2020-10-29 18:40:15,031 - root - INFO - Training: Epoch 0005 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1474.8236 | Iter Mean Loss 1474.8236
+2020-10-29 18:40:15,038 - root - INFO - Training: Epoch 0005 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 883.7047 | Iter Mean Loss 1179.2642
+2020-10-29 18:40:15,045 - root - INFO - Training: Epoch 0005 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 584.9653 | Iter Mean Loss 981.1646
+2020-10-29 18:40:15,051 - root - INFO - Training: Epoch 0005 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 525.9285 | Iter Mean Loss 867.3555
+2020-10-29 18:40:15,052 - root - INFO - Evaluate: Epoch 0005 | NDCG 0.0402 | MSE 10.4354
+2020-10-29 18:40:15,059 - root - INFO - Training: Epoch 0006 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1418.4535 | Iter Mean Loss 1418.4535
+2020-10-29 18:40:15,066 - root - INFO - Training: Epoch 0006 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 830.8525 | Iter Mean Loss 1124.6530
+2020-10-29 18:40:15,072 - root - INFO - Training: Epoch 0006 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 541.5154 | Iter Mean Loss 930.2738
+2020-10-29 18:40:15,078 - root - INFO - Training: Epoch 0006 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 501.2412 | Iter Mean Loss 823.0157
+2020-10-29 18:40:15,080 - root - INFO - Evaluate: Epoch 0006 | NDCG 0.0402 | MSE 10.4658
+2020-10-29 18:40:15,087 - root - INFO - Training: Epoch 0007 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1374.9633 | Iter Mean Loss 1374.9633
+2020-10-29 18:40:15,094 - root - INFO - Training: Epoch 0007 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 790.2744 | Iter Mean Loss 1082.6188
+2020-10-29 18:40:15,101 - root - INFO - Training: Epoch 0007 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 508.6347 | Iter Mean Loss 891.2908
+2020-10-29 18:40:15,107 - root - INFO - Training: Epoch 0007 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 481.8563 | Iter Mean Loss 788.9322
+2020-10-29 18:40:15,109 - root - INFO - Evaluate: Epoch 0007 | NDCG 0.0402 | MSE 10.4942
+2020-10-29 18:40:15,118 - root - INFO - Training: Epoch 0008 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1341.5176 | Iter Mean Loss 1341.5176
+2020-10-29 18:40:15,130 - root - INFO - Training: Epoch 0008 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 759.0914 | Iter Mean Loss 1050.3045
+2020-10-29 18:40:15,137 - root - INFO - Training: Epoch 0008 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 483.7946 | Iter Mean Loss 861.4679
+2020-10-29 18:40:15,143 - root - INFO - Training: Epoch 0008 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 466.4183 | Iter Mean Loss 762.7055
+2020-10-29 18:40:15,146 - root - INFO - Evaluate: Epoch 0008 | NDCG 0.0402 | MSE 10.5202
+2020-10-29 18:40:15,153 - root - INFO - Training: Epoch 0009 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1315.4391 | Iter Mean Loss 1315.4391
+2020-10-29 18:40:15,159 - root - INFO - Training: Epoch 0009 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 734.6091 | Iter Mean Loss 1025.0241
+2020-10-29 18:40:15,167 - root - INFO - Training: Epoch 0009 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 464.6332 | Iter Mean Loss 838.2272
+2020-10-29 18:40:15,173 - root - INFO - Training: Epoch 0009 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 453.7119 | Iter Mean Loss 742.0983
+2020-10-29 18:40:15,174 - root - INFO - Evaluate: Epoch 0009 | NDCG 0.0000 | MSE 10.5435
+2020-10-29 18:40:15,182 - root - INFO - Training: Epoch 0010 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1294.3445 | Iter Mean Loss 1294.3445
+2020-10-29 18:40:15,189 - root - INFO - Training: Epoch 0010 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 714.5009 | Iter Mean Loss 1004.4227
+2020-10-29 18:40:15,196 - root - INFO - Training: Epoch 0010 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 449.1339 | Iter Mean Loss 819.3264
+2020-10-29 18:40:15,203 - root - INFO - Training: Epoch 0010 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 442.7567 | Iter Mean Loss 725.1840
+2020-10-29 18:40:15,204 - root - INFO - Evaluate: Epoch 0010 | NDCG 0.0000 | MSE 10.5639
+2020-10-29 18:40:15,211 - root - INFO - Training: Epoch 0011 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1276.3506 | Iter Mean Loss 1276.3506
+2020-10-29 18:40:15,218 - root - INFO - Training: Epoch 0011 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 697.0012 | Iter Mean Loss 986.6759
+2020-10-29 18:40:15,224 - root - INFO - Training: Epoch 0011 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 435.7905 | Iter Mean Loss 803.0474
+2020-10-29 18:40:15,230 - root - INFO - Training: Epoch 0011 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 432.8571 | Iter Mean Loss 710.4999
+2020-10-29 18:40:15,232 - root - INFO - Evaluate: Epoch 0011 | NDCG 0.0000 | MSE 10.5814
+2020-10-29 18:40:15,238 - root - INFO - Training: Epoch 0012 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1260.1660 | Iter Mean Loss 1260.1660
+2020-10-29 18:40:15,246 - root - INFO - Training: Epoch 0012 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 680.9528 | Iter Mean Loss 970.5594
+2020-10-29 18:40:15,252 - root - INFO - Training: Epoch 0012 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 423.6318 | Iter Mean Loss 788.2502
+2020-10-29 18:40:15,258 - root - INFO - Training: Epoch 0012 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 423.5754 | Iter Mean Loss 697.0815
+2020-10-29 18:40:15,260 - root - INFO - Evaluate: Epoch 0012 | NDCG 0.0000 | MSE 10.5962
+2020-10-29 18:40:15,266 - root - INFO - Training: Epoch 0013 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1245.0225 | Iter Mean Loss 1245.0225
+2020-10-29 18:40:15,273 - root - INFO - Training: Epoch 0013 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 665.7051 | Iter Mean Loss 955.3638
+2020-10-29 18:40:15,279 - root - INFO - Training: Epoch 0013 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 412.1246 | Iter Mean Loss 774.2840
+2020-10-29 18:40:15,285 - root - INFO - Training: Epoch 0013 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 414.6634 | Iter Mean Loss 684.3789
+2020-10-29 18:40:15,287 - root - INFO - Evaluate: Epoch 0013 | NDCG 0.0000 | MSE 10.6084
+2020-10-29 18:40:15,293 - root - INFO - Training: Epoch 0014 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1230.5295 | Iter Mean Loss 1230.5295
+2020-10-29 18:40:15,302 - root - INFO - Training: Epoch 0014 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 650.9597 | Iter Mean Loss 940.7446
+2020-10-29 18:40:15,309 - root - INFO - Training: Epoch 0014 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 401.0382 | Iter Mean Loss 760.8425
+2020-10-29 18:40:15,315 - root - INFO - Training: Epoch 0014 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 405.9980 | Iter Mean Loss 672.1314
+2020-10-29 18:40:15,318 - root - INFO - Evaluate: Epoch 0014 | NDCG 0.0000 | MSE 10.6184
+2020-10-29 18:40:15,325 - root - INFO - Training: Epoch 0015 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1216.5352 | Iter Mean Loss 1216.5352
+2020-10-29 18:40:15,331 - root - INFO - Training: Epoch 0015 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 636.6337 | Iter Mean Loss 926.5844
+2020-10-29 18:40:15,339 - root - INFO - Training: Epoch 0015 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 390.3271 | Iter Mean Loss 747.8320
+2020-10-29 18:40:15,344 - root - INFO - Training: Epoch 0015 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 397.5325 | Iter Mean Loss 660.2571
+2020-10-29 18:40:15,346 - root - INFO - Evaluate: Epoch 0015 | NDCG 0.0000 | MSE 10.6267
+2020-10-29 18:40:15,354 - root - INFO - Training: Epoch 0016 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1203.0214 | Iter Mean Loss 1203.0214
+2020-10-29 18:40:15,360 - root - INFO - Training: Epoch 0016 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 622.7578 | Iter Mean Loss 912.8896
+2020-10-29 18:40:15,368 - root - INFO - Training: Epoch 0016 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 380.0404 | Iter Mean Loss 735.2732
+2020-10-29 18:40:15,373 - root - INFO - Training: Epoch 0016 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 389.2625 | Iter Mean Loss 648.7705
+2020-10-29 18:40:15,375 - root - INFO - Evaluate: Epoch 0016 | NDCG 0.0000 | MSE 10.6337
+2020-10-29 18:40:15,382 - root - INFO - Training: Epoch 0017 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1190.0287 | Iter Mean Loss 1190.0287
+2020-10-29 18:40:15,389 - root - INFO - Training: Epoch 0017 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 609.4041 | Iter Mean Loss 899.7164
+2020-10-29 18:40:15,396 - root - INFO - Training: Epoch 0017 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 370.2562 | Iter Mean Loss 723.2296
+2020-10-29 18:40:15,401 - root - INFO - Training: Epoch 0017 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 381.2007 | Iter Mean Loss 637.7224
+2020-10-29 18:40:15,403 - root - INFO - Evaluate: Epoch 0017 | NDCG 0.0000 | MSE 10.6395
+2020-10-29 18:40:15,410 - root - INFO - Training: Epoch 0018 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1177.6052 | Iter Mean Loss 1177.6052
+2020-10-29 18:40:15,416 - root - INFO - Training: Epoch 0018 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 596.6359 | Iter Mean Loss 887.1206
+2020-10-29 18:40:15,422 - root - INFO - Training: Epoch 0018 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 361.0359 | Iter Mean Loss 711.7590
+2020-10-29 18:40:15,428 - root - INFO - Training: Epoch 0018 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 373.3593 | Iter Mean Loss 627.1591
+2020-10-29 18:40:15,430 - root - INFO - Evaluate: Epoch 0018 | NDCG 0.0000 | MSE 10.6445
+2020-10-29 18:40:15,436 - root - INFO - Training: Epoch 0019 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1165.7742 | Iter Mean Loss 1165.7742
+2020-10-29 18:40:15,443 - root - INFO - Training: Epoch 0019 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 584.4814 | Iter Mean Loss 875.1278
+2020-10-29 18:40:15,449 - root - INFO - Training: Epoch 0019 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 352.4053 | Iter Mean Loss 700.8869
+2020-10-29 18:40:15,454 - root - INFO - Training: Epoch 0019 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 365.7417 | Iter Mean Loss 617.1006
+2020-10-29 18:40:15,456 - root - INFO - Evaluate: Epoch 0019 | NDCG 0.0000 | MSE 10.6485
+2020-10-29 18:40:15,463 - root - INFO - Training: Epoch 0020 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1154.5280 | Iter Mean Loss 1154.5280
+2020-10-29 18:40:15,470 - root - INFO - Training: Epoch 0020 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 572.9319 | Iter Mean Loss 863.7299
+2020-10-29 18:40:15,476 - root - INFO - Training: Epoch 0020 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 344.3544 | Iter Mean Loss 690.6048
+2020-10-29 18:40:15,482 - root - INFO - Training: Epoch 0020 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 358.3433 | Iter Mean Loss 607.5394
+2020-10-29 18:40:15,484 - root - INFO - Evaluate: Epoch 0020 | NDCG 0.0000 | MSE 10.6516
+2020-10-29 18:40:15,490 - root - INFO - Training: Epoch 0021 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1143.8362 | Iter Mean Loss 1143.8362
+2020-10-29 18:40:15,497 - root - INFO - Training: Epoch 0021 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 561.9551 | Iter Mean Loss 852.8956
+2020-10-29 18:40:15,503 - root - INFO - Training: Epoch 0021 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 336.8520 | Iter Mean Loss 680.8811
+2020-10-29 18:40:15,510 - root - INFO - Training: Epoch 0021 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 351.1560 | Iter Mean Loss 598.4498
+2020-10-29 18:40:15,511 - root - INFO - Evaluate: Epoch 0021 | NDCG 0.0000 | MSE 10.6536
+2020-10-29 18:40:15,518 - root - INFO - Training: Epoch 0022 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1133.6606 | Iter Mean Loss 1133.6606
+2020-10-29 18:40:15,526 - root - INFO - Training: Epoch 0022 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 551.5110 | Iter Mean Loss 842.5858
+2020-10-29 18:40:15,532 - root - INFO - Training: Epoch 0022 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 329.8595 | Iter Mean Loss 671.6770
+2020-10-29 18:40:15,538 - root - INFO - Training: Epoch 0022 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 344.1744 | Iter Mean Loss 589.8014
+2020-10-29 18:40:15,541 - root - INFO - Evaluate: Epoch 0022 | NDCG 0.0000 | MSE 10.6544
+2020-10-29 18:40:15,548 - root - INFO - Training: Epoch 0023 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1123.9670 | Iter Mean Loss 1123.9670
+2020-10-29 18:40:15,554 - root - INFO - Training: Epoch 0023 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 541.5641 | Iter Mean Loss 832.7656
+2020-10-29 18:40:15,562 - root - INFO - Training: Epoch 0023 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 323.3416 | Iter Mean Loss 662.9576
+2020-10-29 18:40:15,567 - root - INFO - Training: Epoch 0023 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 337.3997 | Iter Mean Loss 581.5681
+2020-10-29 18:40:15,569 - root - INFO - Evaluate: Epoch 0023 | NDCG 0.0000 | MSE 10.6540
+2020-10-29 18:40:15,577 - root - INFO - Training: Epoch 0024 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1114.7295 | Iter Mean Loss 1114.7295
+2020-10-29 18:40:15,583 - root - INFO - Training: Epoch 0024 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 532.0874 | Iter Mean Loss 823.4084
+2020-10-29 18:40:15,590 - root - INFO - Training: Epoch 0024 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 317.2677 | Iter Mean Loss 654.6949
+2020-10-29 18:40:15,596 - root - INFO - Training: Epoch 0024 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 330.8400 | Iter Mean Loss 573.7311
+2020-10-29 18:40:15,598 - root - INFO - Evaluate: Epoch 0024 | NDCG 0.0000 | MSE 10.6523
+2020-10-29 18:40:15,604 - root - INFO - Training: Epoch 0025 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1105.9291 | Iter Mean Loss 1105.9291
+2020-10-29 18:40:15,611 - root - INFO - Training: Epoch 0025 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 523.0613 | Iter Mean Loss 814.4952
+2020-10-29 18:40:15,617 - root - INFO - Training: Epoch 0025 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 311.6119 | Iter Mean Loss 646.8674
+2020-10-29 18:40:15,622 - root - INFO - Training: Epoch 0025 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 324.5103 | Iter Mean Loss 566.2782
+2020-10-29 18:40:15,624 - root - INFO - Evaluate: Epoch 0025 | NDCG 0.0000 | MSE 10.6491
+2020-10-29 18:40:15,630 - root - INFO - Training: Epoch 0026 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1097.5535 | Iter Mean Loss 1097.5535
+2020-10-29 18:40:15,637 - root - INFO - Training: Epoch 0026 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 514.4725 | Iter Mean Loss 806.0130
+2020-10-29 18:40:15,644 - root - INFO - Training: Epoch 0026 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 306.3513 | Iter Mean Loss 639.4591
+2020-10-29 18:40:15,650 - root - INFO - Training: Epoch 0026 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 318.4310 | Iter Mean Loss 559.2021
+2020-10-29 18:40:15,652 - root - INFO - Evaluate: Epoch 0026 | NDCG 0.0000 | MSE 10.6443
+2020-10-29 18:40:15,659 - root - INFO - Training: Epoch 0027 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1089.5940 | Iter Mean Loss 1089.5940
+2020-10-29 18:40:15,666 - root - INFO - Training: Epoch 0027 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 506.3129 | Iter Mean Loss 797.9534
+2020-10-29 18:40:15,673 - root - INFO - Training: Epoch 0027 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 301.4671 | Iter Mean Loss 632.4580
+2020-10-29 18:40:15,679 - root - INFO - Training: Epoch 0027 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 312.6255 | Iter Mean Loss 552.4999
+2020-10-29 18:40:15,680 - root - INFO - Evaluate: Epoch 0027 | NDCG 0.0000 | MSE 10.6379
+2020-10-29 18:40:15,688 - root - INFO - Training: Epoch 0028 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1082.0466 | Iter Mean Loss 1082.0466
+2020-10-29 18:40:15,694 - root - INFO - Training: Epoch 0028 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 498.5797 | Iter Mean Loss 790.3132
+2020-10-29 18:40:15,701 - root - INFO - Training: Epoch 0028 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 296.9441 | Iter Mean Loss 625.8568
+2020-10-29 18:40:15,707 - root - INFO - Training: Epoch 0028 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 307.1178 | Iter Mean Loss 546.1721
+2020-10-29 18:40:15,710 - root - INFO - Evaluate: Epoch 0028 | NDCG 0.0000 | MSE 10.6297
+2020-10-29 18:40:15,717 - root - INFO - Training: Epoch 0029 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1074.9075 | Iter Mean Loss 1074.9075
+2020-10-29 18:40:15,724 - root - INFO - Training: Epoch 0029 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 491.2735 | Iter Mean Loss 783.0905
+2020-10-29 18:40:15,730 - root - INFO - Training: Epoch 0029 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 292.7710 | Iter Mean Loss 619.6507
+2020-10-29 18:40:15,736 - root - INFO - Training: Epoch 0029 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 301.9299 | Iter Mean Loss 540.2205
+2020-10-29 18:40:15,738 - root - INFO - Evaluate: Epoch 0029 | NDCG 0.0053 | MSE 10.6197
+2020-10-29 18:40:15,744 - root - INFO - Training: Epoch 0030 / 10000 | Iter 0000 / 0003 | Time 0.0s | Iter Loss 1068.1722 | Iter Mean Loss 1068.1722
+2020-10-29 18:40:15,751 - root - INFO - Training: Epoch 0030 / 10000 | Iter 0001 / 0003 | Time 0.0s | Iter Loss 484.3965 | Iter Mean Loss 776.2844
+2020-10-29 18:40:15,757 - root - INFO - Training: Epoch 0030 / 10000 | Iter 0002 / 0003 | Time 0.0s | Iter Loss 288.9383 | Iter Mean Loss 613.8357
+2020-10-29 18:40:15,764 - root - INFO - Training: Epoch 0030 / 10000 | Iter 0003 / 0003 | Time 0.0s | Iter Loss 297.0790 | Iter Mean Loss 534.6465
+2020-10-29 18:40:15,767 - root - INFO - Evaluate: Epoch 0030 | NDCG 0.0061 | MSE 10.6079
