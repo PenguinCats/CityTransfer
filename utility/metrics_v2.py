@@ -2,6 +2,7 @@ import torch
 import numpy as np
 from utility.log_helper import logging
 
+
 def dcg_score(score, rank):
     r = np.asfarray(score)
     if len(r):
@@ -57,13 +58,13 @@ def ndcf_at_k_test(rel_score, pred_score, k):
 
     logging.info("Real Rank:")
     logging.info(rel_rank[:valid_len])
-    logging.info("Origin Rank:")
+    logging.info("Pred Rank:")
     logging.info(pred_rank[:valid_len*2])
 
     idcg = dcg_score(real_corresponding_score, real_corresponding_rank)
     dcg = dcg_score(pred_corresponding_score, pred_corresponding_rank)
 
-    return dcg / idcg
+    return dcg / idcg,  rel_rank[:valid_len], pred_rank[:valid_len], pred_rank[valid_len:valid_len*2]
 
 
 if __name__ == '__main__':

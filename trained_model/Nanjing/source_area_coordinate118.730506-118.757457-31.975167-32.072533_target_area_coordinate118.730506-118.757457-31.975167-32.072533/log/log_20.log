@@ -1,0 +1,1189 @@
+2020-11-05 21:06:06,918 - root - INFO - Namespace(K=10, O1_print_every=1, O2_print_every=1, O3_print_every=1, O4_print_every=1, auto_encoder_dim=9, batch_size=32, circle_size=500, city_name='Nanjing', data_dir='datasets/', enterprise=['大众书局', '西西弗书店'], eps=1e-09, evaluate_every=1, gamma=8, grid_size_latitude_degree=0.005, grid_size_longitude_degree=0.005, lambda_1=1, lambda_2=0.5, lambda_3=0.5, lambda_4=0.025, lr=0.001, mess_dropout=0.1, n_epoch=100, print_every=1, save_dir='trained_model/Nanjing/source_area_coordinate118.730506-118.757457-31.975167-32.072533_target_area_coordinate118.730506-118.757457-31.975167-32.072533/', score_norm_max=400, seed=981125, source_area_coordinate=[118.730506, 118.757457, 31.975167, 32.072533], stopping_steps=10, target_area_coordinate=[118.757457, 118.80123, 31.975167, 32.072533], target_enterprise='大众书局')
+2020-11-05 21:06:06,919 - root - INFO - --------------parse args and init done.
+2020-11-05 21:06:10,558 - root - INFO - [1 /10]       load dianping data done.
+2020-11-05 21:06:23,188 - root - INFO - [2 /10]       check enterprise and get small category set.
+2020-11-05 21:06:23,188 - root - INFO - n_source_grid: 95, n_target_grid: 152
+2020-11-05 21:06:23,188 - root - INFO - [3 /10]       split grid done.
+2020-11-05 21:06:24,480 - root - INFO - [4 /10]       distribute data into grids done.
+2020-11-05 21:10:12,770 - root - INFO - [5 /10]       generate rating matrix for Transfer Rating Prediction Model done.
+2020-11-05 21:10:12,874 - root - INFO - [6 /10]       extract geographic features done.
+2020-11-05 21:10:13,030 - root - INFO - [7 /10]       extract commercial features done.
+2020-11-05 21:10:13,030 - root - INFO - [8 /10]       combine features done.
+2020-11-05 21:10:13,090 - root - INFO - [9 /10]       get PCCS and generate delta set done.
+2020-11-05 21:10:13,091 - root - INFO - [10/10]       generate training and testing index done.
+2020-11-05 21:10:13,123 - root - INFO - --------------load data done.
+2020-11-05 21:10:13,126 - root - INFO - CityTransfer(
+  (auto_encoder): ModuleList(
+    (0): AutoEncoder(
+      (encoder): Sequential(
+        (0): Linear(in_features=21, out_features=14, bias=True)
+        (1): Tanh()
+        (2): Linear(in_features=14, out_features=9, bias=True)
+      )
+      (decoder): Sequential(
+        (0): Linear(in_features=9, out_features=14, bias=True)
+        (1): Tanh()
+        (2): Linear(in_features=14, out_features=21, bias=True)
+      )
+    )
+    (1): AutoEncoder(
+      (encoder): Sequential(
+        (0): Linear(in_features=21, out_features=14, bias=True)
+        (1): Tanh()
+        (2): Linear(in_features=14, out_features=9, bias=True)
+      )
+      (decoder): Sequential(
+        (0): Linear(in_features=9, out_features=14, bias=True)
+        (1): Tanh()
+        (2): Linear(in_features=14, out_features=21, bias=True)
+      )
+    )
+  )
+)
+2020-11-05 21:10:13,128 - root - INFO - --------------construct model and optimizer done.
+2020-11-05 21:10:13,128 - root - INFO - --------------initialize metrics done.
+2020-11-05 21:10:13,128 - root - INFO - [!]-----------start training.
+2020-11-05 21:10:13,137 - root - INFO - Training: Epoch 0000 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 599.9505 | Iter Mean Loss 599.9505
+2020-11-05 21:10:13,145 - root - INFO - Training: Epoch 0000 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 563.8873 | Iter Mean Loss 581.9189
+2020-11-05 21:10:13,153 - root - INFO - Training: Epoch 0000 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 584.5262 | Iter Mean Loss 582.7880
+2020-11-05 21:10:13,161 - root - INFO - Training: Epoch 0000 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 507.9936 | Iter Mean Loss 564.0894
+2020-11-05 21:10:13,169 - root - INFO - Training: Epoch 0000 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 458.8430 | Iter Mean Loss 543.0401
+2020-11-05 21:10:13,172 - root - INFO - Evaluate: Epoch 0000 | NDCG 0.0000 | MSE 0.6699
+2020-11-05 21:10:13,180 - root - INFO - Training: Epoch 0001 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 471.0423 | Iter Mean Loss 471.0423
+2020-11-05 21:10:13,188 - root - INFO - Training: Epoch 0001 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 438.9006 | Iter Mean Loss 454.9715
+2020-11-05 21:10:13,195 - root - INFO - Training: Epoch 0001 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 467.8340 | Iter Mean Loss 459.2590
+2020-11-05 21:10:13,203 - root - INFO - Training: Epoch 0001 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 403.4666 | Iter Mean Loss 445.3109
+2020-11-05 21:10:13,210 - root - INFO - Training: Epoch 0001 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 363.2046 | Iter Mean Loss 428.8896
+2020-11-05 21:10:13,212 - root - INFO - Evaluate: Epoch 0001 | NDCG 0.0000 | MSE 0.6592
+2020-11-05 21:10:13,221 - root - INFO - Training: Epoch 0002 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 370.4881 | Iter Mean Loss 370.4881
+2020-11-05 21:10:13,228 - root - INFO - Training: Epoch 0002 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 342.5330 | Iter Mean Loss 356.5105
+2020-11-05 21:10:13,236 - root - INFO - Training: Epoch 0002 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 377.8442 | Iter Mean Loss 363.6218
+2020-11-05 21:10:13,244 - root - INFO - Training: Epoch 0002 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 323.3188 | Iter Mean Loss 353.5460
+2020-11-05 21:10:13,252 - root - INFO - Training: Epoch 0002 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 289.7713 | Iter Mean Loss 340.7911
+2020-11-05 21:10:13,254 - root - INFO - Evaluate: Epoch 0002 | NDCG 0.0000 | MSE 0.6435
+2020-11-05 21:10:13,263 - root - INFO - Training: Epoch 0003 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 293.7136 | Iter Mean Loss 293.7136
+2020-11-05 21:10:13,270 - root - INFO - Training: Epoch 0003 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 270.0704 | Iter Mean Loss 281.8920
+2020-11-05 21:10:13,278 - root - INFO - Training: Epoch 0003 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 310.1771 | Iter Mean Loss 291.3204
+2020-11-05 21:10:13,285 - root - INFO - Training: Epoch 0003 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 263.4282 | Iter Mean Loss 284.3473
+2020-11-05 21:10:13,293 - root - INFO - Training: Epoch 0003 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 234.8489 | Iter Mean Loss 274.4476
+2020-11-05 21:10:13,295 - root - INFO - Evaluate: Epoch 0003 | NDCG 0.0000 | MSE 0.6286
+2020-11-05 21:10:13,305 - root - INFO - Training: Epoch 0004 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 236.6264 | Iter Mean Loss 236.6264
+2020-11-05 21:10:13,313 - root - INFO - Training: Epoch 0004 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 217.0520 | Iter Mean Loss 226.8392
+2020-11-05 21:10:13,323 - root - INFO - Training: Epoch 0004 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 260.5522 | Iter Mean Loss 238.0769
+2020-11-05 21:10:13,331 - root - INFO - Training: Epoch 0004 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 219.7862 | Iter Mean Loss 233.5042
+2020-11-05 21:10:13,339 - root - INFO - Training: Epoch 0004 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 194.8294 | Iter Mean Loss 225.7692
+2020-11-05 21:10:13,342 - root - INFO - Evaluate: Epoch 0004 | NDCG 0.0000 | MSE 0.6161
+2020-11-05 21:10:13,350 - root - INFO - Training: Epoch 0005 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 195.2402 | Iter Mean Loss 195.2402
+2020-11-05 21:10:13,358 - root - INFO - Training: Epoch 0005 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 179.2348 | Iter Mean Loss 187.2375
+2020-11-05 21:10:13,366 - root - INFO - Training: Epoch 0005 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 224.8896 | Iter Mean Loss 199.7882
+2020-11-05 21:10:13,374 - root - INFO - Training: Epoch 0005 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 188.5862 | Iter Mean Loss 196.9877
+2020-11-05 21:10:13,382 - root - INFO - Training: Epoch 0005 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 166.2150 | Iter Mean Loss 190.8331
+2020-11-05 21:10:13,384 - root - INFO - Evaluate: Epoch 0005 | NDCG 0.0000 | MSE 0.6060
+2020-11-05 21:10:13,394 - root - INFO - Training: Epoch 0006 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 165.7128 | Iter Mean Loss 165.7128
+2020-11-05 21:10:13,403 - root - INFO - Training: Epoch 0006 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 152.6226 | Iter Mean Loss 159.1677
+2020-11-05 21:10:13,411 - root - INFO - Training: Epoch 0006 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 199.3787 | Iter Mean Loss 172.5714
+2020-11-05 21:10:13,420 - root - INFO - Training: Epoch 0006 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 166.3069 | Iter Mean Loss 171.0053
+2020-11-05 21:10:13,429 - root - INFO - Training: Epoch 0006 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 145.7488 | Iter Mean Loss 165.9540
+2020-11-05 21:10:13,432 - root - INFO - Evaluate: Epoch 0006 | NDCG 0.0000 | MSE 0.5978
+2020-11-05 21:10:13,441 - root - INFO - Training: Epoch 0007 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 144.5331 | Iter Mean Loss 144.5331
+2020-11-05 21:10:13,449 - root - INFO - Training: Epoch 0007 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 133.6582 | Iter Mean Loss 139.0957
+2020-11-05 21:10:13,457 - root - INFO - Training: Epoch 0007 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 180.6999 | Iter Mean Loss 152.9638
+2020-11-05 21:10:13,464 - root - INFO - Training: Epoch 0007 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 149.9379 | Iter Mean Loss 152.2073
+2020-11-05 21:10:13,472 - root - INFO - Training: Epoch 0007 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 130.6678 | Iter Mean Loss 147.8994
+2020-11-05 21:10:13,474 - root - INFO - Evaluate: Epoch 0007 | NDCG 0.0000 | MSE 0.5912
+2020-11-05 21:10:13,482 - root - INFO - Training: Epoch 0008 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 128.7950 | Iter Mean Loss 128.7950
+2020-11-05 21:10:13,490 - root - INFO - Training: Epoch 0008 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 119.4939 | Iter Mean Loss 124.1445
+2020-11-05 21:10:13,498 - root - INFO - Training: Epoch 0008 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 166.2718 | Iter Mean Loss 138.1869
+2020-11-05 21:10:13,505 - root - INFO - Training: Epoch 0008 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 137.1909 | Iter Mean Loss 137.9379
+2020-11-05 21:10:13,513 - root - INFO - Training: Epoch 0008 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 118.9059 | Iter Mean Loss 134.1315
+2020-11-05 21:10:13,515 - root - INFO - Evaluate: Epoch 0008 | NDCG 0.0000 | MSE 0.5858
+2020-11-05 21:10:13,523 - root - INFO - Training: Epoch 0009 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 116.3777 | Iter Mean Loss 116.3777
+2020-11-05 21:10:13,531 - root - INFO - Training: Epoch 0009 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 108.1299 | Iter Mean Loss 112.2538
+2020-11-05 21:10:13,539 - root - INFO - Training: Epoch 0009 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 154.3308 | Iter Mean Loss 126.2795
+2020-11-05 21:10:13,546 - root - INFO - Training: Epoch 0009 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 126.5405 | Iter Mean Loss 126.3447
+2020-11-05 21:10:13,553 - root - INFO - Training: Epoch 0009 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 109.1168 | Iter Mean Loss 122.8991
+2020-11-05 21:10:13,555 - root - INFO - Evaluate: Epoch 0009 | NDCG 0.0000 | MSE 0.5813
+2020-11-05 21:10:13,563 - root - INFO - Training: Epoch 0010 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 105.9358 | Iter Mean Loss 105.9358
+2020-11-05 21:10:13,571 - root - INFO - Training: Epoch 0010 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 98.3574 | Iter Mean Loss 102.1466
+2020-11-05 21:10:13,579 - root - INFO - Training: Epoch 0010 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 143.8448 | Iter Mean Loss 116.0460
+2020-11-05 21:10:13,586 - root - INFO - Training: Epoch 0010 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 117.1201 | Iter Mean Loss 116.3145
+2020-11-05 21:10:13,594 - root - INFO - Training: Epoch 0010 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 100.5567 | Iter Mean Loss 113.1630
+2020-11-05 21:10:13,596 - root - INFO - Evaluate: Epoch 0010 | NDCG 0.0000 | MSE 0.5768
+2020-11-05 21:10:13,604 - root - INFO - Training: Epoch 0011 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 96.7500 | Iter Mean Loss 96.7500
+2020-11-05 21:10:13,611 - root - INFO - Training: Epoch 0011 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 89.5796 | Iter Mean Loss 93.1648
+2020-11-05 21:10:13,619 - root - INFO - Training: Epoch 0011 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 134.3275 | Iter Mean Loss 106.8857
+2020-11-05 21:10:13,626 - root - INFO - Training: Epoch 0011 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 108.5400 | Iter Mean Loss 107.2993
+2020-11-05 21:10:13,634 - root - INFO - Training: Epoch 0011 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 92.8969 | Iter Mean Loss 104.4188
+2020-11-05 21:10:13,636 - root - INFO - Evaluate: Epoch 0011 | NDCG 0.0000 | MSE 0.5719
+2020-11-05 21:10:13,645 - root - INFO - Training: Epoch 0012 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 88.5143 | Iter Mean Loss 88.5143
+2020-11-05 21:10:13,652 - root - INFO - Training: Epoch 0012 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 81.5814 | Iter Mean Loss 85.0478
+2020-11-05 21:10:13,660 - root - INFO - Training: Epoch 0012 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 125.6180 | Iter Mean Loss 98.5712
+2020-11-05 21:10:13,667 - root - INFO - Training: Epoch 0012 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 100.6804 | Iter Mean Loss 99.0985
+2020-11-05 21:10:13,675 - root - INFO - Training: Epoch 0012 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 86.0280 | Iter Mean Loss 96.4844
+2020-11-05 21:10:13,677 - root - INFO - Evaluate: Epoch 0012 | NDCG 0.0000 | MSE 0.5662
+2020-11-05 21:10:13,685 - root - INFO - Training: Epoch 0013 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 81.1286 | Iter Mean Loss 81.1286
+2020-11-05 21:10:13,693 - root - INFO - Training: Epoch 0013 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 74.3207 | Iter Mean Loss 77.7246
+2020-11-05 21:10:13,701 - root - INFO - Training: Epoch 0013 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 117.6934 | Iter Mean Loss 91.0476
+2020-11-05 21:10:13,709 - root - INFO - Training: Epoch 0013 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 93.5280 | Iter Mean Loss 91.6677
+2020-11-05 21:10:13,717 - root - INFO - Training: Epoch 0013 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 79.9200 | Iter Mean Loss 89.3181
+2020-11-05 21:10:13,719 - root - INFO - Evaluate: Epoch 0013 | NDCG 0.0000 | MSE 0.5598
+2020-11-05 21:10:13,728 - root - INFO - Training: Epoch 0014 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 74.5577 | Iter Mean Loss 74.5577
+2020-11-05 21:10:13,736 - root - INFO - Training: Epoch 0014 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 67.7987 | Iter Mean Loss 71.1782
+2020-11-05 21:10:13,743 - root - INFO - Training: Epoch 0014 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 110.5582 | Iter Mean Loss 84.3049
+2020-11-05 21:10:13,751 - root - INFO - Training: Epoch 0014 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 87.0850 | Iter Mean Loss 84.9999
+2020-11-05 21:10:13,759 - root - INFO - Training: Epoch 0014 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 74.5488 | Iter Mean Loss 82.9097
+2020-11-05 21:10:13,761 - root - INFO - Evaluate: Epoch 0014 | NDCG 0.0000 | MSE 0.5531
+2020-11-05 21:10:13,769 - root - INFO - Training: Epoch 0015 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 68.7612 | Iter Mean Loss 68.7612
+2020-11-05 21:10:13,777 - root - INFO - Training: Epoch 0015 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 61.9997 | Iter Mean Loss 65.3805
+2020-11-05 21:10:13,784 - root - INFO - Training: Epoch 0015 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 104.1932 | Iter Mean Loss 78.3180
+2020-11-05 21:10:13,792 - root - INFO - Training: Epoch 0015 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 81.3271 | Iter Mean Loss 79.0703
+2020-11-05 21:10:13,799 - root - INFO - Training: Epoch 0015 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 69.8635 | Iter Mean Loss 77.2289
+2020-11-05 21:10:13,801 - root - INFO - Evaluate: Epoch 0015 | NDCG 0.0000 | MSE 0.5464
+2020-11-05 21:10:13,811 - root - INFO - Training: Epoch 0016 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 63.6676 | Iter Mean Loss 63.6676
+2020-11-05 21:10:13,820 - root - INFO - Training: Epoch 0016 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 56.8697 | Iter Mean Loss 60.2687
+2020-11-05 21:10:13,828 - root - INFO - Training: Epoch 0016 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 98.5402 | Iter Mean Loss 73.0259
+2020-11-05 21:10:13,835 - root - INFO - Training: Epoch 0016 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 76.1936 | Iter Mean Loss 73.8178
+2020-11-05 21:10:13,844 - root - INFO - Training: Epoch 0016 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 65.7818 | Iter Mean Loss 72.2106
+2020-11-05 21:10:13,846 - root - INFO - Evaluate: Epoch 0016 | NDCG 0.0000 | MSE 0.5403
+2020-11-05 21:10:13,854 - root - INFO - Training: Epoch 0017 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 59.1769 | Iter Mean Loss 59.1769
+2020-11-05 21:10:13,862 - root - INFO - Training: Epoch 0017 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 52.3209 | Iter Mean Loss 55.7489
+2020-11-05 21:10:13,869 - root - INFO - Training: Epoch 0017 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 93.5118 | Iter Mean Loss 68.3365
+2020-11-05 21:10:13,877 - root - INFO - Training: Epoch 0017 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 71.5985 | Iter Mean Loss 69.1520
+2020-11-05 21:10:13,885 - root - INFO - Training: Epoch 0017 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 62.2030 | Iter Mean Loss 67.7622
+2020-11-05 21:10:13,887 - root - INFO - Evaluate: Epoch 0017 | NDCG 0.0000 | MSE 0.5349
+2020-11-05 21:10:13,895 - root - INFO - Training: Epoch 0018 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 55.1791 | Iter Mean Loss 55.1791
+2020-11-05 21:10:13,904 - root - INFO - Training: Epoch 0018 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 48.2524 | Iter Mean Loss 51.7158
+2020-11-05 21:10:13,912 - root - INFO - Training: Epoch 0018 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 89.0110 | Iter Mean Loss 64.1475
+2020-11-05 21:10:13,920 - root - INFO - Training: Epoch 0018 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 67.4521 | Iter Mean Loss 64.9737
+2020-11-05 21:10:13,928 - root - INFO - Training: Epoch 0018 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 59.0294 | Iter Mean Loss 63.7848
+2020-11-05 21:10:13,930 - root - INFO - Evaluate: Epoch 0018 | NDCG 0.0000 | MSE 0.5301
+2020-11-05 21:10:13,938 - root - INFO - Training: Epoch 0019 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 51.5756 | Iter Mean Loss 51.5756
+2020-11-05 21:10:13,946 - root - INFO - Training: Epoch 0019 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 44.5715 | Iter Mean Loss 48.0735
+2020-11-05 21:10:13,954 - root - INFO - Training: Epoch 0019 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 84.9521 | Iter Mean Loss 60.3664
+2020-11-05 21:10:13,962 - root - INFO - Training: Epoch 0019 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 63.6805 | Iter Mean Loss 61.1949
+2020-11-05 21:10:13,969 - root - INFO - Training: Epoch 0019 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 56.1838 | Iter Mean Loss 60.1927
+2020-11-05 21:10:13,971 - root - INFO - Evaluate: Epoch 0019 | NDCG 0.0000 | MSE 0.5260
+2020-11-05 21:10:13,979 - root - INFO - Training: Epoch 0020 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 48.2950 | Iter Mean Loss 48.2950
+2020-11-05 21:10:13,987 - root - INFO - Training: Epoch 0020 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 41.2096 | Iter Mean Loss 44.7523
+2020-11-05 21:10:13,995 - root - INFO - Training: Epoch 0020 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 81.2730 | Iter Mean Loss 56.9259
+2020-11-05 21:10:14,002 - root - INFO - Training: Epoch 0020 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 60.2347 | Iter Mean Loss 57.7531
+2020-11-05 21:10:14,010 - root - INFO - Training: Epoch 0020 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 53.6153 | Iter Mean Loss 56.9255
+2020-11-05 21:10:14,012 - root - INFO - Evaluate: Epoch 0020 | NDCG 0.0000 | MSE 0.5224
+2020-11-05 21:10:14,020 - root - INFO - Training: Epoch 0021 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 45.2965 | Iter Mean Loss 45.2965
+2020-11-05 21:10:14,028 - root - INFO - Training: Epoch 0021 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 38.1255 | Iter Mean Loss 41.7110
+2020-11-05 21:10:14,035 - root - INFO - Training: Epoch 0021 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 77.9367 | Iter Mean Loss 53.7862
+2020-11-05 21:10:14,043 - root - INFO - Training: Epoch 0021 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 57.0892 | Iter Mean Loss 54.6120
+2020-11-05 21:10:14,052 - root - INFO - Training: Epoch 0021 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 51.2955 | Iter Mean Loss 53.9487
+2020-11-05 21:10:14,055 - root - INFO - Evaluate: Epoch 0021 | NDCG 0.0000 | MSE 0.5192
+2020-11-05 21:10:14,064 - root - INFO - Training: Epoch 0022 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 42.5641 | Iter Mean Loss 42.5641
+2020-11-05 21:10:14,074 - root - INFO - Training: Epoch 0022 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 35.3007 | Iter Mean Loss 38.9324
+2020-11-05 21:10:14,083 - root - INFO - Training: Epoch 0022 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 74.9256 | Iter Mean Loss 50.9301
+2020-11-05 21:10:14,091 - root - INFO - Training: Epoch 0022 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 54.2351 | Iter Mean Loss 51.7564
+2020-11-05 21:10:14,101 - root - INFO - Training: Epoch 0022 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 49.2126 | Iter Mean Loss 51.2476
+2020-11-05 21:10:14,103 - root - INFO - Evaluate: Epoch 0022 | NDCG 0.0000 | MSE 0.5164
+2020-11-05 21:10:14,112 - root - INFO - Training: Epoch 0023 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 40.0977 | Iter Mean Loss 40.0977
+2020-11-05 21:10:14,120 - root - INFO - Training: Epoch 0023 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 32.7323 | Iter Mean Loss 36.4150
+2020-11-05 21:10:14,128 - root - INFO - Training: Epoch 0023 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 72.2329 | Iter Mean Loss 48.3543
+2020-11-05 21:10:14,137 - root - INFO - Training: Epoch 0023 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 51.6722 | Iter Mean Loss 49.1838
+2020-11-05 21:10:14,146 - root - INFO - Training: Epoch 0023 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 47.3629 | Iter Mean Loss 48.8196
+2020-11-05 21:10:14,149 - root - INFO - Evaluate: Epoch 0023 | NDCG 0.0000 | MSE 0.5139
+2020-11-05 21:10:14,160 - root - INFO - Training: Epoch 0024 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 37.9030 | Iter Mean Loss 37.9030
+2020-11-05 21:10:14,171 - root - INFO - Training: Epoch 0024 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 30.4248 | Iter Mean Loss 34.1639
+2020-11-05 21:10:14,180 - root - INFO - Training: Epoch 0024 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 69.8550 | Iter Mean Loss 46.0609
+2020-11-05 21:10:14,189 - root - INFO - Training: Epoch 0024 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 49.4024 | Iter Mean Loss 46.8963
+2020-11-05 21:10:14,199 - root - INFO - Training: Epoch 0024 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 45.7445 | Iter Mean Loss 46.6659
+2020-11-05 21:10:14,201 - root - INFO - Evaluate: Epoch 0024 | NDCG 0.0000 | MSE 0.5117
+2020-11-05 21:10:14,211 - root - INFO - Training: Epoch 0025 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 35.9842 | Iter Mean Loss 35.9842
+2020-11-05 21:10:14,220 - root - INFO - Training: Epoch 0025 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 28.3828 | Iter Mean Loss 32.1835
+2020-11-05 21:10:14,229 - root - INFO - Training: Epoch 0025 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 67.7854 | Iter Mean Loss 44.0508
+2020-11-05 21:10:14,237 - root - INFO - Training: Epoch 0025 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 47.4234 | Iter Mean Loss 44.8940
+2020-11-05 21:10:14,245 - root - INFO - Training: Epoch 0025 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 44.3515 | Iter Mean Loss 44.7855
+2020-11-05 21:10:14,248 - root - INFO - Evaluate: Epoch 0025 | NDCG 0.0000 | MSE 0.5098
+2020-11-05 21:10:14,256 - root - INFO - Training: Epoch 0026 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 34.3389 | Iter Mean Loss 34.3389
+2020-11-05 21:10:14,264 - root - INFO - Training: Epoch 0026 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 26.6056 | Iter Mean Loss 30.4722
+2020-11-05 21:10:14,271 - root - INFO - Training: Epoch 0026 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 66.0123 | Iter Mean Loss 42.3189
+2020-11-05 21:10:14,278 - root - INFO - Training: Epoch 0026 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 45.7268 | Iter Mean Loss 43.1709
+2020-11-05 21:10:14,286 - root - INFO - Training: Epoch 0026 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 43.1727 | Iter Mean Loss 43.1712
+2020-11-05 21:10:14,288 - root - INFO - Evaluate: Epoch 0026 | NDCG 0.0000 | MSE 0.5081
+2020-11-05 21:10:14,296 - root - INFO - Training: Epoch 0027 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 32.9560 | Iter Mean Loss 32.9560
+2020-11-05 21:10:14,303 - root - INFO - Training: Epoch 0027 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 25.0850 | Iter Mean Loss 29.0205
+2020-11-05 21:10:14,311 - root - INFO - Training: Epoch 0027 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 64.5169 | Iter Mean Loss 40.8526
+2020-11-05 21:10:14,319 - root - INFO - Training: Epoch 0027 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 44.2964 | Iter Mean Loss 41.7136
+2020-11-05 21:10:14,328 - root - INFO - Training: Epoch 0027 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 42.1911 | Iter Mean Loss 41.8091
+2020-11-05 21:10:14,330 - root - INFO - Evaluate: Epoch 0027 | NDCG 0.0000 | MSE 0.5066
+2020-11-05 21:10:14,339 - root - INFO - Training: Epoch 0028 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 31.8164 | Iter Mean Loss 31.8164
+2020-11-05 21:10:14,347 - root - INFO - Training: Epoch 0028 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 23.8048 | Iter Mean Loss 27.8106
+2020-11-05 21:10:14,355 - root - INFO - Training: Epoch 0028 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 63.2742 | Iter Mean Loss 39.6318
+2020-11-05 21:10:14,363 - root - INFO - Training: Epoch 0028 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 43.1094 | Iter Mean Loss 40.5012
+2020-11-05 21:10:14,370 - root - INFO - Training: Epoch 0028 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 41.3853 | Iter Mean Loss 40.6780
+2020-11-05 21:10:14,373 - root - INFO - Evaluate: Epoch 0028 | NDCG 0.0000 | MSE 0.5052
+2020-11-05 21:10:14,381 - root - INFO - Training: Epoch 0029 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 30.8940 | Iter Mean Loss 30.8940
+2020-11-05 21:10:14,389 - root - INFO - Training: Epoch 0029 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 22.7426 | Iter Mean Loss 26.8183
+2020-11-05 21:10:14,397 - root - INFO - Training: Epoch 0029 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 62.2539 | Iter Mean Loss 38.6302
+2020-11-05 21:10:14,405 - root - INFO - Training: Epoch 0029 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 42.1375 | Iter Mean Loss 39.5070
+2020-11-05 21:10:14,413 - root - INFO - Training: Epoch 0029 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 40.7305 | Iter Mean Loss 39.7517
+2020-11-05 21:10:14,415 - root - INFO - Evaluate: Epoch 0029 | NDCG 0.0000 | MSE 0.5041
+2020-11-05 21:10:14,423 - root - INFO - Training: Epoch 0030 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 30.1582 | Iter Mean Loss 30.1582
+2020-11-05 21:10:14,431 - root - INFO - Training: Epoch 0030 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 21.8714 | Iter Mean Loss 26.0148
+2020-11-05 21:10:14,439 - root - INFO - Training: Epoch 0030 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 61.4230 | Iter Mean Loss 37.8175
+2020-11-05 21:10:14,447 - root - INFO - Training: Epoch 0030 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 41.3496 | Iter Mean Loss 38.7006
+2020-11-05 21:10:14,455 - root - INFO - Training: Epoch 0030 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 40.2007 | Iter Mean Loss 39.0006
+2020-11-05 21:10:14,457 - root - INFO - Evaluate: Epoch 0030 | NDCG 0.2817 | MSE 0.5031
+2020-11-05 21:10:14,465 - root - INFO - Training: Epoch 0031 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 29.5766 | Iter Mean Loss 29.5766
+2020-11-05 21:10:14,473 - root - INFO - Training: Epoch 0031 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 21.1624 | Iter Mean Loss 25.3695
+2020-11-05 21:10:14,481 - root - INFO - Training: Epoch 0031 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 60.7478 | Iter Mean Loss 37.1623
+2020-11-05 21:10:14,489 - root - INFO - Training: Epoch 0031 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 40.7138 | Iter Mean Loss 38.0501
+2020-11-05 21:10:14,496 - root - INFO - Training: Epoch 0031 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 39.7704 | Iter Mean Loss 38.3942
+2020-11-05 21:10:14,498 - root - INFO - Evaluate: Epoch 0031 | NDCG 0.2817 | MSE 0.5022
+2020-11-05 21:10:14,507 - root - INFO - Training: Epoch 0032 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 29.1174 | Iter Mean Loss 29.1174
+2020-11-05 21:10:14,514 - root - INFO - Training: Epoch 0032 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 20.5868 | Iter Mean Loss 24.8521
+2020-11-05 21:10:14,522 - root - INFO - Training: Epoch 0032 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 60.1961 | Iter Mean Loss 36.6334
+2020-11-05 21:10:14,529 - root - INFO - Training: Epoch 0032 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 40.1997 | Iter Mean Loss 37.5250
+2020-11-05 21:10:14,537 - root - INFO - Training: Epoch 0032 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 39.4166 | Iter Mean Loss 37.9033
+2020-11-05 21:10:14,539 - root - INFO - Evaluate: Epoch 0032 | NDCG 0.2817 | MSE 0.5015
+2020-11-05 21:10:14,547 - root - INFO - Training: Epoch 0033 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 28.7520 | Iter Mean Loss 28.7520
+2020-11-05 21:10:14,555 - root - INFO - Training: Epoch 0033 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 20.1178 | Iter Mean Loss 24.4349
+2020-11-05 21:10:14,562 - root - INFO - Training: Epoch 0033 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 59.7387 | Iter Mean Loss 36.2028
+2020-11-05 21:10:14,570 - root - INFO - Training: Epoch 0033 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 39.7799 | Iter Mean Loss 37.0971
+2020-11-05 21:10:14,577 - root - INFO - Training: Epoch 0033 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 39.1192 | Iter Mean Loss 37.5015
+2020-11-05 21:10:14,579 - root - INFO - Evaluate: Epoch 0033 | NDCG 0.2817 | MSE 0.5009
+2020-11-05 21:10:14,587 - root - INFO - Training: Epoch 0034 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 28.4556 | Iter Mean Loss 28.4556
+2020-11-05 21:10:14,595 - root - INFO - Training: Epoch 0034 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 19.7321 | Iter Mean Loss 24.0938
+2020-11-05 21:10:14,602 - root - INFO - Training: Epoch 0034 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 59.3507 | Iter Mean Loss 35.8461
+2020-11-05 21:10:14,610 - root - INFO - Training: Epoch 0034 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 39.4309 | Iter Mean Loss 36.7423
+2020-11-05 21:10:14,617 - root - INFO - Training: Epoch 0034 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 38.8614 | Iter Mean Loss 37.1661
+2020-11-05 21:10:14,619 - root - INFO - Evaluate: Epoch 0034 | NDCG 0.2817 | MSE 0.5003
+2020-11-05 21:10:14,627 - root - INFO - Training: Epoch 0035 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 28.2086 | Iter Mean Loss 28.2086
+2020-11-05 21:10:14,635 - root - INFO - Training: Epoch 0035 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 19.4101 | Iter Mean Loss 23.8093
+2020-11-05 21:10:14,642 - root - INFO - Training: Epoch 0035 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 59.0119 | Iter Mean Loss 35.5435
+2020-11-05 21:10:14,650 - root - INFO - Training: Epoch 0035 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 39.1339 | Iter Mean Loss 36.4411
+2020-11-05 21:10:14,658 - root - INFO - Training: Epoch 0035 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 38.6306 | Iter Mean Loss 36.8790
+2020-11-05 21:10:14,660 - root - INFO - Evaluate: Epoch 0035 | NDCG 0.2817 | MSE 0.4999
+2020-11-05 21:10:14,668 - root - INFO - Training: Epoch 0036 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 27.9961 | Iter Mean Loss 27.9961
+2020-11-05 21:10:14,676 - root - INFO - Training: Epoch 0036 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 19.1364 | Iter Mean Loss 23.5663
+2020-11-05 21:10:14,683 - root - INFO - Training: Epoch 0036 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 58.7064 | Iter Mean Loss 35.2796
+2020-11-05 21:10:14,690 - root - INFO - Training: Epoch 0036 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 38.8739 | Iter Mean Loss 36.1782
+2020-11-05 21:10:14,698 - root - INFO - Training: Epoch 0036 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 38.4172 | Iter Mean Loss 36.6260
+2020-11-05 21:10:14,700 - root - INFO - Evaluate: Epoch 0036 | NDCG 0.2817 | MSE 0.4996
+2020-11-05 21:10:14,708 - root - INFO - Training: Epoch 0037 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 27.8074 | Iter Mean Loss 27.8074
+2020-11-05 21:10:14,715 - root - INFO - Training: Epoch 0037 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 18.8993 | Iter Mean Loss 23.3534
+2020-11-05 21:10:14,722 - root - INFO - Training: Epoch 0037 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 58.4225 | Iter Mean Loss 35.0431
+2020-11-05 21:10:14,730 - root - INFO - Training: Epoch 0037 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 38.6401 | Iter Mean Loss 35.9423
+2020-11-05 21:10:14,737 - root - INFO - Training: Epoch 0037 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 38.2145 | Iter Mean Loss 36.3967
+2020-11-05 21:10:14,739 - root - INFO - Evaluate: Epoch 0037 | NDCG 0.2817 | MSE 0.4993
+2020-11-05 21:10:14,747 - root - INFO - Training: Epoch 0038 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 27.6351 | Iter Mean Loss 27.6351
+2020-11-05 21:10:14,754 - root - INFO - Training: Epoch 0038 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 18.6900 | Iter Mean Loss 23.1625
+2020-11-05 21:10:14,762 - root - INFO - Training: Epoch 0038 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 58.1517 | Iter Mean Loss 34.8256
+2020-11-05 21:10:14,769 - root - INFO - Training: Epoch 0038 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 38.4241 | Iter Mean Loss 35.7252
+2020-11-05 21:10:14,776 - root - INFO - Training: Epoch 0038 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 38.0179 | Iter Mean Loss 36.1837
+2020-11-05 21:10:14,778 - root - INFO - Evaluate: Epoch 0038 | NDCG 0.2817 | MSE 0.4991
+2020-11-05 21:10:14,786 - root - INFO - Training: Epoch 0039 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 27.4741 | Iter Mean Loss 27.4741
+2020-11-05 21:10:14,794 - root - INFO - Training: Epoch 0039 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 18.5017 | Iter Mean Loss 22.9879
+2020-11-05 21:10:14,801 - root - INFO - Training: Epoch 0039 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 57.8881 | Iter Mean Loss 34.6213
+2020-11-05 21:10:14,808 - root - INFO - Training: Epoch 0039 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 38.2203 | Iter Mean Loss 35.5210
+2020-11-05 21:10:14,815 - root - INFO - Training: Epoch 0039 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 37.8245 | Iter Mean Loss 35.9817
+2020-11-05 21:10:14,818 - root - INFO - Evaluate: Epoch 0039 | NDCG 0.2817 | MSE 0.4989
+2020-11-05 21:10:14,826 - root - INFO - Training: Epoch 0040 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 27.3210 | Iter Mean Loss 27.3210
+2020-11-05 21:10:14,834 - root - INFO - Training: Epoch 0040 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 18.3295 | Iter Mean Loss 22.8252
+2020-11-05 21:10:14,842 - root - INFO - Training: Epoch 0040 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 57.6279 | Iter Mean Loss 34.4261
+2020-11-05 21:10:14,849 - root - INFO - Training: Epoch 0040 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 38.0246 | Iter Mean Loss 35.3257
+2020-11-05 21:10:14,857 - root - INFO - Training: Epoch 0040 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 37.6324 | Iter Mean Loss 35.7871
+2020-11-05 21:10:14,859 - root - INFO - Evaluate: Epoch 0040 | NDCG 0.2817 | MSE 0.4988
+2020-11-05 21:10:14,867 - root - INFO - Training: Epoch 0041 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 27.1733 | Iter Mean Loss 27.1733
+2020-11-05 21:10:14,875 - root - INFO - Training: Epoch 0041 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 18.1695 | Iter Mean Loss 22.6714
+2020-11-05 21:10:14,883 - root - INFO - Training: Epoch 0041 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 57.3683 | Iter Mean Loss 34.2370
+2020-11-05 21:10:14,890 - root - INFO - Training: Epoch 0041 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 37.8340 | Iter Mean Loss 35.1363
+2020-11-05 21:10:14,898 - root - INFO - Training: Epoch 0041 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 37.4404 | Iter Mean Loss 35.5971
+2020-11-05 21:10:14,900 - root - INFO - Evaluate: Epoch 0041 | NDCG 0.2817 | MSE 0.4987
+2020-11-05 21:10:14,909 - root - INFO - Training: Epoch 0042 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 27.0294 | Iter Mean Loss 27.0294
+2020-11-05 21:10:14,918 - root - INFO - Training: Epoch 0042 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 18.0186 | Iter Mean Loss 22.5240
+2020-11-05 21:10:14,926 - root - INFO - Training: Epoch 0042 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 57.1077 | Iter Mean Loss 34.0519
+2020-11-05 21:10:14,933 - root - INFO - Training: Epoch 0042 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 37.6466 | Iter Mean Loss 34.9506
+2020-11-05 21:10:14,941 - root - INFO - Training: Epoch 0042 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 37.2477 | Iter Mean Loss 35.4100
+2020-11-05 21:10:14,943 - root - INFO - Evaluate: Epoch 0042 | NDCG 0.2817 | MSE 0.4986
+2020-11-05 21:10:14,951 - root - INFO - Training: Epoch 0043 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 26.8878 | Iter Mean Loss 26.8878
+2020-11-05 21:10:14,959 - root - INFO - Training: Epoch 0043 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 17.8743 | Iter Mean Loss 22.3811
+2020-11-05 21:10:14,966 - root - INFO - Training: Epoch 0043 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 56.8452 | Iter Mean Loss 33.8691
+2020-11-05 21:10:14,974 - root - INFO - Training: Epoch 0043 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 37.4607 | Iter Mean Loss 34.7670
+2020-11-05 21:10:14,981 - root - INFO - Training: Epoch 0043 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 37.0539 | Iter Mean Loss 35.2244
+2020-11-05 21:10:14,983 - root - INFO - Evaluate: Epoch 0043 | NDCG 0.2817 | MSE 0.4986
+2020-11-05 21:10:14,992 - root - INFO - Training: Epoch 0044 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 26.7473 | Iter Mean Loss 26.7473
+2020-11-05 21:10:14,999 - root - INFO - Training: Epoch 0044 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 17.7345 | Iter Mean Loss 22.2409
+2020-11-05 21:10:15,007 - root - INFO - Training: Epoch 0044 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 56.5801 | Iter Mean Loss 33.6873
+2020-11-05 21:10:15,015 - root - INFO - Training: Epoch 0044 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 37.2753 | Iter Mean Loss 34.5843
+2020-11-05 21:10:15,023 - root - INFO - Training: Epoch 0044 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 36.8584 | Iter Mean Loss 35.0391
+2020-11-05 21:10:15,025 - root - INFO - Evaluate: Epoch 0044 | NDCG 0.2817 | MSE 0.4985
+2020-11-05 21:10:15,034 - root - INFO - Training: Epoch 0045 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 26.6069 | Iter Mean Loss 26.6069
+2020-11-05 21:10:15,041 - root - INFO - Training: Epoch 0045 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 17.5973 | Iter Mean Loss 22.1021
+2020-11-05 21:10:15,050 - root - INFO - Training: Epoch 0045 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 56.3121 | Iter Mean Loss 33.5054
+2020-11-05 21:10:15,057 - root - INFO - Training: Epoch 0045 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 37.0895 | Iter Mean Loss 34.4015
+2020-11-05 21:10:15,065 - root - INFO - Training: Epoch 0045 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 36.6610 | Iter Mean Loss 34.8534
+2020-11-05 21:10:15,067 - root - INFO - Evaluate: Epoch 0045 | NDCG 0.2817 | MSE 0.4985
+2020-11-05 21:10:15,076 - root - INFO - Training: Epoch 0046 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 26.4657 | Iter Mean Loss 26.4657
+2020-11-05 21:10:15,084 - root - INFO - Training: Epoch 0046 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 17.4612 | Iter Mean Loss 21.9635
+2020-11-05 21:10:15,092 - root - INFO - Training: Epoch 0046 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 56.0410 | Iter Mean Loss 33.3226
+2020-11-05 21:10:15,099 - root - INFO - Training: Epoch 0046 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 36.9027 | Iter Mean Loss 34.2176
+2020-11-05 21:10:15,107 - root - INFO - Training: Epoch 0046 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 36.4613 | Iter Mean Loss 34.6664
+2020-11-05 21:10:15,109 - root - INFO - Evaluate: Epoch 0046 | NDCG 0.2817 | MSE 0.4985
+2020-11-05 21:10:15,117 - root - INFO - Training: Epoch 0047 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 26.3228 | Iter Mean Loss 26.3228
+2020-11-05 21:10:15,125 - root - INFO - Training: Epoch 0047 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 17.3249 | Iter Mean Loss 21.8239
+2020-11-05 21:10:15,133 - root - INFO - Training: Epoch 0047 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 55.7666 | Iter Mean Loss 33.1381
+2020-11-05 21:10:15,140 - root - INFO - Training: Epoch 0047 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 36.7143 | Iter Mean Loss 34.0322
+2020-11-05 21:10:15,148 - root - INFO - Training: Epoch 0047 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 36.2590 | Iter Mean Loss 34.4775
+2020-11-05 21:10:15,150 - root - INFO - Evaluate: Epoch 0047 | NDCG 0.2817 | MSE 0.4985
+2020-11-05 21:10:15,159 - root - INFO - Training: Epoch 0048 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 26.1776 | Iter Mean Loss 26.1776
+2020-11-05 21:10:15,167 - root - INFO - Training: Epoch 0048 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 17.1874 | Iter Mean Loss 21.6825
+2020-11-05 21:10:15,174 - root - INFO - Training: Epoch 0048 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 55.4889 | Iter Mean Loss 32.9513
+2020-11-05 21:10:15,182 - root - INFO - Training: Epoch 0048 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 36.5238 | Iter Mean Loss 33.8444
+2020-11-05 21:10:15,189 - root - INFO - Training: Epoch 0048 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 36.0538 | Iter Mean Loss 34.2863
+2020-11-05 21:10:15,191 - root - INFO - Evaluate: Epoch 0048 | NDCG 0.2817 | MSE 0.4985
+2020-11-05 21:10:15,200 - root - INFO - Training: Epoch 0049 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 26.0292 | Iter Mean Loss 26.0292
+2020-11-05 21:10:15,207 - root - INFO - Training: Epoch 0049 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 17.0477 | Iter Mean Loss 21.5385
+2020-11-05 21:10:15,215 - root - INFO - Training: Epoch 0049 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 55.2077 | Iter Mean Loss 32.7616
+2020-11-05 21:10:15,222 - root - INFO - Training: Epoch 0049 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 36.3308 | Iter Mean Loss 33.6539
+2020-11-05 21:10:15,230 - root - INFO - Training: Epoch 0049 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 35.8454 | Iter Mean Loss 34.0922
+2020-11-05 21:10:15,232 - root - INFO - Evaluate: Epoch 0049 | NDCG 0.2817 | MSE 0.4984
+2020-11-05 21:10:15,241 - root - INFO - Training: Epoch 0050 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 25.8773 | Iter Mean Loss 25.8773
+2020-11-05 21:10:15,249 - root - INFO - Training: Epoch 0050 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 16.9051 | Iter Mean Loss 21.3912
+2020-11-05 21:10:15,257 - root - INFO - Training: Epoch 0050 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 54.9228 | Iter Mean Loss 32.5684
+2020-11-05 21:10:15,265 - root - INFO - Training: Epoch 0050 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 36.1349 | Iter Mean Loss 33.4600
+2020-11-05 21:10:15,272 - root - INFO - Training: Epoch 0050 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 35.6332 | Iter Mean Loss 33.8947
+2020-11-05 21:10:15,274 - root - INFO - Evaluate: Epoch 0050 | NDCG 0.2817 | MSE 0.4984
+2020-11-05 21:10:15,283 - root - INFO - Training: Epoch 0051 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 25.7211 | Iter Mean Loss 25.7211
+2020-11-05 21:10:15,290 - root - INFO - Training: Epoch 0051 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 16.7588 | Iter Mean Loss 21.2400
+2020-11-05 21:10:15,298 - root - INFO - Training: Epoch 0051 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 54.6339 | Iter Mean Loss 32.3713
+2020-11-05 21:10:15,307 - root - INFO - Training: Epoch 0051 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 35.9358 | Iter Mean Loss 33.2624
+2020-11-05 21:10:15,315 - root - INFO - Training: Epoch 0051 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 35.4170 | Iter Mean Loss 33.6933
+2020-11-05 21:10:15,317 - root - INFO - Evaluate: Epoch 0051 | NDCG 0.2817 | MSE 0.4984
+2020-11-05 21:10:15,327 - root - INFO - Training: Epoch 0052 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 25.5602 | Iter Mean Loss 25.5602
+2020-11-05 21:10:15,335 - root - INFO - Training: Epoch 0052 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 16.6084 | Iter Mean Loss 21.0843
+2020-11-05 21:10:15,342 - root - INFO - Training: Epoch 0052 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 54.3408 | Iter Mean Loss 32.1698
+2020-11-05 21:10:15,350 - root - INFO - Training: Epoch 0052 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 35.7330 | Iter Mean Loss 33.0606
+2020-11-05 21:10:15,358 - root - INFO - Training: Epoch 0052 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 35.1963 | Iter Mean Loss 33.4877
+2020-11-05 21:10:15,360 - root - INFO - Evaluate: Epoch 0052 | NDCG 0.2817 | MSE 0.4984
+2020-11-05 21:10:15,368 - root - INFO - Training: Epoch 0053 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 25.3942 | Iter Mean Loss 25.3942
+2020-11-05 21:10:15,375 - root - INFO - Training: Epoch 0053 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 16.4533 | Iter Mean Loss 20.9238
+2020-11-05 21:10:15,383 - root - INFO - Training: Epoch 0053 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 54.0431 | Iter Mean Loss 31.9635
+2020-11-05 21:10:15,391 - root - INFO - Training: Epoch 0053 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 35.5263 | Iter Mean Loss 32.8542
+2020-11-05 21:10:15,399 - root - INFO - Training: Epoch 0053 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 34.9707 | Iter Mean Loss 33.2775
+2020-11-05 21:10:15,402 - root - INFO - Evaluate: Epoch 0053 | NDCG 0.2817 | MSE 0.4984
+2020-11-05 21:10:15,410 - root - INFO - Training: Epoch 0054 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 25.2227 | Iter Mean Loss 25.2227
+2020-11-05 21:10:15,418 - root - INFO - Training: Epoch 0054 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 16.2930 | Iter Mean Loss 20.7579
+2020-11-05 21:10:15,426 - root - INFO - Training: Epoch 0054 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 53.7405 | Iter Mean Loss 31.7521
+2020-11-05 21:10:15,433 - root - INFO - Training: Epoch 0054 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 35.3152 | Iter Mean Loss 32.6429
+2020-11-05 21:10:15,441 - root - INFO - Training: Epoch 0054 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 34.7399 | Iter Mean Loss 33.0623
+2020-11-05 21:10:15,443 - root - INFO - Evaluate: Epoch 0054 | NDCG 0.2817 | MSE 0.4984
+2020-11-05 21:10:15,451 - root - INFO - Training: Epoch 0055 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 25.0453 | Iter Mean Loss 25.0453
+2020-11-05 21:10:15,459 - root - INFO - Training: Epoch 0055 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 16.1273 | Iter Mean Loss 20.5863
+2020-11-05 21:10:15,466 - root - INFO - Training: Epoch 0055 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 53.4327 | Iter Mean Loss 31.5351
+2020-11-05 21:10:15,474 - root - INFO - Training: Epoch 0055 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 35.0995 | Iter Mean Loss 32.4262
+2020-11-05 21:10:15,481 - root - INFO - Training: Epoch 0055 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 34.5034 | Iter Mean Loss 32.8417
+2020-11-05 21:10:15,484 - root - INFO - Evaluate: Epoch 0055 | NDCG 0.2817 | MSE 0.4984
+2020-11-05 21:10:15,492 - root - INFO - Training: Epoch 0056 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 24.8616 | Iter Mean Loss 24.8616
+2020-11-05 21:10:15,500 - root - INFO - Training: Epoch 0056 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 15.9557 | Iter Mean Loss 20.4086
+2020-11-05 21:10:15,507 - root - INFO - Training: Epoch 0056 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 53.1193 | Iter Mean Loss 31.3122
+2020-11-05 21:10:15,515 - root - INFO - Training: Epoch 0056 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 34.8789 | Iter Mean Loss 32.2039
+2020-11-05 21:10:15,523 - root - INFO - Training: Epoch 0056 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 34.2609 | Iter Mean Loss 32.6153
+2020-11-05 21:10:15,525 - root - INFO - Evaluate: Epoch 0056 | NDCG 0.2817 | MSE 0.4984
+2020-11-05 21:10:15,534 - root - INFO - Training: Epoch 0057 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 24.6712 | Iter Mean Loss 24.6712
+2020-11-05 21:10:15,541 - root - INFO - Training: Epoch 0057 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 15.7779 | Iter Mean Loss 20.2245
+2020-11-05 21:10:15,549 - root - INFO - Training: Epoch 0057 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 52.7999 | Iter Mean Loss 31.0830
+2020-11-05 21:10:15,556 - root - INFO - Training: Epoch 0057 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 34.6530 | Iter Mean Loss 31.9755
+2020-11-05 21:10:15,564 - root - INFO - Training: Epoch 0057 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 34.0120 | Iter Mean Loss 32.3828
+2020-11-05 21:10:15,566 - root - INFO - Evaluate: Epoch 0057 | NDCG 0.2817 | MSE 0.4984
+2020-11-05 21:10:15,574 - root - INFO - Training: Epoch 0058 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 24.4738 | Iter Mean Loss 24.4738
+2020-11-05 21:10:15,582 - root - INFO - Training: Epoch 0058 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 15.5936 | Iter Mean Loss 20.0337
+2020-11-05 21:10:15,589 - root - INFO - Training: Epoch 0058 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 52.4743 | Iter Mean Loss 30.8472
+2020-11-05 21:10:15,597 - root - INFO - Training: Epoch 0058 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 34.4216 | Iter Mean Loss 31.7408
+2020-11-05 21:10:15,604 - root - INFO - Training: Epoch 0058 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 33.7564 | Iter Mean Loss 32.1439
+2020-11-05 21:10:15,606 - root - INFO - Evaluate: Epoch 0058 | NDCG 0.2817 | MSE 0.4984
+2020-11-05 21:10:15,614 - root - INFO - Training: Epoch 0059 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 24.2691 | Iter Mean Loss 24.2691
+2020-11-05 21:10:15,622 - root - INFO - Training: Epoch 0059 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 15.4025 | Iter Mean Loss 19.8358
+2020-11-05 21:10:15,629 - root - INFO - Training: Epoch 0059 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 52.1423 | Iter Mean Loss 30.6046
+2020-11-05 21:10:15,636 - root - INFO - Training: Epoch 0059 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 34.1844 | Iter Mean Loss 31.4996
+2020-11-05 21:10:15,644 - root - INFO - Training: Epoch 0059 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 33.4938 | Iter Mean Loss 31.8984
+2020-11-05 21:10:15,646 - root - INFO - Evaluate: Epoch 0059 | NDCG 0.2817 | MSE 0.4983
+2020-11-05 21:10:15,655 - root - INFO - Training: Epoch 0060 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 24.0568 | Iter Mean Loss 24.0568
+2020-11-05 21:10:15,662 - root - INFO - Training: Epoch 0060 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 15.2046 | Iter Mean Loss 19.6307
+2020-11-05 21:10:15,670 - root - INFO - Training: Epoch 0060 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 51.8035 | Iter Mean Loss 30.3549
+2020-11-05 21:10:15,677 - root - INFO - Training: Epoch 0060 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 33.9413 | Iter Mean Loss 31.2515
+2020-11-05 21:10:15,684 - root - INFO - Training: Epoch 0060 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 33.2241 | Iter Mean Loss 31.6460
+2020-11-05 21:10:15,687 - root - INFO - Evaluate: Epoch 0060 | NDCG 0.2817 | MSE 0.4983
+2020-11-05 21:10:15,694 - root - INFO - Training: Epoch 0061 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 23.8366 | Iter Mean Loss 23.8366
+2020-11-05 21:10:15,702 - root - INFO - Training: Epoch 0061 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 14.9995 | Iter Mean Loss 19.4181
+2020-11-05 21:10:15,709 - root - INFO - Training: Epoch 0061 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 51.4578 | Iter Mean Loss 30.0980
+2020-11-05 21:10:15,716 - root - INFO - Training: Epoch 0061 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 33.6920 | Iter Mean Loss 30.9965
+2020-11-05 21:10:15,724 - root - INFO - Training: Epoch 0061 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 32.9471 | Iter Mean Loss 31.3866
+2020-11-05 21:10:15,726 - root - INFO - Evaluate: Epoch 0061 | NDCG 0.2817 | MSE 0.4983
+2020-11-05 21:10:15,734 - root - INFO - Training: Epoch 0062 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 23.6084 | Iter Mean Loss 23.6084
+2020-11-05 21:10:15,741 - root - INFO - Training: Epoch 0062 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 14.7872 | Iter Mean Loss 19.1978
+2020-11-05 21:10:15,749 - root - INFO - Training: Epoch 0062 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 51.1051 | Iter Mean Loss 29.8336
+2020-11-05 21:10:15,756 - root - INFO - Training: Epoch 0062 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 33.4366 | Iter Mean Loss 30.7343
+2020-11-05 21:10:15,763 - root - INFO - Training: Epoch 0062 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 32.6626 | Iter Mean Loss 31.1200
+2020-11-05 21:10:15,765 - root - INFO - Evaluate: Epoch 0062 | NDCG 0.2817 | MSE 0.4983
+2020-11-05 21:10:15,773 - root - INFO - Training: Epoch 0063 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 23.3720 | Iter Mean Loss 23.3720
+2020-11-05 21:10:15,781 - root - INFO - Training: Epoch 0063 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 14.5678 | Iter Mean Loss 18.9699
+2020-11-05 21:10:15,788 - root - INFO - Training: Epoch 0063 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 50.7455 | Iter Mean Loss 29.5618
+2020-11-05 21:10:15,795 - root - INFO - Training: Epoch 0063 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 33.1749 | Iter Mean Loss 30.4650
+2020-11-05 21:10:15,803 - root - INFO - Training: Epoch 0063 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 32.3708 | Iter Mean Loss 30.8462
+2020-11-05 21:10:15,805 - root - INFO - Evaluate: Epoch 0063 | NDCG 0.2817 | MSE 0.4983
+2020-11-05 21:10:15,813 - root - INFO - Training: Epoch 0064 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 23.1274 | Iter Mean Loss 23.1274
+2020-11-05 21:10:15,821 - root - INFO - Training: Epoch 0064 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 14.3412 | Iter Mean Loss 18.7343
+2020-11-05 21:10:15,829 - root - INFO - Training: Epoch 0064 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 50.3788 | Iter Mean Loss 29.2825
+2020-11-05 21:10:15,837 - root - INFO - Training: Epoch 0064 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 32.9071 | Iter Mean Loss 30.1886
+2020-11-05 21:10:15,844 - root - INFO - Training: Epoch 0064 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 32.0718 | Iter Mean Loss 30.5653
+2020-11-05 21:10:15,846 - root - INFO - Evaluate: Epoch 0064 | NDCG 0.2817 | MSE 0.4983
+2020-11-05 21:10:15,854 - root - INFO - Training: Epoch 0065 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 22.8747 | Iter Mean Loss 22.8747
+2020-11-05 21:10:15,862 - root - INFO - Training: Epoch 0065 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 14.1076 | Iter Mean Loss 18.4912
+2020-11-05 21:10:15,870 - root - INFO - Training: Epoch 0065 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 50.0055 | Iter Mean Loss 28.9959
+2020-11-05 21:10:15,877 - root - INFO - Training: Epoch 0065 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 32.6333 | Iter Mean Loss 29.9053
+2020-11-05 21:10:15,885 - root - INFO - Training: Epoch 0065 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 31.7657 | Iter Mean Loss 30.2774
+2020-11-05 21:10:15,887 - root - INFO - Evaluate: Epoch 0065 | NDCG 0.2817 | MSE 0.4983
+2020-11-05 21:10:15,896 - root - INFO - Training: Epoch 0066 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 22.6140 | Iter Mean Loss 22.6140
+2020-11-05 21:10:15,903 - root - INFO - Training: Epoch 0066 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 13.8674 | Iter Mean Loss 18.2407
+2020-11-05 21:10:15,911 - root - INFO - Training: Epoch 0066 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 49.6256 | Iter Mean Loss 28.7023
+2020-11-05 21:10:15,918 - root - INFO - Training: Epoch 0066 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 32.3538 | Iter Mean Loss 29.6152
+2020-11-05 21:10:15,926 - root - INFO - Training: Epoch 0066 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 31.4529 | Iter Mean Loss 29.9827
+2020-11-05 21:10:15,928 - root - INFO - Evaluate: Epoch 0066 | NDCG 0.2817 | MSE 0.4983
+2020-11-05 21:10:15,936 - root - INFO - Training: Epoch 0067 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 22.3457 | Iter Mean Loss 22.3457
+2020-11-05 21:10:15,944 - root - INFO - Training: Epoch 0067 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 13.6209 | Iter Mean Loss 17.9833
+2020-11-05 21:10:15,951 - root - INFO - Training: Epoch 0067 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 49.2396 | Iter Mean Loss 28.4020
+2020-11-05 21:10:15,959 - root - INFO - Training: Epoch 0067 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 32.0689 | Iter Mean Loss 29.3188
+2020-11-05 21:10:15,966 - root - INFO - Training: Epoch 0067 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 31.1339 | Iter Mean Loss 29.6818
+2020-11-05 21:10:15,968 - root - INFO - Evaluate: Epoch 0067 | NDCG 0.2817 | MSE 0.4983
+2020-11-05 21:10:15,976 - root - INFO - Training: Epoch 0068 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 22.0700 | Iter Mean Loss 22.0700
+2020-11-05 21:10:15,984 - root - INFO - Training: Epoch 0068 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 13.3688 | Iter Mean Loss 17.7194
+2020-11-05 21:10:15,992 - root - INFO - Training: Epoch 0068 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 48.8480 | Iter Mean Loss 28.0956
+2020-11-05 21:10:16,000 - root - INFO - Training: Epoch 0068 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 31.7791 | Iter Mean Loss 29.0165
+2020-11-05 21:10:16,007 - root - INFO - Training: Epoch 0068 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 30.8094 | Iter Mean Loss 29.3751
+2020-11-05 21:10:16,009 - root - INFO - Evaluate: Epoch 0068 | NDCG 0.2817 | MSE 0.4982
+2020-11-05 21:10:16,018 - root - INFO - Training: Epoch 0069 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 21.7878 | Iter Mean Loss 21.7878
+2020-11-05 21:10:16,025 - root - INFO - Training: Epoch 0069 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 13.1117 | Iter Mean Loss 17.4497
+2020-11-05 21:10:16,033 - root - INFO - Training: Epoch 0069 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 48.4515 | Iter Mean Loss 27.7837
+2020-11-05 21:10:16,040 - root - INFO - Training: Epoch 0069 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 31.4851 | Iter Mean Loss 28.7090
+2020-11-05 21:10:16,048 - root - INFO - Training: Epoch 0069 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 30.4802 | Iter Mean Loss 29.0633
+2020-11-05 21:10:16,050 - root - INFO - Evaluate: Epoch 0069 | NDCG 0.2817 | MSE 0.4982
+2020-11-05 21:10:16,058 - root - INFO - Training: Epoch 0070 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 21.4996 | Iter Mean Loss 21.4996
+2020-11-05 21:10:16,066 - root - INFO - Training: Epoch 0070 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 12.8505 | Iter Mean Loss 17.1750
+2020-11-05 21:10:16,073 - root - INFO - Training: Epoch 0070 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 48.0509 | Iter Mean Loss 27.4670
+2020-11-05 21:10:16,081 - root - INFO - Training: Epoch 0070 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 31.1877 | Iter Mean Loss 28.3972
+2020-11-05 21:10:16,090 - root - INFO - Training: Epoch 0070 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 30.1473 | Iter Mean Loss 28.7472
+2020-11-05 21:10:16,092 - root - INFO - Evaluate: Epoch 0070 | NDCG 0.2817 | MSE 0.4982
+2020-11-05 21:10:16,101 - root - INFO - Training: Epoch 0071 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 21.2065 | Iter Mean Loss 21.2065
+2020-11-05 21:10:16,109 - root - INFO - Training: Epoch 0071 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 12.5862 | Iter Mean Loss 16.8963
+2020-11-05 21:10:16,117 - root - INFO - Training: Epoch 0071 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 47.6471 | Iter Mean Loss 27.1466
+2020-11-05 21:10:16,125 - root - INFO - Training: Epoch 0071 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 30.8876 | Iter Mean Loss 28.0818
+2020-11-05 21:10:16,133 - root - INFO - Training: Epoch 0071 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 29.8117 | Iter Mean Loss 28.4278
+2020-11-05 21:10:16,135 - root - INFO - Evaluate: Epoch 0071 | NDCG 0.2817 | MSE 0.4982
+2020-11-05 21:10:16,144 - root - INFO - Training: Epoch 0072 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 20.9094 | Iter Mean Loss 20.9094
+2020-11-05 21:10:16,151 - root - INFO - Training: Epoch 0072 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 12.3201 | Iter Mean Loss 16.6147
+2020-11-05 21:10:16,159 - root - INFO - Training: Epoch 0072 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 47.2411 | Iter Mean Loss 26.8235
+2020-11-05 21:10:16,167 - root - INFO - Training: Epoch 0072 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 30.5859 | Iter Mean Loss 27.7641
+2020-11-05 21:10:16,175 - root - INFO - Training: Epoch 0072 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 29.4748 | Iter Mean Loss 28.1063
+2020-11-05 21:10:16,178 - root - INFO - Evaluate: Epoch 0072 | NDCG 0.2817 | MSE 0.4981
+2020-11-05 21:10:16,186 - root - INFO - Training: Epoch 0073 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 20.6096 | Iter Mean Loss 20.6096
+2020-11-05 21:10:16,194 - root - INFO - Training: Epoch 0073 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 12.0533 | Iter Mean Loss 16.3314
+2020-11-05 21:10:16,201 - root - INFO - Training: Epoch 0073 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 46.8343 | Iter Mean Loss 26.4990
+2020-11-05 21:10:16,209 - root - INFO - Training: Epoch 0073 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 30.2837 | Iter Mean Loss 27.4452
+2020-11-05 21:10:16,217 - root - INFO - Training: Epoch 0073 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 29.1379 | Iter Mean Loss 27.7837
+2020-11-05 21:10:16,219 - root - INFO - Evaluate: Epoch 0073 | NDCG 0.2817 | MSE 0.4981
+2020-11-05 21:10:16,227 - root - INFO - Training: Epoch 0074 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 20.3084 | Iter Mean Loss 20.3084
+2020-11-05 21:10:16,235 - root - INFO - Training: Epoch 0074 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 11.7873 | Iter Mean Loss 16.0478
+2020-11-05 21:10:16,242 - root - INFO - Training: Epoch 0074 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 46.4277 | Iter Mean Loss 26.1744
+2020-11-05 21:10:16,250 - root - INFO - Training: Epoch 0074 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 29.9821 | Iter Mean Loss 27.1264
+2020-11-05 21:10:16,258 - root - INFO - Training: Epoch 0074 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 28.8025 | Iter Mean Loss 27.4616
+2020-11-05 21:10:16,260 - root - INFO - Evaluate: Epoch 0074 | NDCG 0.2817 | MSE 0.4980
+2020-11-05 21:10:16,268 - root - INFO - Training: Epoch 0075 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 20.0072 | Iter Mean Loss 20.0072
+2020-11-05 21:10:16,275 - root - INFO - Training: Epoch 0075 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 11.5235 | Iter Mean Loss 15.7653
+2020-11-05 21:10:16,283 - root - INFO - Training: Epoch 0075 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 46.0226 | Iter Mean Loss 25.8511
+2020-11-05 21:10:16,290 - root - INFO - Training: Epoch 0075 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 29.6824 | Iter Mean Loss 26.8089
+2020-11-05 21:10:16,297 - root - INFO - Training: Epoch 0075 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 28.4702 | Iter Mean Loss 27.1412
+2020-11-05 21:10:16,300 - root - INFO - Evaluate: Epoch 0075 | NDCG 0.2817 | MSE 0.4980
+2020-11-05 21:10:16,307 - root - INFO - Training: Epoch 0076 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 19.7075 | Iter Mean Loss 19.7075
+2020-11-05 21:10:16,316 - root - INFO - Training: Epoch 0076 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 11.2634 | Iter Mean Loss 15.4854
+2020-11-05 21:10:16,326 - root - INFO - Training: Epoch 0076 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 45.6204 | Iter Mean Loss 25.5304
+2020-11-05 21:10:16,333 - root - INFO - Training: Epoch 0076 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 29.3856 | Iter Mean Loss 26.4942
+2020-11-05 21:10:16,342 - root - INFO - Training: Epoch 0076 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 28.1424 | Iter Mean Loss 26.8239
+2020-11-05 21:10:16,344 - root - INFO - Evaluate: Epoch 0076 | NDCG 0.2817 | MSE 0.4979
+2020-11-05 21:10:16,353 - root - INFO - Training: Epoch 0077 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 19.4107 | Iter Mean Loss 19.4107
+2020-11-05 21:10:16,361 - root - INFO - Training: Epoch 0077 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 11.0085 | Iter Mean Loss 15.2096
+2020-11-05 21:10:16,369 - root - INFO - Training: Epoch 0077 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 45.2223 | Iter Mean Loss 25.2138
+2020-11-05 21:10:16,377 - root - INFO - Training: Epoch 0077 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 29.0930 | Iter Mean Loss 26.1836
+2020-11-05 21:10:16,385 - root - INFO - Training: Epoch 0077 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 27.8205 | Iter Mean Loss 26.5110
+2020-11-05 21:10:16,387 - root - INFO - Evaluate: Epoch 0077 | NDCG 0.2817 | MSE 0.4978
+2020-11-05 21:10:16,396 - root - INFO - Training: Epoch 0078 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 19.1182 | Iter Mean Loss 19.1182
+2020-11-05 21:10:16,405 - root - INFO - Training: Epoch 0078 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 10.7601 | Iter Mean Loss 14.9391
+2020-11-05 21:10:16,413 - root - INFO - Training: Epoch 0078 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 44.8294 | Iter Mean Loss 24.9026
+2020-11-05 21:10:16,421 - root - INFO - Training: Epoch 0078 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 28.8055 | Iter Mean Loss 25.8783
+2020-11-05 21:10:16,429 - root - INFO - Training: Epoch 0078 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 27.5060 | Iter Mean Loss 26.2038
+2020-11-05 21:10:16,431 - root - INFO - Evaluate: Epoch 0078 | NDCG 0.2817 | MSE 0.4978
+2020-11-05 21:10:16,440 - root - INFO - Training: Epoch 0079 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 18.8312 | Iter Mean Loss 18.8312
+2020-11-05 21:10:16,447 - root - INFO - Training: Epoch 0079 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 10.5194 | Iter Mean Loss 14.6753
+2020-11-05 21:10:16,455 - root - INFO - Training: Epoch 0079 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 44.4427 | Iter Mean Loss 24.5978
+2020-11-05 21:10:16,462 - root - INFO - Training: Epoch 0079 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 28.5241 | Iter Mean Loss 25.5794
+2020-11-05 21:10:16,470 - root - INFO - Training: Epoch 0079 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 27.1998 | Iter Mean Loss 25.9034
+2020-11-05 21:10:16,472 - root - INFO - Evaluate: Epoch 0079 | NDCG 0.2817 | MSE 0.4977
+2020-11-05 21:10:16,480 - root - INFO - Training: Epoch 0080 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 18.5509 | Iter Mean Loss 18.5509
+2020-11-05 21:10:16,488 - root - INFO - Training: Epoch 0080 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 10.2874 | Iter Mean Loss 14.4192
+2020-11-05 21:10:16,497 - root - INFO - Training: Epoch 0080 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 44.0630 | Iter Mean Loss 24.3004
+2020-11-05 21:10:16,505 - root - INFO - Training: Epoch 0080 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 28.2495 | Iter Mean Loss 25.2877
+2020-11-05 21:10:16,514 - root - INFO - Training: Epoch 0080 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 26.9029 | Iter Mean Loss 25.6107
+2020-11-05 21:10:16,516 - root - INFO - Evaluate: Epoch 0080 | NDCG 0.2817 | MSE 0.4975
+2020-11-05 21:10:16,525 - root - INFO - Training: Epoch 0081 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 18.2782 | Iter Mean Loss 18.2782
+2020-11-05 21:10:16,533 - root - INFO - Training: Epoch 0081 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 10.0649 | Iter Mean Loss 14.1715
+2020-11-05 21:10:16,541 - root - INFO - Training: Epoch 0081 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 43.6909 | Iter Mean Loss 24.0113
+2020-11-05 21:10:16,549 - root - INFO - Training: Epoch 0081 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 27.9822 | Iter Mean Loss 25.0040
+2020-11-05 21:10:16,558 - root - INFO - Training: Epoch 0081 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 26.6160 | Iter Mean Loss 25.3264
+2020-11-05 21:10:16,560 - root - INFO - Evaluate: Epoch 0081 | NDCG 0.2817 | MSE 0.4974
+2020-11-05 21:10:16,568 - root - INFO - Training: Epoch 0082 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 18.0136 | Iter Mean Loss 18.0136
+2020-11-05 21:10:16,576 - root - INFO - Training: Epoch 0082 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 9.8524 | Iter Mean Loss 13.9330
+2020-11-05 21:10:16,584 - root - INFO - Training: Epoch 0082 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 43.3267 | Iter Mean Loss 23.7309
+2020-11-05 21:10:16,593 - root - INFO - Training: Epoch 0082 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 27.7225 | Iter Mean Loss 24.7288
+2020-11-05 21:10:16,600 - root - INFO - Training: Epoch 0082 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 26.3393 | Iter Mean Loss 25.0509
+2020-11-05 21:10:16,603 - root - INFO - Evaluate: Epoch 0082 | NDCG 0.2817 | MSE 0.4972
+2020-11-05 21:10:16,612 - root - INFO - Training: Epoch 0083 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 17.7576 | Iter Mean Loss 17.7576
+2020-11-05 21:10:16,620 - root - INFO - Training: Epoch 0083 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 9.6501 | Iter Mean Loss 13.7039
+2020-11-05 21:10:16,628 - root - INFO - Training: Epoch 0083 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 42.9706 | Iter Mean Loss 23.4594
+2020-11-05 21:10:16,636 - root - INFO - Training: Epoch 0083 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 27.4706 | Iter Mean Loss 24.4622
+2020-11-05 21:10:16,644 - root - INFO - Training: Epoch 0083 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 26.0730 | Iter Mean Loss 24.7844
+2020-11-05 21:10:16,646 - root - INFO - Evaluate: Epoch 0083 | NDCG 0.2817 | MSE 0.4971
+2020-11-05 21:10:16,655 - root - INFO - Training: Epoch 0084 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 17.5104 | Iter Mean Loss 17.5104
+2020-11-05 21:10:16,663 - root - INFO - Training: Epoch 0084 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 9.4581 | Iter Mean Loss 13.4843
+2020-11-05 21:10:16,671 - root - INFO - Training: Epoch 0084 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 42.6225 | Iter Mean Loss 23.1970
+2020-11-05 21:10:16,679 - root - INFO - Training: Epoch 0084 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 27.2264 | Iter Mean Loss 24.2044
+2020-11-05 21:10:16,686 - root - INFO - Training: Epoch 0084 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 25.8169 | Iter Mean Loss 24.5269
+2020-11-05 21:10:16,689 - root - INFO - Evaluate: Epoch 0084 | NDCG 0.2817 | MSE 0.4969
+2020-11-05 21:10:16,698 - root - INFO - Training: Epoch 0085 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 17.2718 | Iter Mean Loss 17.2718
+2020-11-05 21:10:16,706 - root - INFO - Training: Epoch 0085 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 9.2762 | Iter Mean Loss 13.2740
+2020-11-05 21:10:16,714 - root - INFO - Training: Epoch 0085 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 42.2822 | Iter Mean Loss 22.9434
+2020-11-05 21:10:16,722 - root - INFO - Training: Epoch 0085 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 26.9895 | Iter Mean Loss 23.9549
+2020-11-05 21:10:16,729 - root - INFO - Training: Epoch 0085 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 25.5706 | Iter Mean Loss 24.2781
+2020-11-05 21:10:16,731 - root - INFO - Evaluate: Epoch 0085 | NDCG 0.2817 | MSE 0.4966
+2020-11-05 21:10:16,740 - root - INFO - Training: Epoch 0086 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 17.0416 | Iter Mean Loss 17.0416
+2020-11-05 21:10:16,748 - root - INFO - Training: Epoch 0086 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 9.1037 | Iter Mean Loss 13.0727
+2020-11-05 21:10:16,756 - root - INFO - Training: Epoch 0086 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 41.9491 | Iter Mean Loss 22.6982
+2020-11-05 21:10:16,763 - root - INFO - Training: Epoch 0086 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 26.7597 | Iter Mean Loss 23.7136
+2020-11-05 21:10:16,771 - root - INFO - Training: Epoch 0086 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 25.3335 | Iter Mean Loss 24.0375
+2020-11-05 21:10:16,774 - root - INFO - Evaluate: Epoch 0086 | NDCG 0.2817 | MSE 0.4964
+2020-11-05 21:10:16,782 - root - INFO - Training: Epoch 0087 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 16.8193 | Iter Mean Loss 16.8193
+2020-11-05 21:10:16,790 - root - INFO - Training: Epoch 0087 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 8.9402 | Iter Mean Loss 12.8798
+2020-11-05 21:10:16,798 - root - INFO - Training: Epoch 0087 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 41.6228 | Iter Mean Loss 22.4608
+2020-11-05 21:10:16,807 - root - INFO - Training: Epoch 0087 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 26.5364 | Iter Mean Loss 23.4797
+2020-11-05 21:10:16,815 - root - INFO - Training: Epoch 0087 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 25.1048 | Iter Mean Loss 23.8047
+2020-11-05 21:10:16,817 - root - INFO - Evaluate: Epoch 0087 | NDCG 0.2817 | MSE 0.4961
+2020-11-05 21:10:16,827 - root - INFO - Training: Epoch 0088 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 16.6043 | Iter Mean Loss 16.6043
+2020-11-05 21:10:16,834 - root - INFO - Training: Epoch 0088 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 8.7848 | Iter Mean Loss 12.6946
+2020-11-05 21:10:16,842 - root - INFO - Training: Epoch 0088 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 41.3025 | Iter Mean Loss 22.2305
+2020-11-05 21:10:16,850 - root - INFO - Training: Epoch 0088 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 26.3189 | Iter Mean Loss 23.2526
+2020-11-05 21:10:16,857 - root - INFO - Training: Epoch 0088 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 24.8837 | Iter Mean Loss 23.5788
+2020-11-05 21:10:16,859 - root - INFO - Evaluate: Epoch 0088 | NDCG 0.2817 | MSE 0.4958
+2020-11-05 21:10:16,867 - root - INFO - Training: Epoch 0089 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 16.3959 | Iter Mean Loss 16.3959
+2020-11-05 21:10:16,875 - root - INFO - Training: Epoch 0089 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 8.6366 | Iter Mean Loss 12.5163
+2020-11-05 21:10:16,883 - root - INFO - Training: Epoch 0089 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 40.9874 | Iter Mean Loss 22.0067
+2020-11-05 21:10:16,890 - root - INFO - Training: Epoch 0089 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 26.1066 | Iter Mean Loss 23.0316
+2020-11-05 21:10:16,898 - root - INFO - Training: Epoch 0089 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 24.6691 | Iter Mean Loss 23.3591
+2020-11-05 21:10:16,900 - root - INFO - Evaluate: Epoch 0089 | NDCG 0.2817 | MSE 0.4955
+2020-11-05 21:10:16,908 - root - INFO - Training: Epoch 0090 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 16.1933 | Iter Mean Loss 16.1933
+2020-11-05 21:10:16,915 - root - INFO - Training: Epoch 0090 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 8.4948 | Iter Mean Loss 12.3441
+2020-11-05 21:10:16,923 - root - INFO - Training: Epoch 0090 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 40.6769 | Iter Mean Loss 21.7883
+2020-11-05 21:10:16,930 - root - INFO - Training: Epoch 0090 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 25.8988 | Iter Mean Loss 22.8159
+2020-11-05 21:10:16,938 - root - INFO - Training: Epoch 0090 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 24.4602 | Iter Mean Loss 23.1448
+2020-11-05 21:10:16,940 - root - INFO - Evaluate: Epoch 0090 | NDCG 0.2817 | MSE 0.4952
+2020-11-05 21:10:16,948 - root - INFO - Training: Epoch 0091 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 15.9957 | Iter Mean Loss 15.9957
+2020-11-05 21:10:16,955 - root - INFO - Training: Epoch 0091 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 8.3584 | Iter Mean Loss 12.1771
+2020-11-05 21:10:16,963 - root - INFO - Training: Epoch 0091 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 40.3700 | Iter Mean Loss 21.5747
+2020-11-05 21:10:16,970 - root - INFO - Training: Epoch 0091 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 25.6948 | Iter Mean Loss 22.6047
+2020-11-05 21:10:16,978 - root - INFO - Training: Epoch 0091 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 24.2559 | Iter Mean Loss 22.9350
+2020-11-05 21:10:16,981 - root - INFO - Evaluate: Epoch 0091 | NDCG 0.2817 | MSE 0.4948
+2020-11-05 21:10:16,989 - root - INFO - Training: Epoch 0092 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 15.8024 | Iter Mean Loss 15.8024
+2020-11-05 21:10:16,997 - root - INFO - Training: Epoch 0092 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 8.2265 | Iter Mean Loss 12.0144
+2020-11-05 21:10:17,004 - root - INFO - Training: Epoch 0092 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 40.0662 | Iter Mean Loss 21.3650
+2020-11-05 21:10:17,012 - root - INFO - Training: Epoch 0092 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 25.4940 | Iter Mean Loss 22.3973
+2020-11-05 21:10:17,019 - root - INFO - Training: Epoch 0092 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 24.0553 | Iter Mean Loss 22.7289
+2020-11-05 21:10:17,021 - root - INFO - Evaluate: Epoch 0092 | NDCG 0.2817 | MSE 0.4944
+2020-11-05 21:10:17,029 - root - INFO - Training: Epoch 0093 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 15.6127 | Iter Mean Loss 15.6127
+2020-11-05 21:10:17,037 - root - INFO - Training: Epoch 0093 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 8.0982 | Iter Mean Loss 11.8555
+2020-11-05 21:10:17,044 - root - INFO - Training: Epoch 0093 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 39.7648 | Iter Mean Loss 21.1586
+2020-11-05 21:10:17,052 - root - INFO - Training: Epoch 0093 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 25.2957 | Iter Mean Loss 22.1929
+2020-11-05 21:10:17,059 - root - INFO - Training: Epoch 0093 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 23.8577 | Iter Mean Loss 22.5259
+2020-11-05 21:10:17,061 - root - INFO - Evaluate: Epoch 0093 | NDCG 0.2817 | MSE 0.4940
+2020-11-05 21:10:17,069 - root - INFO - Training: Epoch 0094 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 15.4260 | Iter Mean Loss 15.4260
+2020-11-05 21:10:17,077 - root - INFO - Training: Epoch 0094 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 7.9730 | Iter Mean Loss 11.6995
+2020-11-05 21:10:17,084 - root - INFO - Training: Epoch 0094 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 39.4652 | Iter Mean Loss 20.9547
+2020-11-05 21:10:17,092 - root - INFO - Training: Epoch 0094 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 25.0996 | Iter Mean Loss 21.9909
+2020-11-05 21:10:17,099 - root - INFO - Training: Epoch 0094 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 23.6624 | Iter Mean Loss 22.3252
+2020-11-05 21:10:17,101 - root - INFO - Evaluate: Epoch 0094 | NDCG 0.2817 | MSE 0.4936
+2020-11-05 21:10:17,109 - root - INFO - Training: Epoch 0095 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 15.2417 | Iter Mean Loss 15.2417
+2020-11-05 21:10:17,117 - root - INFO - Training: Epoch 0095 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 7.8501 | Iter Mean Loss 11.5459
+2020-11-05 21:10:17,124 - root - INFO - Training: Epoch 0095 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 39.1670 | Iter Mean Loss 20.7529
+2020-11-05 21:10:17,131 - root - INFO - Training: Epoch 0095 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 24.9051 | Iter Mean Loss 21.7910
+2020-11-05 21:10:17,139 - root - INFO - Training: Epoch 0095 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 23.4687 | Iter Mean Loss 22.1265
+2020-11-05 21:10:17,141 - root - INFO - Evaluate: Epoch 0095 | NDCG 0.2817 | MSE 0.4932
+2020-11-05 21:10:17,149 - root - INFO - Training: Epoch 0096 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 15.0594 | Iter Mean Loss 15.0594
+2020-11-05 21:10:17,156 - root - INFO - Training: Epoch 0096 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 7.7290 | Iter Mean Loss 11.3942
+2020-11-05 21:10:17,164 - root - INFO - Training: Epoch 0096 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 38.8697 | Iter Mean Loss 20.5527
+2020-11-05 21:10:17,171 - root - INFO - Training: Epoch 0096 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 24.7120 | Iter Mean Loss 21.5925
+2020-11-05 21:10:17,179 - root - INFO - Training: Epoch 0096 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 23.2761 | Iter Mean Loss 21.9292
+2020-11-05 21:10:17,180 - root - INFO - Evaluate: Epoch 0096 | NDCG 0.2817 | MSE 0.4927
+2020-11-05 21:10:17,189 - root - INFO - Training: Epoch 0097 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 14.8789 | Iter Mean Loss 14.8789
+2020-11-05 21:10:17,196 - root - INFO - Training: Epoch 0097 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 7.6093 | Iter Mean Loss 11.2441
+2020-11-05 21:10:17,203 - root - INFO - Training: Epoch 0097 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 38.5732 | Iter Mean Loss 20.3538
+2020-11-05 21:10:17,211 - root - INFO - Training: Epoch 0097 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 24.5200 | Iter Mean Loss 21.3953
+2020-11-05 21:10:17,218 - root - INFO - Training: Epoch 0097 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 23.0843 | Iter Mean Loss 21.7331
+2020-11-05 21:10:17,220 - root - INFO - Evaluate: Epoch 0097 | NDCG 0.2817 | MSE 0.4922
+2020-11-05 21:10:17,228 - root - INFO - Training: Epoch 0098 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 14.6999 | Iter Mean Loss 14.6999
+2020-11-05 21:10:17,235 - root - INFO - Training: Epoch 0098 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 7.4908 | Iter Mean Loss 11.0953
+2020-11-05 21:10:17,244 - root - INFO - Training: Epoch 0098 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 38.2772 | Iter Mean Loss 20.1560
+2020-11-05 21:10:17,252 - root - INFO - Training: Epoch 0098 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 24.3290 | Iter Mean Loss 21.1992
+2020-11-05 21:10:17,259 - root - INFO - Training: Epoch 0098 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 22.8930 | Iter Mean Loss 21.5380
+2020-11-05 21:10:17,261 - root - INFO - Evaluate: Epoch 0098 | NDCG 0.2817 | MSE 0.4917
+2020-11-05 21:10:17,269 - root - INFO - Training: Epoch 0099 / 0100 | Iter 0000 / 0004 | Time 0.0s | Iter Loss 14.5223 | Iter Mean Loss 14.5223
+2020-11-05 21:10:17,276 - root - INFO - Training: Epoch 0099 / 0100 | Iter 0001 / 0004 | Time 0.0s | Iter Loss 7.3731 | Iter Mean Loss 10.9477
+2020-11-05 21:10:17,284 - root - INFO - Training: Epoch 0099 / 0100 | Iter 0002 / 0004 | Time 0.0s | Iter Loss 37.9818 | Iter Mean Loss 19.9591
+2020-11-05 21:10:17,291 - root - INFO - Training: Epoch 0099 / 0100 | Iter 0003 / 0004 | Time 0.0s | Iter Loss 24.1389 | Iter Mean Loss 21.0040
+2020-11-05 21:10:17,299 - root - INFO - Training: Epoch 0099 / 0100 | Iter 0004 / 0004 | Time 0.0s | Iter Loss 22.7019 | Iter Mean Loss 21.3436
+2020-11-05 21:10:17,301 - root - INFO - Evaluate: Epoch 0099 | NDCG 0.2817 | MSE 0.4912
+2020-11-05 21:10:17,301 - root - INFO - [!]-----------training done.
+2020-11-05 21:10:17,425 - matplotlib.font_manager - DEBUG - findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=10.0.
+2020-11-05 21:10:17,426 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'STIXSizeThreeSym' (STIXSizThreeSymReg.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,426 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'DejaVu Sans Mono' (DejaVuSansMono-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,426 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'STIXNonUnicode' (STIXNonUni.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,426 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'STIXSizeOneSym' (STIXSizOneSymReg.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,426 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'STIXSizeFourSym' (STIXSizFourSymBol.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,426 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'STIXGeneral' (STIXGeneralItalic.ttf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,427 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'cmex10' (cmex10.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,427 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'STIXNonUnicode' (STIXNonUniBol.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,427 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'STIXNonUnicode' (STIXNonUniIta.ttf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,427 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'DejaVu Serif' (DejaVuSerif-Italic.ttf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,427 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'STIXGeneral' (STIXGeneralBolIta.ttf) italic normal 700 normal>) = 11.335
+2020-11-05 21:10:17,428 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'DejaVu Sans' (DejaVuSans-Bold.ttf) normal normal 700 normal>) = 0.33499999999999996
+2020-11-05 21:10:17,428 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'cmss10' (cmss10.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,428 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'DejaVu Sans' (DejaVuSans-Oblique.ttf) oblique normal 400 normal>) = 1.05
+2020-11-05 21:10:17,428 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'DejaVu Serif' (DejaVuSerif.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,428 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'STIXSizeOneSym' (STIXSizOneSymBol.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,428 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'STIXGeneral' (STIXGeneral.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,429 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'STIXSizeTwoSym' (STIXSizTwoSymBol.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,429 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'STIXSizeFiveSym' (STIXSizFiveSymReg.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,429 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'DejaVu Serif Display' (DejaVuSerifDisplay.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,429 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'STIXSizeFourSym' (STIXSizFourSymReg.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,429 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'cmmi10' (cmmi10.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,429 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'STIXGeneral' (STIXGeneralBol.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,430 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'STIXSizeTwoSym' (STIXSizTwoSymReg.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,430 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'DejaVu Serif' (DejaVuSerif-BoldItalic.ttf) italic normal 700 normal>) = 11.335
+2020-11-05 21:10:17,430 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'DejaVu Sans Mono' (DejaVuSansMono.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,430 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'DejaVu Sans' (DejaVuSans.ttf) normal normal 400 normal>) = 0.05
+2020-11-05 21:10:17,430 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'cmr10' (cmr10.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,430 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'DejaVu Sans Mono' (DejaVuSansMono-BoldOblique.ttf) oblique normal 700 normal>) = 11.335
+2020-11-05 21:10:17,431 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'DejaVu Sans' (DejaVuSans-BoldOblique.ttf) oblique normal 700 normal>) = 1.335
+2020-11-05 21:10:17,431 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'DejaVu Sans Display' (DejaVuSansDisplay.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,431 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'STIXSizeThreeSym' (STIXSizThreeSymBol.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,431 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'cmb10' (cmb10.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,431 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'DejaVu Sans Mono' (DejaVuSansMono-Oblique.ttf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,431 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'DejaVu Serif' (DejaVuSerif-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,432 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'cmsy10' (cmsy10.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,432 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'STIXNonUnicode' (STIXNonUniBolIta.ttf) italic normal 700 normal>) = 11.335
+2020-11-05 21:10:17,432 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'cmtt10' (cmtt10.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,432 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Lato' (Lato-BoldItalic.ttf) italic normal 700 normal>) = 11.335
+2020-11-05 21:10:17,432 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Old South Arabian' (NotoSansOldSouthArabian-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,433 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Lepcha' (NotoSansLepcha-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,433 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Lato' (Lato-ThinItalic.ttf) italic normal 200 normal>) = 11.24
+2020-11-05 21:10:17,433 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Symbols2' (NotoSansSymbols2-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,433 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Gurmukhi' (NotoSerifGurmukhi-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,434 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Norasi' (Norasi.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,434 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman' (lmroman6-bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,434 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Symbols' (NotoSansSymbols-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,434 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'UnDinaru' (UnDinaru.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,434 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Bengali' (NotoSansBengali-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,435 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Lao' (NotoSansLao-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,435 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'IPAPGothic' (ipagp.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,435 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Georgian' (NotoSerifGeorgian-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,435 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman' (lmroman10-bolditalic.otf) italic normal 700 normal>) = 11.335
+2020-11-05 21:10:17,435 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Telugu' (NotoSansTelugu-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,435 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans NKo' (NotoSansNKo-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,436 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Thaana' (NotoSansThaana-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,436 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Tamil' (NotoSansTamil-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,436 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif' (NotoSerif-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,436 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Old Permic' (NotoSansOldPermic-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,436 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Malayalam' (NotoSerifMalayalam-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,436 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Mende Kikakui' (NotoSansMendeKikakui-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,437 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Linear A' (NotoSansLinearA-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,437 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'UnDinaru' (UnDinaruBold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,437 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman' (lmroman8-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,437 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'IPAexMincho' (ipaexm.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,438 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Coptic' (NotoSansCoptic-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,438 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Heros Cn' (texgyreheroscn-bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,438 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Umpush' (Umpush-Oblique.otf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,438 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'IPAMincho' (ipam.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,438 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Canadian Aboriginal' (NotoSansCanadianAboriginal-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,438 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Yi' (NotoSansYi-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,439 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Syriac Eastern' (NotoSansSyriacEastern-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,439 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Symbola' (Symbola_hint.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,439 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Mono Prop' (lmmonoprop10-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,439 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Tlwg Typo' (TlwgTypo.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,439 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman' (lmroman10-italic.otf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,440 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Hebrew' (NotoSansHebrew-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,440 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Cuneiform' (NotoSansCuneiform-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,440 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Math' (latinmodern-math.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,440 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Old Italic' (NotoSansOldItalic-Regular.ttf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,440 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Liberation Sans' (LiberationSans-Italic.ttf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,441 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Cursor' (texgyrecursor-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,441 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Tlwg Typist' (TlwgTypist.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,441 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Tamil Slanted' (NotoSerifTamilSlanted-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,441 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Pagella' (texgyrepagella-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,441 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Waree' (Waree-BoldOblique.otf) oblique normal 700 normal>) = 11.335
+2020-11-05 21:10:17,442 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Devanagari' (NotoSerifDevanagari-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,442 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Khmer' (NotoSerifKhmer-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,442 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans' (NotoSans-BoldItalic.ttf) italic normal 700 normal>) = 11.335
+2020-11-05 21:10:17,442 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'IPAexGothic' (ipaexg.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,442 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'UnJamoDotum' (UnJamoDotum.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,442 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Buhid' (NotoSansBuhid-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,442 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Ugaritic' (NotoSansUgaritic-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,443 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Sans Quotation' (lmsansquot8-bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,443 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Tlwg Typo' (TlwgTypo-Oblique.otf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,443 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Inscriptional Parthian' (NotoSansInscriptionalParthian-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,443 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Glagolitic' (NotoSansGlagolitic-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,443 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Schola' (texgyreschola-italic.otf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,444 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Cursor' (texgyrecursor-bolditalic.otf) italic normal 700 normal>) = 11.335
+2020-11-05 21:10:17,444 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Thai' (NotoSansThai-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,444 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Armenian' (NotoSansArmenian-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,444 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Laksaman' (Laksaman.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,444 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Liberation Serif' (LiberationSerif-Italic.ttf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,445 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Liberation Mono' (LiberationMono-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,445 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Lato' (Lato-Italic.ttf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,445 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Hatran' (NotoSansHatran-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,445 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Rejang' (NotoSansRejang-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,445 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman' (lmroman12-italic.otf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,445 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Liberation Sans Narrow' (LiberationSansNarrow-Regular.ttf) normal normal 400 condensed>) = 10.25
+2020-11-05 21:10:17,446 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Inscriptional Pahlavi' (NotoSansInscriptionalPahlavi-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,446 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Tamil' (NotoSansTamil-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,446 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Lato' (Lato-Heavy.ttf) normal normal 800 normal>) = 10.43
+2020-11-05 21:10:17,446 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Gujarati' (NotoSerifGujarati-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,446 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Lato' (Lato-BlackItalic.ttf) italic normal 900 normal>) = 11.525
+2020-11-05 21:10:17,447 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Syriac Estrangela' (NotoSansSyriacEstrangela-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,447 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Laksaman' (Laksaman-BoldItalic.otf) italic normal 700 normal>) = 11.335
+2020-11-05 21:10:17,447 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'AR PL KaitiM Big5' (bkai00mp.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,447 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Tlwg Typo' (TlwgTypo-BoldOblique.otf) oblique normal 700 normal>) = 11.335
+2020-11-05 21:10:17,447 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Thai' (NotoSansThai-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,447 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'KaiTi' (simkai.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,448 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Schola' (texgyreschola-bolditalic.otf) italic normal 700 normal>) = 11.335
+2020-11-05 21:10:17,448 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Music' (NotoMusic-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,448 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'UnPen' (UnPen.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,448 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Lao' (NotoSerifLao-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,448 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Termes' (texgyretermes-bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,449 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Umpush' (Umpush-Bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,449 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Lato' (Lato-Hairline.ttf) normal normal 100 normal>) = 10.335
+2020-11-05 21:10:17,449 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Warang Citi' (NotoSansWarangCiti-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,449 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman Slanted' (lmromanslant10-bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,449 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Malayalam' (NotoSansMalayalam-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,450 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Umpush' (Umpush-Light.otf) normal normal 300 normal>) = 10.145
+2020-11-05 21:10:17,450 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Tlwg Typewriter' (TlwgTypewriter-Oblique.otf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,450 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Sinhala' (NotoSansSinhala-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,450 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif CJK JP' (NotoSerifCJK-Bold.ttc) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,450 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Schola' (texgyreschola-bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,450 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Mono Prop' (lmmonoprop10-oblique.otf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,451 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Bassa Vah' (NotoSansBassaVah-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,451 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Norasi' (Norasi-BoldItalic.otf) italic normal 700 normal>) = 11.335
+2020-11-05 21:10:17,451 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'IPAPMincho' (ipamp.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,451 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Bonum Math' (texgyrebonum-math.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,451 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Gujarati' (NotoSerifGujarati-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,452 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Sans' (lmsans10-bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,452 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Gujarati' (NotoSansGujarati-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,452 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman Caps' (lmromancaps10-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,452 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'UnVada' (UnVada.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,452 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Thai' (NotoSerifThai-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,452 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Vai' (NotoSansVai-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,453 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Liberation Sans Narrow' (LiberationSansNarrow-BoldItalic.ttf) italic normal 700 condensed>) = 11.535
+2020-11-05 21:10:17,453 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Pagella Math' (texgyrepagella-math.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,453 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Kannada' (NotoSerifKannada-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,453 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Sans' (lmsans9-oblique.otf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,453 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Lato' (Lato-SemiboldItalic.ttf) italic normal 600 normal>) = 11.24
+2020-11-05 21:10:17,453 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman' (lmroman8-italic.otf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,454 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Deseret' (NotoSansDeseret-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,454 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Tai Le' (NotoSansTaiLe-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,454 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Osmanya' (NotoSansOsmanya-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,454 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Sans' (lmsans8-oblique.otf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,454 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Adventor' (texgyreadventor-italic.otf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,454 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Georgian' (NotoSansGeorgian-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,454 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Kufi Arabic' (NotoKufiArabic-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,455 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman Unslanted' (lmromanunsl10-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,455 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Lato' (Lato-LightItalic.ttf) italic normal 300 normal>) = 11.145
+2020-11-05 21:10:17,455 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Georgian' (NotoSansGeorgian-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,455 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Osage' (NotoSansOsage-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,455 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Cursor' (texgyrecursor-bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,455 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Phoenician' (NotoSansPhoenician-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,456 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Tagalog' (NotoSansTagalog-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,456 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Sans' (lmsans9-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,456 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Mono' (lmmono8-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,456 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'UnBatang' (UnBatang.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,456 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Batak' (NotoSansBatak-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,456 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Miao' (NotoSansMiao-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,456 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Lao' (NotoSansLao-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,457 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Mono Caps' (lmmonocaps10-oblique.otf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,457 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Khojki' (NotoSansKhojki-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,457 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans' (NotoSans-Italic.ttf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,457 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Samaritan' (NotoSansSamaritan-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,457 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Ahom' (NotoSerifAhom-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,457 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Ethiopic' (NotoSansEthiopic-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,458 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'WenQuanYi Micro Hei' (wqy-microhei.ttc) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,458 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Sinhala' (NotoSansSinhala-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,458 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Bengali' (NotoSerifBengali-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,458 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Termes' (texgyretermes-bolditalic.otf) italic normal 700 normal>) = 11.335
+2020-11-05 21:10:17,458 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Lato' (Lato-Black.ttf) normal normal 900 normal>) = 10.525
+2020-11-05 21:10:17,458 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'UnPilgi' (UnPilgiBold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,458 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Nastaliq Urdu' (NotoNastaliqUrdu-Bold.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,459 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Mono' (lmmono10-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,459 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'UnGraphic' (UnGraphic.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,459 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'webdings' (DeepinOpenSymbol4.ttf) normal normal 500 normal>) = 10.145
+2020-11-05 21:10:17,459 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Heros' (texgyreheros-italic.otf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,459 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman Slanted' (lmromanslant12-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,459 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Mono' (lmmono10-italic.otf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,460 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Lato' (Lato-HairlineItalic.ttf) italic normal 100 normal>) = 11.335
+2020-11-05 21:10:17,460 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Mono Light' (lmmonolt10-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,460 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Oriya' (NotoSansOriya-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,460 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Heros' (texgyreheros-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,460 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'AR PL Mingti2L Big5' (bsmi00lp.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,460 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Gothic' (NotoSansGothic-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,460 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'UnJamoBatang' (UnJamoBatang.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,461 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Gurmukhi' (NotoSerifGurmukhi-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,461 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Padauk Book' (PadaukBook-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,461 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Bengali' (NotoSansBengali-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,461 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Liberation Serif' (LiberationSerif-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,461 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Tlwg Mono' (TlwgMono-Bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,461 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Adlam Unjoined' (NotoSansAdlamUnjoined-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,462 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman' (lmroman7-italic.otf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,462 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Tlwg Mono' (TlwgMono-Oblique.otf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,462 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Elbasan' (NotoSansElbasan-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,462 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Kufi Arabic' (NotoKufiArabic-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,462 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'SimHei' (simhei.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,462 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'UnJamoNovel' (UnJamoNovel.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,462 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Lycian' (NotoSansLycian-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,463 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman Slanted' (lmromanslant17-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,463 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Sora Sompeng' (NotoSansSoraSompeng-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,463 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'AR PL KaitiM GB' (gkai00mp.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,463 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Hebrew' (NotoSansHebrew-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,463 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif CJK JP' (NotoSerifCJK-Regular.ttc) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,463 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Symbols' (NotoSansSymbols-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,463 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Lohit Devanagari' (Lohit-Devanagari.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,464 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre DejaVu Math' (texgyredejavu-math.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,464 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Mono' (lmmono12-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,464 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Sans' (lmsans12-oblique.otf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,464 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'IPAGothic' (ipag.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,464 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Balinese' (NotoSerifBalinese-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,464 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Sinhala' (NotoSerifSinhala-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,465 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Ethiopic' (NotoSansEthiopic-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,465 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Cypriot' (NotoSansCypriot-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,465 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Sans Demi Cond' (lmsansdemicond10-regular.otf) normal normal 600 condensed>) = 10.44
+2020-11-05 21:10:17,465 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Sinhala' (NotoSerifSinhala-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,465 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Hanunoo' (NotoSansHanunoo-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,465 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Waree' (Waree.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,466 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Meetei Mayek' (NotoSansMeeteiMayek-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,466 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Pagella' (texgyrepagella-italic.otf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,466 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Sans' (lmsans10-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,466 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'UnJamoSora' (UnJamoSora.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,466 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Tlwg Typo' (TlwgTypo-Bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,466 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Brahmi' (NotoSansBrahmi-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,466 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Shavian' (NotoSansShavian-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,467 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Kannada' (NotoSansKannada-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,467 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Mono' (lmmono9-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,467 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman' (lmroman5-bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,467 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Display' (NotoSansDisplay-BoldItalic.ttf) italic normal 700 normal>) = 11.335
+2020-11-05 21:10:17,467 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Arabic' (NotoSansArabic-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,467 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman' (lmroman12-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,467 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Sharada' (NotoSansSharada-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,468 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Lato' (Lato-Light.ttf) normal normal 300 normal>) = 10.145
+2020-11-05 21:10:17,468 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman' (lmroman10-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,468 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Mono Light' (lmmonolt10-oblique.otf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,468 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Palmyrene' (NotoSansPalmyrene-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,468 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Meroitic' (NotoSansMeroitic-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,468 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Display' (NotoSansDisplay-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,469 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Telugu' (NotoSerifTelugu-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,469 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Tibetan' (NotoSerifTibetan-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,469 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Hebrew' (NotoSerifHebrew-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,469 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Times New Roman' (times.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,469 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Mandaic' (NotoSansMandaic-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,469 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Buginese' (NotoSansBuginese-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,469 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Mro' (NotoSansMro-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,470 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Sawasdee' (Sawasdee.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,470 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman Caps' (lmromancaps10-oblique.otf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,470 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans CJK JP' (NotoSansCJK-Bold.ttc) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,470 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Display' (NotoSerifDisplay-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,470 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Imperial Aramaic' (NotoSansImperialAramaic-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,470 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Ethiopic' (NotoSerifEthiopic-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,471 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Tai Viet' (NotoSansTaiViet-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,471 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Psalter Pahlavi' (NotoSansPsalterPahlavi-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,471 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Termes' (texgyretermes-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,471 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Laksaman' (Laksaman-Bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,471 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Syriac Western' (NotoSansSyriacWestern-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,471 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Takri' (NotoSansTakri-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,471 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Grantha' (NotoSansGrantha-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,472 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Wingdings 2' (DeepinOpenSymbol2.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,472 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Schola' (texgyreschola-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,472 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Times New Roman' (timesbi.ttf) italic normal 700 normal>) = 11.335
+2020-11-05 21:10:17,472 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Myanmar' (NotoSansMyanmar-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,472 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif' (NotoSerif-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,472 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Malayalam' (NotoSerifMalayalam-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,473 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Liberation Sans Narrow' (LiberationSansNarrow-Bold.ttf) normal normal 700 condensed>) = 10.535
+2020-11-05 21:10:17,473 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Kinnari' (Kinnari-Bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,473 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'DejaVu Sans Mono' (DejaVuSansMono.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,473 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Baekmuk Gulim' (gulim.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,473 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Tlwg Typist' (TlwgTypist-Bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,473 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Armenian' (NotoSerifArmenian-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,473 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Lato' (Lato-Semibold.ttf) normal normal 600 normal>) = 10.24
+2020-11-05 21:10:17,474 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Times New Roman' (timesi.ttf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,474 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Mahajani' (NotoSansMahajani-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,474 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Waree' (Waree-Oblique.otf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,474 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans' (NotoSans-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,474 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Naskh Arabic' (NotoNaskhArabic-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,474 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Tlwg Typewriter' (TlwgTypewriter.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,475 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'UnDinaru' (UnDinaruLight.ttf) normal normal 300 normal>) = 10.145
+2020-11-05 21:10:17,475 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Mono Prop Light' (lmmonoproplt10-bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,475 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Bonum' (texgyrebonum-bolditalic.otf) italic normal 700 normal>) = 11.335
+2020-11-05 21:10:17,475 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Duployan' (NotoSansDuployan-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,475 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Pahawh Hmong' (NotoSansPahawhHmong-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,475 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Sans Quotation' (lmsansquot8-oblique.otf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,475 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Loma' (Loma-BoldOblique.otf) oblique normal 700 normal>) = 11.335
+2020-11-05 21:10:17,476 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Bonum' (texgyrebonum-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,476 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Bengali' (NotoSerifBengali-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,476 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Georgian' (NotoSerifGeorgian-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,476 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Multani' (NotoSansMultani-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,476 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Caucasian Albanian' (NotoSansCaucasianAlbanian-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,476 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Javanese' (NotoSansJavanese-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,477 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Sawasdee' (Sawasdee-Bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,477 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Cherokee' (NotoSansCherokee-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,477 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Adventor' (texgyreadventor-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,477 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Umpush' (Umpush-LightOblique.otf) oblique normal 300 normal>) = 11.145
+2020-11-05 21:10:17,477 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Carian' (NotoSansCarian-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,477 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Chakma' (NotoSansChakma-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,477 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Gurmukhi' (NotoSansGurmukhi-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,478 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'DejaVu Sans' (DejaVuSans-Bold.ttf) normal normal 700 normal>) = 0.33499999999999996
+2020-11-05 21:10:17,478 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Sans' (lmsans12-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,478 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Sans' (lmsans17-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,478 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Cham' (NotoSansCham-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,478 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Mono' (NotoSansMono-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,478 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Times New Roman' (timesbd.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,479 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Armenian' (NotoSansArmenian-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,479 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman' (lmroman7-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,479 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Liberation Sans' (LiberationSans-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,479 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Purisa' (Purisa-Bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,479 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Heros' (texgyreheros-bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,479 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Manichaean' (NotoSansManichaean-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,479 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'AR PL SungtiL GB' (gbsn00lp.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,480 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Termes Math' (texgyretermes-math.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,480 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Sans Quotation' (lmsansquot8-boldoblique.otf) oblique normal 700 normal>) = 11.335
+2020-11-05 21:10:17,480 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Liberation Mono' (LiberationMono-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,480 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Unifont CSUR' (unifont_csur.ttf) normal normal 500 normal>) = 10.145
+2020-11-05 21:10:17,480 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'UnPilgi' (UnPilgi.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,480 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Lisu' (NotoSansLisu-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,480 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Waree' (Waree-Bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,481 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Gujarati' (NotoSansGujarati-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,481 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Devanagari' (NotoSerifDevanagari-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,481 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Schola Math' (texgyreschola-math.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,481 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Syriac' (NotoSansSyriac-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,481 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman' (lmroman17-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,481 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Heros Cn' (texgyreheroscn-bolditalic.otf) italic normal 700 normal>) = 11.335
+2020-11-05 21:10:17,482 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'SimSun' (simsun.ttc) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,482 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Modi' (NotoSansModi-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,482 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Marchen' (NotoSansMarchen-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,482 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Khmer' (NotoSansKhmer-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,482 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Limbu' (NotoSansLimbu-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,482 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'DejaVu Serif' (DejaVuSerif-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,482 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Chorus' (texgyrechorus-mediumitalic.otf) normal normal 500 normal>) = 10.145
+2020-11-05 21:10:17,483 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Padauk Book' (PadaukBook-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,483 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Umpush' (Umpush.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,483 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Display' (NotoSansDisplay-Italic.ttf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,483 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman' (lmroman10-bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,483 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Tlwg Typewriter' (TlwgTypewriter-BoldOblique.otf) oblique normal 700 normal>) = 11.335
+2020-11-05 21:10:17,483 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'OpenSymbol' (opens___.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,484 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Liberation Mono' (LiberationMono-Italic.ttf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,484 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'UnBatang' (UnBatangBold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,484 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Unifont' (unifont.ttf) normal normal 500 normal>) = 10.145
+2020-11-05 21:10:17,484 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Bonum' (texgyrebonum-italic.otf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,484 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Runic' (NotoSansRunic-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,484 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'UnTaza' (UnTaza.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,484 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans CJK JP' (NotoSansCJK-Regular.ttc) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,485 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Termes' (texgyretermes-italic.otf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,485 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Wingdings 3' (DeepinOpenSymbol3.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,485 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Telugu' (NotoSerifTelugu-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,485 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Purisa' (Purisa-BoldOblique.otf) oblique normal 700 normal>) = 11.335
+2020-11-05 21:10:17,485 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Lato' (Lato-MediumItalic.ttf) italic normal 500 normal>) = 11.145
+2020-11-05 21:10:17,485 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Naskh Arabic' (NotoNaskhArabic-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,486 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Arabic' (NotoSansArabic-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,486 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Bhaiksuki' (NotoSansBhaiksuki-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,486 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman Dunhill' (lmromandunh10-oblique.otf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,486 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Lato' (Lato-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,486 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Tai Tham' (NotoSansTaiTham-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,486 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Display' (NotoSansDisplay-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,486 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Loma' (Loma-Bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,487 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'IPAexMincho' (fonts-japanese-mincho.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,487 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'DejaVu Sans Mono' (DejaVuSansMono-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,487 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Display' (NotoSerifDisplay-Italic.ttf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,487 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Kharoshthi' (NotoSansKharoshthi-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,487 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Lato' (Lato-HeavyItalic.ttf) italic normal 800 normal>) = 11.43
+2020-11-05 21:10:17,487 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Kannada' (NotoSansKannada-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,488 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Tibetan' (NotoSansTibetan-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,488 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Norasi' (Norasi-Oblique.otf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,488 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Display' (NotoSerifDisplay-BoldItalic.ttf) italic normal 700 normal>) = 11.335
+2020-11-05 21:10:17,488 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'UnShinmun' (UnShinmun.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,488 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Ogham' (NotoSansOgham-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,488 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Kinnari' (Kinnari-Oblique.otf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,488 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Garuda' (Garuda.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,489 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Nabataean' (NotoSansNabataean-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,489 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Baekmuk Headline' (hline.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,489 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman Demi' (lmromandemi10-oblique.otf) oblique normal 600 normal>) = 11.24
+2020-11-05 21:10:17,489 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Thaana' (NotoSansThaana-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,489 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Sawasdee' (Sawasdee-Oblique.otf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,489 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Myanmar' (NotoSansMyanmar-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,490 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'YouYuan' (SIMYOU.TTF) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,490 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans New Tai Lue' (NotoSansNewTaiLue-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,490 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'UnDotum' (UnDotum.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,490 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Devanagari' (NotoSansDevanagari-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,490 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Tlwg Typewriter' (TlwgTypewriter-Bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,490 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Syloti Nagri' (NotoSansSylotiNagri-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,490 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Tlwg Typist' (TlwgTypist-BoldOblique.otf) oblique normal 700 normal>) = 11.335
+2020-11-05 21:10:17,491 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Kayah Li' (NotoSansKayahLi-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,491 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Sans' (lmsans10-oblique.otf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,491 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Tifinagh' (NotoSansTifinagh-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,491 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Mono' (NotoSansMono-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,491 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Kinnari' (Kinnari.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,491 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Adventor' (texgyreadventor-bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,492 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Linear B' (NotoSansLinearB-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,492 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Nastaliq Urdu' (NotoNastaliqUrdu-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,492 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Laksaman' (Laksaman-Italic.otf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,492 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Tamil' (NotoSerifTamil-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,492 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Oriya' (NotoSansOriya-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,492 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman Slanted' (lmromanslant10-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,492 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'UnGungseo' (UnGungseo.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,493 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman' (lmroman9-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,493 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Pagella' (texgyrepagella-bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,493 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Ol Chiki' (NotoSansOlChiki-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,493 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans PhagsPa' (NotoSansPhagsPa-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,493 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Kinnari' (Kinnari-Italic.otf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,493 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Tibetan' (NotoSansTibetan-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,494 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Garuda' (Garuda-Bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,494 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Pau Cin Hau' (NotoSansPauCinHau-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,494 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Cherokee' (NotoSansCherokee-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,494 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Tlwg Mono' (TlwgMono-BoldOblique.otf) oblique normal 700 normal>) = 11.335
+2020-11-05 21:10:17,494 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Umpush' (Umpush-BoldOblique.otf) oblique normal 700 normal>) = 11.335
+2020-11-05 21:10:17,494 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Sans' (lmsans8-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,494 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman' (lmroman6-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,495 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Sans' (lmsans17-oblique.otf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,495 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Kinnari' (Kinnari-BoldItalic.otf) italic normal 700 normal>) = 11.335
+2020-11-05 21:10:17,495 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'UnYetgul' (UnYetgul.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,495 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Tibetan' (NotoSerifTibetan-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,495 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'UnPilgia' (UnPilgia.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,495 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Baekmuk Dotum' (dotum.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,495 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Lydian' (NotoSansLydian-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,496 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Mono Light' (lmmonolt10-boldoblique.otf) oblique normal 700 normal>) = 11.335
+2020-11-05 21:10:17,496 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Sans Demi Cond' (lmsansdemicond10-oblique.otf) oblique normal 600 condensed>) = 11.44
+2020-11-05 21:10:17,496 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Mono Caps' (lmmonocaps10-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,496 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Mono Prop Light' (lmmonoproplt10-oblique.otf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,496 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Sundanese' (NotoSansSundanese-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,496 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Lato' (Lato-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,497 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Anatolian Hieroglyphs' (NotoSansAnatolianHieroglyphs-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,497 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Khmer' (NotoSerifKhmer-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,497 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Bonum' (texgyrebonum-bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,497 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Ethiopic' (NotoSerifEthiopic-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,497 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Old Hungarian' (NotoSansOldHungarian-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,497 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Mongolian' (NotoSansMongolian-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,498 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Telugu' (NotoSansTelugu-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,498 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Devanagari' (NotoSansDevanagari-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,498 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Kinnari' (Kinnari-BoldOblique.otf) oblique normal 700 normal>) = 11.335
+2020-11-05 21:10:17,498 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Liberation Sans' (LiberationSans-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,498 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Malayalam' (NotoSansMalayalam-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,498 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Liberation Serif' (LiberationSerif-BoldItalic.ttf) italic normal 700 normal>) = 11.335
+2020-11-05 21:10:17,498 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'UnGraphic' (UnGraphicBold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,499 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Newa' (NotoSansNewa-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,499 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif' (NotoSerif-Italic.ttf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,499 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Hebrew' (NotoSerifHebrew-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,499 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Liberation Sans' (LiberationSans-BoldItalic.ttf) italic normal 700 normal>) = 11.335
+2020-11-05 21:10:17,499 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Gurmukhi' (NotoSansGurmukhi-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,499 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Adventor' (texgyreadventor-bolditalic.otf) italic normal 700 normal>) = 11.335
+2020-11-05 21:10:17,500 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Norasi' (Norasi-Bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,500 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Saurashtra' (NotoSansSaurashtra-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,500 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Garuda' (Garuda-Oblique.otf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,500 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Liberation Sans Narrow' (LiberationSansNarrow-Italic.ttf) italic normal 400 condensed>) = 11.25
+2020-11-05 21:10:17,500 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Mono Light Cond' (lmmonoltcond10-regular.otf) normal normal 400 condensed>) = 10.25
+2020-11-05 21:10:17,500 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman Demi' (lmromandemi10-regular.otf) normal normal 600 normal>) = 10.24
+2020-11-05 21:10:17,500 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Symbol' (DeepinOpenSymbol6.ttf) normal normal 500 normal>) = 10.145
+2020-11-05 21:10:17,501 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman' (lmroman9-italic.otf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,501 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman Slanted' (lmromanslant9-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,501 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Loma' (Loma.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,501 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'DejaVu Sans' (DejaVuSans.ttf) normal normal 400 normal>) = 0.05
+2020-11-05 21:10:17,501 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Norasi' (Norasi-Italic.otf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,501 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'UnDotum' (UnDotumBold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,502 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Math' (NotoSansMath-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,502 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Baekmuk Batang' (batang.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,502 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Avestan' (NotoSansAvestan-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,502 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Mono Prop Light' (lmmonoproplt10-boldoblique.otf) oblique normal 700 normal>) = 11.335
+2020-11-05 21:10:17,502 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'UnPenheulim' (UnPenheulim.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,503 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Liberation Mono' (LiberationMono-BoldItalic.ttf) italic normal 700 normal>) = 11.335
+2020-11-05 21:10:17,503 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Display' (NotoSerifDisplay-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,503 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Tlwg Mono' (TlwgMono.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,503 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Mono Light' (lmmonolt10-bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,503 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman' (lmroman7-bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,503 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Old North Arabian' (NotoSansOldNorthArabian-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,503 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Purisa' (Purisa.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,504 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Thai' (NotoSerifThai-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,504 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Adlam' (NotoSansAdlam-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,504 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Tirhuta' (NotoSansTirhuta-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,504 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Tlwg Typist' (TlwgTypist-Oblique.otf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,504 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman' (lmroman9-bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,504 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Liberation Serif' (LiberationSerif-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,505 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Mono Light Cond' (lmmonoltcond10-oblique.otf) oblique normal 400 condensed>) = 11.25
+2020-11-05 21:10:17,505 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Kannada' (NotoSerifKannada-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,505 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman Dunhill' (lmromandunh10-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,505 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Padauk' (Padauk-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,505 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Canadian Aboriginal' (NotoSansCanadianAboriginal-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,505 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Kaithi' (NotoSansKaithi-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,506 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Egyptian Hieroglyphs' (NotoSansEgyptianHieroglyphs-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,506 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'LiSu' (SIMLI.TTF) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,506 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'IPAexGothic' (fonts-japanese-gothic.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,506 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Sans Quotation' (lmsansquot8-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,506 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Mono' (NotoMono-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,506 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Myanmar' (NotoSerifMyanmar-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,506 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Heros Cn' (texgyreheroscn-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,507 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Lato' (Lato-Medium.ttf) normal normal 500 normal>) = 10.145
+2020-11-05 21:10:17,507 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'DejaVu Serif' (DejaVuSerif.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,507 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans' (NotoSans-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,507 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Mono Prop Light' (lmmonoproplt10-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,507 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Khudawadi' (NotoSansKhudawadi-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,507 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Lao' (NotoSerifLao-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,507 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman Slanted' (lmromanslant8-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,508 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Armenian' (NotoSerifArmenian-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,508 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman' (lmroman12-bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,508 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Sans' (lmsans10-boldoblique.otf) oblique normal 700 normal>) = 11.335
+2020-11-05 21:10:17,508 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Myanmar' (NotoSerifMyanmar-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,508 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Cursor' (texgyrecursor-italic.otf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,508 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Padauk' (Padauk-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,509 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Bamum' (NotoSansBamum-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,509 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'FangSong' (simfang.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,509 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Cham' (NotoSansCham-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,509 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Wingdings' (DeepinOpenSymbol.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,509 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Tamil Slanted' (NotoSerifTamilSlanted-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,509 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman' (lmroman8-bold.otf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,509 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Sawasdee' (Sawasdee-BoldOblique.otf) oblique normal 700 normal>) = 11.335
+2020-11-05 21:10:17,510 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Heros Cn' (texgyreheroscn-italic.otf) italic normal 400 normal>) = 11.05
+2020-11-05 21:10:17,510 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Heros' (texgyreheros-bolditalic.otf) italic normal 700 normal>) = 11.335
+2020-11-05 21:10:17,510 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Tagbanwa' (NotoSansTagbanwa-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,510 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Roman' (lmroman5-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,510 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif Tamil' (NotoSerifTamil-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,510 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Norasi' (Norasi-BoldOblique.otf) oblique normal 700 normal>) = 11.335
+2020-11-05 21:10:17,510 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Khmer' (NotoSansKhmer-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,511 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Purisa' (Purisa-Oblique.otf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,511 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'TeX Gyre Pagella' (texgyrepagella-bolditalic.otf) italic normal 700 normal>) = 11.335
+2020-11-05 21:10:17,511 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Lato' (Lato-Thin.ttf) normal normal 200 normal>) = 10.24
+2020-11-05 21:10:17,511 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Loma' (Loma-Oblique.otf) oblique normal 400 normal>) = 11.05
+2020-11-05 21:10:17,511 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'MT Extra' (DeepinOpenSymbol5.ttf) normal normal 500 normal>) = 10.145
+2020-11-05 21:10:17,512 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Unifont Upper' (unifont_upper.ttf) normal normal 500 normal>) = 10.145
+2020-11-05 21:10:17,512 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Serif' (NotoSerif-BoldItalic.ttf) italic normal 700 normal>) = 11.335
+2020-11-05 21:10:17,512 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Javanese' (NotoSansJavanese-Bold.ttf) normal normal 700 normal>) = 10.335
+2020-11-05 21:10:17,512 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Garuda' (Garuda-BoldOblique.otf) oblique normal 700 normal>) = 11.335
+2020-11-05 21:10:17,512 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Old Turkic' (NotoSansOldTurkic-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,512 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Latin Modern Mono Slanted' (lmmonoslant10-regular.otf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,513 - matplotlib.font_manager - DEBUG - findfont: score(<Font 'Noto Sans Old Persian' (NotoSansOldPersian-Regular.ttf) normal normal 400 normal>) = 10.05
+2020-11-05 21:10:17,513 - matplotlib.font_manager - DEBUG - findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=10.0 to DejaVu Sans ('/home/penguincat/.conda/envs/PY38/lib/python3.8/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf') with score of 0.050000.
+2020-11-05 21:10:17,720 - root - INFO - [!]-----------start testing.
+2020-11-05 21:16:00,082 - root - INFO - Real Rank:
+2020-11-05 21:16:00,082 - root - INFO - [116 142]
+2020-11-05 21:16:00,083 - root - INFO - Pred Rank:
+2020-11-05 21:16:00,083 - root - INFO - [ 91 142  79  50]

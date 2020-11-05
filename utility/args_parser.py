@@ -17,10 +17,14 @@ def parse_args():
     parser.add_argument('--data_dir', nargs='?', default='datasets/',
                         help='Input datasets path.')
 
-    parser.add_argument('--enterprise', nargs='?', default=['luckin coffee瑞幸咖啡', 'CoCo都可', '星巴克'],
+    parser.add_argument('--enterprise', nargs='?', default=['大众书局', '西西弗书店'],
                         help='Input enterprise to be selected.')
-    parser.add_argument('--target_enterprise', nargs='?', default='luckin coffee瑞幸咖啡',
+    parser.add_argument('--target_enterprise', nargs='?', default='大众书局',
                         help='Input target enterprise to be transferred.')
+    # parser.add_argument('--enterprise', nargs='?', default=['luckin coffee瑞幸咖啡', 'CoCo都可', '星巴克'],
+    #                     help='Input enterprise to be selected.')
+    # parser.add_argument('--target_enterprise', nargs='?', default='luckin coffee瑞幸咖啡',
+    #                     help='Input target enterprise to be transferred.')
     # parser.add_argument('--enterprise', nargs='?', default=['NIKE', 'New Balance', '李宁'],
     #                     help='Input enterprise to be selected.')
     # parser.add_argument('--target_enterprise', nargs='?', default='NIKE',
@@ -41,6 +45,16 @@ def parse_args():
     # parser.add_argument('--test_batch_size', type=int, default=10000,
     #                     help='Test batch size (the shop number to test every batch).')
 
+    # Area 4
+    parser.add_argument('--source_area_coordinate', nargs=8, type=float,
+    # parser.add_argument('--target_area_coordinate', nargs=8, type=float,
+                        default=[118.730506, 118.757457, 31.975167, 32.072533],
+                        help='Source area coordinate. [longitude1, longitude2, latitude1， latitude2]')
+    parser.add_argument('--target_area_coordinate', nargs=8, type=float,
+    # parser.add_argument('--source_area_coordinate', nargs=8, type=float,
+                        default=[118.757457, 118.80123, 31.975167, 32.072533],
+                        help='Target area coordinate. [longitude1, longitude2, latitude1， latitude2]')
+
     # Area 1
     # parser.add_argument('--source_area_coordinate', nargs=8, type=float,
     #                     default=[118.739776, 118.814792, 32.055803, 32.100893],
@@ -49,13 +63,13 @@ def parse_args():
     #                     default=[118.729991, 118.808783, 32.011709, 32.055803],
     #                     help='Target area coordinate. [longitude1, longitude2, latitude1， latitude2]')
 
-    # Area 2
-    parser.add_argument('--source_area_coordinate', nargs=8, type=float,
-                        default=[118.768014, 118.827563, 32.004111, 32.066481],
-                        help='Source area coordinate. [longitude1, longitude2, latitude1， latitude2]')
-    parser.add_argument('--target_area_coordinate', nargs=8, type=float,
-                        default=[118.774311, 118.928619, 31.864258, 31.992135],
-                        help='Target area coordinate. [longitude1, longitude2, latitude1， latitude2]')
+    # # Area 2
+    # parser.add_argument('--source_area_coordinate', nargs=8, type=float,
+    #                     default=[118.768014, 118.827563, 32.004111, 32.066481],
+    #                     help='Source area coordinate. [longitude1, longitude2, latitude1， latitude2]')
+    # parser.add_argument('--target_area_coordinate', nargs=8, type=float,
+    #                     default=[118.774311, 118.928619, 31.864258, 31.992135],
+    #                     help='Target area coordinate. [longitude1, longitude2, latitude1， latitude2]')
 
     # Area 3
     # parser.add_argument('--source_area_coordinate', nargs=8, type=float,
@@ -77,6 +91,8 @@ def parse_args():
                         help='Location grid size (by longitude degree).')
     parser.add_argument('--grid_size_latitude_degree', type=float, default=0.005,
                         help='Location grid size (by latitude degree).')
+    parser.add_argument('--circle_size', type=float, default=500,
+                        help='circle size (by meters).')
 
     parser.add_argument('--auto_encoder_dim', type=int, default=9,
                         help='Dimension of Auto Encoder.')

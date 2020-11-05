@@ -19,7 +19,8 @@ class DataLoader(object):
 
         # define data path
         data_dir = os.path.join(args.data_dir, args.city_name)
-        dianping_data_path = os.path.join(data_dir, 'dianping.csv')
+        # dianping_data_path = os.path.join(data_dir, 'dianping.csv')
+        dianping_data_path = os.path.join(data_dir, 'dianping_bookshop_edit.csv')
 
         # load dianping data
         source_area_data, target_area_data, self.big_category_dict, self.big_category_dict_reverse, \
@@ -34,15 +35,14 @@ class DataLoader(object):
         logging.info("[2 /10]       check enterprise and get small category set.")
 
         # split grid
-        self.n_source_grid, self.n_target_grid, source_area_longitude_boundary, source_area_latitude_boundary, \
-            target_area_longitude_boundary, target_area_latitude_boundary = self.split_grid()
+        self.n_source_grid, self.n_target_grid, self.source_area_longitude_boundary, \
+            self.source_area_latitude_boundary, self.target_area_longitude_boundary, self.target_area_latitude_boundary\
+            = self.split_grid()
         logging.info("[3 /10]       split grid done.")
 
         # distribute data into grids
         source_data_dict, target_data_dict, source_grid_enterprise_data, target_grid_enterprise_data \
-            = self.distribute_data(source_area_data, target_area_data, source_area_longitude_boundary,
-                                   source_area_latitude_boundary, target_area_longitude_boundary,
-                                   target_area_latitude_boundary)
+            = self.distribute_data(source_area_data, target_area_data)
         logging.info("[4 /10]       distribute data into grids done.")
 
         # generate rating matrix for Transfer Rating Prediction Model
@@ -125,21 +125,21 @@ class DataLoader(object):
         #  columns = ['shop_id', 'name', 'big_category', 'small_category',
         #             'longitude', 'latitude', 'review_count', 'branchname']
 
-        source_chains = collections.defaultdict(int)
-        target_chains = collections.defaultdict(int)
+        source_chains = collections.defaultdict(list)
+        target_chains = collections.defaultdict(list)
 
         valid_small_category_set = set()
         for item in source_area_data:
             if item[1] in self.args.enterprise:
-                source_chains[item[1]] += 1
+                source_chains[item[1]].append(item)
                 valid_small_category_set.add(item[3])
         for item in target_area_data:
             if item[1] in self.args.enterprise:
-                target_chains[item[1]] += 1
+                target_chains[item[1]].append(item)
                 valid_small_category_set.add(item[3])
 
         for name in self.args.enterprise:
-            if source_chains[name] == 0 or target_chains[name] == 0:
+            if len(source_chains[name]) == 0 or len(target_chains[name]) == 0:
                 logging.error('品牌 {} 并非在原地区和目的地区都有门店'.format(name))
                 exit(1)
 
@@ -182,9 +182,7 @@ class DataLoader(object):
         return n_source_grid, n_target_grid, source_area_longitude_boundary, source_area_latitude_boundary, \
             target_area_longitude_boundary, target_area_latitude_boundary
 
-    def distribute_data(self, source_area_data, target_area_data,
-                        source_area_longitude_boundary, source_area_latitude_boundary,
-                        target_area_longitude_boundary, target_area_latitude_boundary):
+    def distribute_data(self, source_area_data, target_area_data):
         #  columns = ['shop_id', 'name', 'big_category', 'small_category',
         #             'longitude', 'latitude', 'review_count', 'branchname']
         source_data_dict = collections.defaultdict(list)
@@ -193,32 +191,32 @@ class DataLoader(object):
         target_grid_enterprise_data = collections.defaultdict(list)
         for item in source_area_data:
             lon_index = 0
-            for index, _ in enumerate(source_area_longitude_boundary[:-1]):
-                if source_area_longitude_boundary[index] <= item[4] <= source_area_longitude_boundary[index + 1]:
+            for index, _ in enumerate(self.source_area_longitude_boundary[:-1]):
+                if self.source_area_longitude_boundary[index] <= item[4] <= self.source_area_longitude_boundary[index + 1]:
                     lon_index = index
                     break
             lat_index = 0
-            for index, _ in enumerate(source_area_latitude_boundary[:-1]):
-                if source_area_latitude_boundary[index] <= item[5] <= source_area_latitude_boundary[index + 1]:
+            for index, _ in enumerate(self.source_area_latitude_boundary[:-1]):
+                if self.source_area_latitude_boundary[index] <= item[5] <= self.source_area_latitude_boundary[index + 1]:
                     lat_index = index
                     break
-            grid_id = lon_index * (len(source_area_latitude_boundary) - 1) + lat_index
+            grid_id = lon_index * (len(self.source_area_latitude_boundary) - 1) + lat_index
             source_data_dict[grid_id].append(item)
             if item[1] in self.args.enterprise:
                 source_grid_enterprise_data[grid_id].append(item)
 
         for item in target_area_data:
             lon_index = 0
-            for index, _ in enumerate(target_area_longitude_boundary[:-1]):
-                if target_area_longitude_boundary[index] <= item[4] <= target_area_longitude_boundary[index + 1]:
+            for index, _ in enumerate(self.target_area_longitude_boundary[:-1]):
+                if self.target_area_longitude_boundary[index] <= item[4] <= self.target_area_longitude_boundary[index + 1]:
                     lon_index = index
                     break
             lat_index = 0
-            for index, _ in enumerate(target_area_latitude_boundary[:-1]):
-                if target_area_latitude_boundary[index] <= item[5] <= target_area_latitude_boundary[index + 1]:
+            for index, _ in enumerate(self.target_area_latitude_boundary[:-1]):
+                if self.target_area_latitude_boundary[index] <= item[5] <= self.target_area_latitude_boundary[index + 1]:
                     lat_index = index
                     break
-            grid_id = lon_index * (len(target_area_latitude_boundary) - 1) + lat_index
+            grid_id = lon_index * (len(self.target_area_latitude_boundary) - 1) + lat_index
             target_data_dict[grid_id].append(item)
             if item[1] in self.args.enterprise:
                 target_grid_enterprise_data[grid_id].append(item)
@@ -376,6 +374,8 @@ class DataLoader(object):
 
         source_rating_matrix = torch.Tensor(source_rating_matrix)
         target_rating_matrix = torch.Tensor(target_rating_matrix)
+        res0 = torch.sort(target_rating_matrix[0], descending=True)
+        res1 = torch.sort(target_rating_matrix[1], descending=True)
 
         return source_rating_matrix, target_rating_matrix
 
@@ -473,3 +473,43 @@ class DataLoader(object):
         feature = self.target_feature[self.target_enterprise_index, grid_index]
         score = self.target_rating_matrix[self.target_enterprise_index, grid_index]
         return feature, score
+
+    def get_grid_coordinate_rectangle_by_grid_id(self, grid_id, grid_type):
+        if grid_type == 's':
+            row_id = grid_id // (len(self.source_area_latitude_boundary) - 1)
+            col_id = grid_id % (len(self.source_area_latitude_boundary) - 1)
+            lon_lef = self.source_area_longitude_boundary[row_id]
+            lon_rig = self.source_area_longitude_boundary[row_id + 1]
+            lat_down = self.source_area_latitude_boundary[col_id]
+            lat_up = self.source_area_latitude_boundary[col_id + 1]
+        else:
+            row_id = grid_id // (len(self.target_area_latitude_boundary) - 1)
+            col_id = grid_id % (len(self.target_area_latitude_boundary) - 1)
+            lon_lef = self.target_area_longitude_boundary[row_id]
+            lon_rig = self.target_area_longitude_boundary[row_id+1]
+            lat_down = self.target_area_latitude_boundary[col_id]
+            lat_up = self.target_area_latitude_boundary[col_id+1]
+        return [[lat_up, lon_lef], [lat_down, lon_lef], [lat_down, lon_rig], [lat_up, lon_rig], [lat_up, lon_lef]]
+        # coordinate_lon = [lon_lef, lon_lef, lon_rig, lon_rig, lon_lef]
+        # coordinate_lat = [lat_up, lat_down, lat_down, lat_up, lat_up]
+        # return coordinate_lon, coordinate_lat
+
+    def get_grid_coordinate_circle_by_grid_id(self, grid_id, grid_type):
+        if grid_type == 's':
+            row_id = grid_id // (len(self.source_area_latitude_boundary) - 1)
+            col_id = grid_id % (len(self.source_area_latitude_boundary) - 1)
+            lon = (self.source_area_longitude_boundary[row_id] + self.source_area_longitude_boundary[row_id + 1]) / 2
+            lat = (self.source_area_latitude_boundary[col_id] + self.source_area_latitude_boundary[col_id + 1]) / 2
+        else:
+            row_id = grid_id // (len(self.target_area_latitude_boundary) - 1)
+            col_id = grid_id % (len(self.target_area_latitude_boundary) - 1)
+            lon = (self.target_area_longitude_boundary[row_id] + self.target_area_longitude_boundary[row_id+1]) / 2
+            lat = (self.target_area_latitude_boundary[col_id] + self.target_area_latitude_boundary[col_id+1]) / 2
+        return [lat, lon]
+
+    def get_grid_coordinate(self, real_grids, pred_grids, pred_back_rank):
+        real_grids_draw_info = [self.get_grid_coordinate_rectangle_by_grid_id(grid, 't') for grid in real_grids]
+        pred_grids_draw_info = [self.get_grid_coordinate_circle_by_grid_id(grid, 't') for grid in pred_grids]
+        pred_back_grids_draw_info = [self.get_grid_coordinate_circle_by_grid_id(grid, 't') for grid in pred_back_rank]
+
+        return real_grids_draw_info, pred_grids_draw_info, pred_back_grids_draw_info
