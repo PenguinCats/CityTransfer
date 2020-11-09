@@ -45,11 +45,11 @@ class VisualizationTool(object):
                 fill_color='#00FF00',
                 fill_opacity=0.2
             ).add_to(self.visual_map)
-        self.visual_map.save("mp.html")
+        self.visual_map.save("mp_rm.html")
 
 
 if __name__ == '__main__':
     v = VisualizationTool(None)
     ss = [[[31.980166999999998, 118.757457], [31.975167, 118.757457], [31.975167, 118.762457], [31.980166999999998, 118.762457], [31.980166999999998, 118.757457]]]
     tg = [[31.997666999999993, 118.764957], [32.062666999999976, 118.77495699999999]]
-    v.draw_map(ss, tg, tg)
+    v.draw_map(ss, tg, tg, tg)

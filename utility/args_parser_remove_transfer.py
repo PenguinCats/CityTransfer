@@ -45,47 +45,10 @@ def parse_args():
     # parser.add_argument('--test_batch_size', type=int, default=10000,
     #                     help='Test batch size (the shop number to test every batch).')
 
-    # Area 4
-    # parser.add_argument('--source_area_coordinate', nargs=8, type=float,
-    # # parser.add_argument('--target_area_coordinate', nargs=8, type=float,
-    #                     default=[118.730506, 118.757457, 31.975167, 32.072533],
-    #                     help='Source area coordinate. [longitude1, longitude2, latitude1， latitude2]')
-    # parser.add_argument('--target_area_coordinate', nargs=8, type=float,
-    # # parser.add_argument('--source_area_coordinate', nargs=8, type=float,
-    #                     default=[118.757457, 118.80123, 31.975167, 32.072533],
-    #                     help='Target area coordinate. [longitude1, longitude2, latitude1， latitude2]')
-
-    # Area 1
-    parser.add_argument('--source_area_coordinate', nargs=8, type=float,
-                        default=[118.739776, 118.814792, 32.055803, 32.100893],
+    # Area 5
+    parser.add_argument('--area_coordinate', nargs=8, type=float,
+                        default=[118.715099, 118.818182, 31.986015, 32.148505],
                         help='Source area coordinate. [longitude1, longitude2, latitude1， latitude2]')
-    parser.add_argument('--target_area_coordinate', nargs=8, type=float,
-                        default=[118.729991, 118.808783, 32.011709, 32.055803],
-                        help='Target area coordinate. [longitude1, longitude2, latitude1， latitude2]')
-
-    # Area 2
-    # parser.add_argument('--source_area_coordinate', nargs=8, type=float,
-    #                     default=[118.768014, 118.827563, 32.004111, 32.066481],
-    #                     help='Source area coordinate. [longitude1, longitude2, latitude1， latitude2]')
-    # parser.add_argument('--target_area_coordinate', nargs=8, type=float,
-    #                     default=[118.774311, 118.928619, 31.864258, 31.992135],
-    #                     help='Target area coordinate. [longitude1, longitude2, latitude1， latitude2]')
-
-    # Area 3
-    # parser.add_argument('--source_area_coordinate', nargs=8, type=float,
-    #                     default=[118.733768, 118.802089, 32.056531, 32.093186],
-    #                     help='Source area coordinate. [longitude1, longitude2, latitude1， latitude2]')
-    # parser.add_argument('--target_area_coordinate', nargs=8, type=float,
-    #                     default=[118.766555, 118.824749, 32.013893, 32.052457],
-    #                     help='Target area coordinate. [longitude1, longitude2, latitude1， latitude2]')
-
-    # Area 0
-    # parser.add_argument('--source_area_coordinate', nargs=8, type=float,
-    #                     default=[118.735647, 118.788862, 32.042283, 32.094942],
-    #                     help='Source area coordinate. [longitude1, longitude2, latitude1， latitude2]')
-    # parser.add_argument('--target_area_coordinate', nargs=8, type=float,
-    #                     default=[118.771352, 118.823537, 32.013759, 32.060615],
-    #                     help='Target area coordinate. [longitude1, longitude2, latitude1， latitude2]')
 
     parser.add_argument('--grid_size_longitude_degree', type=float, default=0.005,
                         help='Location grid size (by longitude degree).')
@@ -132,16 +95,15 @@ def parse_args():
     parser.add_argument('--evaluate_every', type=int, default=1,
                         help='Epoch interval of evaluating.')
 
-    parser.add_argument('--K', type=int, default=10,
+    parser.add_argument('--K', type=int, default=30,
                         help='Calculate metric@K when evaluating.')
     parser.add_argument('--score_norm_max', type=int, default=400,
                         help='score norm max.')
 
     args = parser.parse_args()
 
-    save_dir = 'trained_model/{}/source_area_coordinate{}_target_area_coordinate{}/'.format(
-        args.city_name, '-'.join([str(item) for item in args.source_area_coordinate]),
-        '-'.join([str(item) for item in args.source_area_coordinate]))
+    save_dir = 'trained_model/{}/area_coordinate{}/'.format(
+        args.city_name, '-'.join([str(item) for item in args.area_coordinate]))
     args.save_dir = save_dir
 
     return args

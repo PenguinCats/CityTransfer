@@ -1,36 +1,76 @@
 import torch
 import numpy as np
+from utility.log_helper import logging
 
 
-def _convert_rank_to_score(rel, pred):
-    rel_rank_score = np.arange(1, len(rel) + 1)[::-1]
-    rel2score = {pos: sc for pos, sc in zip(rel, rel_rank_score)}
-    pred_rank_score = [rel2score.get(pos, 0.0) for pos in pred]
-    return rel_rank_score, pred_rank_score
-
-
-def dcg_at_k(r, k):
-    r = np.asfarray(r)[:k]
+def dcg_score(score, rank):
+    r = np.asfarray(score)
     if len(r):
-        return np.sum(r / np.log2(np.arange(2, r.size+2)))
+        rank = [v+1 for v in rank]
+        return torch.sum(score / np.log2(rank))
     else:
         return 0
 
 
-def ndcg_at_k(rel, pred, k):
-    rel = rel[:k]
-    pred = pred[:k]
-    rel_sc, pred_sc = _convert_rank_to_score(rel, pred)
-    idcg = dcg_at_k(rel_sc, k)
-    dcg = dcg_at_k(pred_sc, k)
+def ndcf_at_k(rel_score, pred_score, k):
+    sorted_rel_score, rel_rank = torch.sort(rel_score, descending=True)
+    _, pred_rank = torch.sort(pred_score, descending=True)
+    valid_len = min(len(torch.nonzero(sorted_rel_score)), k)
+
+    rel_rank = rel_rank.numpy()
+    pred_rank = pred_rank.numpy()
+
+    rel2score = {pos: sc for pos, sc in zip(rel_rank, sorted_rel_score)}
+    rel2rank = {pos: sc+1 for pos, sc in zip(rel_rank, range(len(rel_rank)))}
+
+    pred_corresponding_score = torch.Tensor([rel2score[pos] for pos in pred_rank])
+    pred_corresponding_rank = torch.Tensor([rel2rank[pos] for pos in pred_rank])
+
+    real_corresponding_score = sorted_rel_score[:valid_len]
+    real_corresponding_rank = [rk + 1 for rk in range(len(real_corresponding_score))]
+    pred_corresponding_score = pred_corresponding_score[:valid_len]
+    pred_corresponding_rank = pred_corresponding_rank[:valid_len]
+
+    idcg = dcg_score(real_corresponding_score, real_corresponding_rank)
+    dcg = dcg_score(pred_corresponding_score, pred_corresponding_rank)
+
     return dcg / idcg
 
 
+def ndcf_at_k_test(rel_score, pred_score, k):
+    sorted_rel_score, rel_rank = torch.sort(rel_score, descending=True)
+    _, pred_rank = torch.sort(pred_score, descending=True)
+    valid_len = min(len(torch.nonzero(sorted_rel_score)), k)
+
+    rel_rank = rel_rank.numpy()
+    pred_rank = pred_rank.numpy()
+
+    rel2score = {pos: sc for pos, sc in zip(rel_rank, sorted_rel_score)}
+    rel2rank = {pos: sc+1 for pos, sc in zip(rel_rank, range(len(rel_rank)))}
+
+    pred_corresponding_score = torch.Tensor([rel2score[pos] for pos in pred_rank])
+    pred_corresponding_rank = torch.Tensor([rel2rank[pos] for pos in pred_rank])
+
+    real_corresponding_score = sorted_rel_score[:valid_len]
+    real_corresponding_rank = [rk + 1 for rk in range(len(real_corresponding_score))]
+    pred_corresponding_score = pred_corresponding_score[:valid_len]
+    pred_corresponding_rank = pred_corresponding_rank[:valid_len]
+
+    logging.info("Real Rank:")
+    logging.info(rel_rank[:valid_len])
+    logging.info("Pred Rank:")
+    logging.info(pred_rank[:valid_len*2])
+
+    idcg = dcg_score(real_corresponding_score, real_corresponding_rank)
+    dcg = dcg_score(pred_corresponding_score, pred_corresponding_rank)
+
+    return dcg / idcg,  rel_rank[:valid_len], pred_rank[:valid_len], pred_rank[valid_len:valid_len*2]
+
+
 if __name__ == '__main__':
-    a = [3, 9, 2, 5]
-    aaa = [3, 2, 3, 3, 2]
+    a = [3, 9, 2, 5, 1, 1, 0]
+    aaa = [3, 2, 5, 9, 4, 1, 0]
     # print(ndcg_at_k(a, b, 4))
     # print(ndcg_at_k(a, aa, 4))
     # print(ndcg_at_k(a, aaa, 4))
-    print(torch.argsort(torch.Tensor(a)))
-    print(torch.argsort(torch.Tensor(aaa)))
+    print(ndcf_at_k(torch.Tensor(a), torch.Tensor(aaa), 4))
