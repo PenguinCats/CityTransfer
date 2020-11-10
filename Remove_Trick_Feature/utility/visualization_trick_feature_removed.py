@@ -45,7 +45,7 @@ class VisualizationTool(object):
                 fill_color='#00FF00',
                 fill_opacity=0.2
             ).add_to(self.visual_map)
-        self.visual_map.save("mp_rm.html")
+        self.visual_map.save("mp_trick_feature_removed.html")
 
 
 if __name__ == '__main__':

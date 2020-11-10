@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2020/10/9 0009 8:49
 # @Author  : Binjie Zhang (bj_zhang@seu.edu.cn)
-# @File    : _discarded_CityTransfer.py
+# @File    : CityTransfer_remove_transfer.py
 
 import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import argparse
-from utility.log_helper import logging
+from Remove_Transfer.utility.log_helper import logging
 
 
 class AutoEncoder(nn.Module):
@@ -80,8 +79,6 @@ class CityTransfer(nn.Module):
 
     def cal_prediction_loss(self, enterprise_index, grid_index, grid_feature, real_score):
         score = self.cal_prediction_score(enterprise_index, grid_index, grid_feature)
-        # origin_index = torch.argsort(real_score, descending=True)
-        # predict_index = torch.argsort(score, descending=True)
         # Equation (12)
         loss = F.mse_loss(score, real_score, reduction='sum')
         # loss = F.mse_loss(score, real_score, reduction='mean')
@@ -106,20 +103,3 @@ class CityTransfer(nn.Module):
         else:
             logging.error('wrong parameters!')
             exit(1)
-
-
-# if __name__ == "__main__":
-#     parser = argparse.ArgumentParser(description="City Transfer Args.")
-#     args = parser.parse_args()
-#     args.auto_encoder_dim = 9
-#     args.enterprise = ['a', 'b', 'c']
-#     c = CityTransfer(args, 5, 1000, 1000)
-#     aa = torch.Tensor([[0.15, 0.71, 0.5, 0.4, 0.3], [0.15, 0.71, 0.5, 0.4, 0.3], [0.15, 0.71, 0.5, 0.4, 0.3]])
-#     bb = torch.Tensor([[0.75, 0.61, 0.4, 0.9, 0.1], [0.75, 0.61, 0.4, 0.9, 0.1], [0.75, 0.61, 0.4, 0.9, 0.1]])
-#     ab = torch.Tensor([[0.75, 0.61, 0.4, 0.9, 0.1], [0.75, 0.61, 0.4, 0.9, 0.1]])
-#     cc = torch.Tensor([[0.75, 0.61, 0.4, 0.9, 0.1, 0.61, 0.4, 0.9, 0.1],
-#                       [0.2, 0.7, 0.4, 0.4, 0.1, 0.9, 0.4, 0.2, 0.1]])
-#     dd = torch.Tensor([[0.8, 0.7], [0.3, 0.1], [0.6, 0.9]])
-#     # res = c.cal_prediction_loss([1, 2, 0], [30, 40], ab, 's', dd)
-#     res2 = c.cal_prediction_score([1, 2, 0], [30, 40], ab, 't')
-#     print(res2)

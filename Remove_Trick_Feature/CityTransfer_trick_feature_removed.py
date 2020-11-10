@@ -8,7 +8,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import argparse
-from utility.log_helper import logging
+from Remove_Trick_Feature.utility.log_helper import logging
 
 
 class AutoEncoder(nn.Module):

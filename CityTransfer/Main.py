@@ -7,14 +7,12 @@ import random
 import numpy as np
 import pandas as pd
 import torch
-import matplotlib.pyplot as plt
-from time import time
-from utility.args_parser import parse_args
-from utility.log_helper import logging, logging_config
-from utility.data_loader import DataLoader
-from utility.metrics import ndcf_at_k, ndcf_at_k_test
-from utility.visualization import VisualizationTool
-from CityTransfer import CityTransfer
+from CityTransfer.utility.args_parser import parse_args
+from CityTransfer.utility.log_helper import logging, logging_config
+from CityTransfer.utility.data_loader import DataLoader
+from CityTransfer.utility.metrics import ndcf_at_k_test
+from CityTransfer.utility.visualization import VisualizationTool
+from CityTransfer.CityTransfer import CityTransfer
 
 DEBUG = True
 CUDA_AVAILABLE = False

@@ -8,8 +8,8 @@ import numpy as np
 import collections
 import random
 import torch
-from utility.log_helper import logging
-from utility.utility_tool import _norm
+from Remove_Transfer.utility.log_helper import logging
+from Remove_Transfer.utility.utility_tool import _norm
 
 
 class DataLoader(object):
@@ -58,7 +58,7 @@ class DataLoader(object):
         logging.info("[8 /9]       combine features done.")
 
         # generate training and testing index
-        self.target_train_grids, self.target_test_grids, self.all_grids = self.generate_training_and_testing_index()
+        self.target_train_grids, self.target_test_grids, self.portion_grids = self.generate_training_and_testing_index()
         logging.info("[9 /9]       generate training and testing index done.")
 
         # change data to tensor
@@ -264,7 +264,6 @@ class DataLoader(object):
 
         density_max = np.max(commercial_features[:, :, 0])
         density_min = np.min(commercial_features[:, :, 0])
-
         commercial_features[:, :, 0] = _norm(commercial_features[:, :, 0], density_max, density_min)
 
         return commercial_features
@@ -305,23 +304,23 @@ class DataLoader(object):
         target_grids_id = target_grids_id.numpy().tolist()
         target_chain_id = target_grids_id[:len(torch.nonzero(sorted_target_score))]
         random.shuffle(target_chain_id)
-        target_train_grids = target_chain_id[:len(target_chain_id)//2]
-        target_test_grids = target_chain_id[len(target_chain_id)//2:]
+        target_chain_train_grids = target_chain_id[:len(target_chain_id)//2]
+        target_chain_test_grids = target_chain_id[len(target_chain_id)//2:]
 
         target_other_id = target_grids_id[len(torch.nonzero(sorted_target_score)):]
         random.shuffle(target_other_id)
         target_other_train_grids = target_other_id[:len(target_other_id) // 2]
         target_other_test_grids = target_other_id[len(target_other_id) // 2:]
 
-        target_train = target_train_grids + target_other_train_grids
-        target_test = target_test_grids + target_other_test_grids
+        target_train = target_chain_train_grids + target_other_train_grids
+        target_test = target_chain_test_grids + target_other_test_grids
         random.shuffle(target_train)
         random.shuffle(target_test)
 
-        all_grids = [grid_id for grid_id in np.arange(self.n_grid)]
-        random.shuffle(all_grids)
+        portion_grids = [grid_id for grid_id in np.arange(self.n_grid)]
+        random.shuffle(portion_grids)
 
-        return np.array(target_train), np.array(target_test), np.array(all_grids)
+        return np.array(target_train), np.array(target_test), np.array(portion_grids)
 
     def get_feature_and_rel_score_for_prediction_model(self, grid_index, enterprise_type):
         if enterprise_type == 't':
@@ -381,3 +380,4 @@ class DataLoader(object):
                 other_shops_draw_info.append(self.get_grid_coordinate_rhombus_by_grid_id(grid))
 
         return other_shops_draw_info
+

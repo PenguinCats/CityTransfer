@@ -1,6 +1,6 @@
 import torch
 import numpy as np
-from utility.log_helper import logging
+from CityTransfer.utility.log_helper import logging
 
 
 def dcg_score(score, rank):
@@ -65,12 +65,3 @@ def ndcf_at_k_test(rel_score, pred_score, k):
     dcg = dcg_score(pred_corresponding_score, pred_corresponding_rank)
 
     return dcg / idcg,  rel_rank[:valid_len], pred_rank[:valid_len], pred_rank[valid_len:valid_len*2]
-
-
-if __name__ == '__main__':
-    a = [3, 9, 2, 5, 1, 1, 0]
-    aaa = [3, 2, 5, 9, 4, 1, 0]
-    # print(ndcg_at_k(a, b, 4))
-    # print(ndcg_at_k(a, aa, 4))
-    # print(ndcg_at_k(a, aaa, 4))
-    print(ndcf_at_k(torch.Tensor(a), torch.Tensor(aaa), 4))

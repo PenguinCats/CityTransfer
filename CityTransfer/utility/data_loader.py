@@ -8,9 +8,8 @@ import numpy as np
 import collections
 import random
 import torch
-from sklearn import preprocessing
-from utility.log_helper import logging
-from utility.utility_tool import _norm, _trans_to_zero_to_five
+from CityTransfer.utility.log_helper import logging
+from CityTransfer.utility.utility_tool import _norm
 
 
 class DataLoader(object):
@@ -308,9 +307,6 @@ class DataLoader(object):
             if Nc > 0:
                 grid_feature[:, 1] = -1 * (Nc - grid_feature[:, 0]) / (1.0 * Nc)
 
-            # remove trick feature
-            grid_feature[:, 0] = 0
-
             return grid_feature[:, :2]
             # Equation (7 & 8)
             # Have PROBLEMS! What is t' and t? What is the meaning of the equations?
@@ -493,6 +489,9 @@ class DataLoader(object):
             lat_down = self.target_area_latitude_boundary[col_id]
             lat_up = self.target_area_latitude_boundary[col_id+1]
         return [[lat_up, lon_lef], [lat_down, lon_rig]]
+        # coordinate_lon = [lon_lef, lon_lef, lon_rig, lon_rig, lon_lef]
+        # coordinate_lat = [lat_up, lat_down, lat_down, lat_up, lat_up]
+        # return coordinate_lon, coordinate_lat
 
     def get_grid_coordinate_circle_by_grid_id(self, grid_id, grid_type):
         if grid_type == 's':
@@ -507,10 +506,10 @@ class DataLoader(object):
             lat = (self.target_area_latitude_boundary[col_id] + self.target_area_latitude_boundary[col_id+1]) / 2
         return [lat, lon]
 
-    def get_grid_coordinate(self, real_grids, pred_grids, pred_back_grids):
+    def get_grid_coordinate(self, real_grids, pred_grids, pred_back_rank):
         real_grids_draw_info = [self.get_grid_coordinate_rectangle_by_grid_id(grid, 't') for grid in real_grids]
         pred_grids_draw_info = [self.get_grid_coordinate_circle_by_grid_id(grid, 't') for grid in pred_grids]
-        pred_back_grids_draw_info = [self.get_grid_coordinate_circle_by_grid_id(grid, 't') for grid in pred_back_grids]
+        pred_back_grids_draw_info = [self.get_grid_coordinate_circle_by_grid_id(grid, 't') for grid in pred_back_rank]
 
         return real_grids_draw_info, pred_grids_draw_info, pred_back_grids_draw_info
 
