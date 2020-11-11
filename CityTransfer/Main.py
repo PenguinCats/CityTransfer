@@ -87,93 +87,93 @@ if __name__ == '__main__':
         data.target_feature = data.target_feature.to(DEVICE)
         data.PCCS_score = data.PCCS_score.to(DEVICE)
 
-    # # training
-    # logging.info("[!]-----------start training.")
-    # for epoch in range(args.n_epoch):
-    #     model.train()
-    #     iter_total_loss = 0
-    #     for batch_iter in range(len(source_batch)):
-    #         time_iter = time()
-    #
-    #         optimizer.zero_grad()
-    #         batch_total_loss = 0
-    #
-    #         batch_source_index = source_batch[batch_iter]
-    #         batch_target_index = target_batch[batch_iter]
-    #
-    #         # Auto Encoder
-    #         source_grid_feature = data.source_feature[:, batch_source_index]
-    #         target_grid_feature = data.target_feature[:, batch_target_index]
-    #
-    #         ae_source_batch_loss = args.lambda_3 * model('cal_auto_encoder_loss', source_grid_feature, 's')
-    #         ae_target_batch_loss = args.lambda_3 * model('cal_auto_encoder_loss', target_grid_feature, 't')
-    #
-    #         batch_total_loss += ae_source_batch_loss + ae_target_batch_loss
-    #
-    #         # Inter-City Knowledge Association
-    #         score_1, source_feature_1, target_feature_1 = \
-    #             data.get_score_and_feature_for_inter_city(batch_source_index, 's')
-    #         score_2, source_feature_2, target_feature_2 = \
-    #             data.get_score_and_feature_for_inter_city(batch_target_index, 't')
-    #
-    #         inter_city_source_batch_loss_1 = \
-    #             args.lambda_2 * model('cal_inter_city_loss', score_1, source_feature_1, target_feature_1)
-    #         inter_city_source_batch_loss_2 = \
-    #             args.lambda_2 * model('cal_inter_city_loss', score_2, source_feature_2, target_feature_2)
-    #
-    #         batch_total_loss += inter_city_source_batch_loss_1 + inter_city_source_batch_loss_2
-    #
-    #         # Prediction Model
-    #         feature_source, score_source = data.get_feature_and_rel_score_for_prediction_model(batch_source_index, 's')
-    #         feature_target, score_target = data.get_feature_and_rel_score_for_prediction_model(batch_target_index, 't')
-    #
-    #         prediction_source_batch_loss = model('cal_prediction_loss', data.all_enterprise_index,
-    #                                              batch_source_index, feature_source, 's', score_source)
-    #         prediction_target_batch_loss = model('cal_prediction_loss', data.portion_enterprise_index,
-    #                                              batch_target_index, feature_target, 't', score_target)
-    #
-    #         batch_total_loss += prediction_source_batch_loss + args.lambda_1 * prediction_target_batch_loss
-    #
-    #         # calculate total loss and backward
-    #         iter_total_loss += batch_total_loss.item()
-    #         batch_total_loss.backward()
-    #         optimizer.step()
-    #
-    #         if DEBUG and (batch_iter % args.print_every) == 0:
-    #             logging.info('Training: Epoch {:04d} / {:04d} | Iter {:04d} / {:04d} | Time {:.1f}s '
-    #                          '| Iter Loss {:.4f} | Iter Mean Loss {:.4f}'.
-    #                          format(epoch, args.n_epoch, batch_iter, len(source_batch) - 1, time() - time_iter,
-    #                                 batch_total_loss.item(), iter_total_loss / (batch_iter + 1)))
-    #
-    #     # evaluate prediction model
-    #     if (epoch % args.evaluate_every) == 0:
-    #         model.eval()
-    #         with torch.no_grad():
-    #             feature, real_score = data.get_feature_and_rel_score_for_evaluate(data.target_grid_ids)
-    #             predict_score = model('prediction', data.target_enterprise_index,
-    #                                   data.target_grid_ids, feature)
-    #
-    #             mse_epoch = torch.nn.functional.mse_loss(real_score, predict_score)
-    #             ndcg_epoch = ndcf_at_k(real_score, predict_score, args.K)
-    #
-    #             ndcg_list.append(ndcg_epoch)
-    #             mse_list.append(mse_epoch)
-    #
-    #             if DEBUG:
-    #                 logging.info('Evaluate: Epoch {:04d} | NDCG {:.4f} | MSE {:.4f}'.
-    #                              format(epoch, ndcg_epoch, mse_epoch))
-    #
-    # logging.info("[!]-----------training done.")
-    #
-    # plt.subplot(1, 2, 1)
-    # plt.xlabel("epoch")
-    # plt.ylabel("ndcg")
-    # plt.plot(range(len(ndcg_list)), ndcg_list)
-    # plt.subplot(1, 2, 2)
-    # plt.xlabel("epoch")
-    # plt.ylabel("mse")
-    # plt.plot(range(len(mse_list)), mse_list)
-    # plt.show()
+    # training
+    logging.info("[!]-----------start training.")
+    for epoch in range(args.n_epoch):
+        model.train()
+        iter_total_loss = 0
+        for batch_iter in range(len(source_batch)):
+            time_iter = time()
+
+            optimizer.zero_grad()
+            batch_total_loss = 0
+
+            batch_source_index = source_batch[batch_iter]
+            batch_target_index = target_batch[batch_iter]
+
+            # Auto Encoder
+            source_grid_feature = data.source_feature[:, batch_source_index]
+            target_grid_feature = data.target_feature[:, batch_target_index]
+
+            ae_source_batch_loss = args.lambda_3 * model('cal_auto_encoder_loss', source_grid_feature, 's')
+            ae_target_batch_loss = args.lambda_3 * model('cal_auto_encoder_loss', target_grid_feature, 't')
+
+            batch_total_loss += ae_source_batch_loss + ae_target_batch_loss
+
+            # Inter-City Knowledge Association
+            score_1, source_feature_1, target_feature_1 = \
+                data.get_score_and_feature_for_inter_city(batch_source_index, 's')
+            score_2, source_feature_2, target_feature_2 = \
+                data.get_score_and_feature_for_inter_city(batch_target_index, 't')
+
+            inter_city_source_batch_loss_1 = \
+                args.lambda_2 * model('cal_inter_city_loss', score_1, source_feature_1, target_feature_1)
+            inter_city_source_batch_loss_2 = \
+                args.lambda_2 * model('cal_inter_city_loss', score_2, source_feature_2, target_feature_2)
+
+            batch_total_loss += inter_city_source_batch_loss_1 + inter_city_source_batch_loss_2
+
+            # Prediction Model
+            feature_source, score_source = data.get_feature_and_rel_score_for_prediction_model(batch_source_index, 's')
+            feature_target, score_target = data.get_feature_and_rel_score_for_prediction_model(batch_target_index, 't')
+
+            prediction_source_batch_loss = model('cal_prediction_loss', data.all_enterprise_index,
+                                                 batch_source_index, feature_source, 's', score_source)
+            prediction_target_batch_loss = model('cal_prediction_loss', data.portion_enterprise_index,
+                                                 batch_target_index, feature_target, 't', score_target)
+
+            batch_total_loss += prediction_source_batch_loss + args.lambda_1 * prediction_target_batch_loss
+
+            # calculate total loss and backward
+            iter_total_loss += batch_total_loss.item()
+            batch_total_loss.backward()
+            optimizer.step()
+
+            if DEBUG and (batch_iter % args.print_every) == 0:
+                logging.info('Training: Epoch {:04d} / {:04d} | Iter {:04d} / {:04d} | Time {:.1f}s '
+                             '| Iter Loss {:.4f} | Iter Mean Loss {:.4f}'.
+                             format(epoch, args.n_epoch, batch_iter, len(source_batch) - 1, time() - time_iter,
+                                    batch_total_loss.item(), iter_total_loss / (batch_iter + 1)))
+
+        # evaluate prediction model
+        if (epoch % args.evaluate_every) == 0:
+            model.eval()
+            with torch.no_grad():
+                feature, real_score = data.get_feature_and_rel_score_for_evaluate(data.target_grid_ids)
+                predict_score = model('prediction', data.target_enterprise_index,
+                                      data.target_grid_ids, feature)
+
+                mse_epoch = torch.nn.functional.mse_loss(real_score, predict_score)
+                ndcg_epoch = ndcf_at_k(real_score, predict_score, args.K)
+
+                ndcg_list.append(ndcg_epoch)
+                mse_list.append(mse_epoch)
+
+                if DEBUG:
+                    logging.info('Evaluate: Epoch {:04d} | NDCG {:.4f} | MSE {:.4f}'.
+                                 format(epoch, ndcg_epoch, mse_epoch))
+
+    logging.info("[!]-----------training done.")
+
+    plt.subplot(1, 2, 1)
+    plt.xlabel("epoch")
+    plt.ylabel("ndcg")
+    plt.plot(range(len(ndcg_list)), ndcg_list)
+    plt.subplot(1, 2, 2)
+    plt.xlabel("epoch")
+    plt.ylabel("mse")
+    plt.plot(range(len(mse_list)), mse_list)
+    plt.show()
 
     # testing
     logging.info("[!]-----------start testing.")
