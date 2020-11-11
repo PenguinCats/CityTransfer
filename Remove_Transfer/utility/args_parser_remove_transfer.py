@@ -19,24 +19,24 @@ def parse_args():
 
     # parser.add_argument('--enterprise', nargs='?', default=['大众书局', '西西弗书店'],
     #                     help='Input enterprise to be selected.')
-    # parser.add_argument('--target_enterprise', nargs='?', default='西西弗书店',
+    # parser.add_argument('--target_enterprise', nargs='?', default='大众书局',
     #                     help='Input target enterprise to be transferred.')
     # parser.add_argument('--enterprise', nargs='?', default=['luckin coffee瑞幸咖啡', 'CoCo都可', '星巴克'],
     #                     help='Input enterprise to be selected.')
     # parser.add_argument('--target_enterprise', nargs='?', default='CoCo都可',
     #                     help='Input target enterprise to be transferred.')
-    parser.add_argument('--enterprise', nargs='?', default=['如家酒店', '7天连锁酒店'],
-                        help='Input enterprise to be selected.')
-    parser.add_argument('--target_enterprise', nargs='?', default='如家酒店',
-                        help='Input target enterprise to be transferred.')
+    # parser.add_argument('--enterprise', nargs='?', default=['如家酒店', '7天连锁酒店'],
+    #                     help='Input enterprise to be selected.')
+    # parser.add_argument('--target_enterprise', nargs='?', default='如家酒店',
+    #                     help='Input target enterprise to be transferred.')
     # parser.add_argument('--enterprise', nargs='?', default=['NIKE', 'New Balance', '李宁'],
     #                     help='Input enterprise to be selected.')
-    # parser.add_argument('--target_enterprise', nargs='?', default='New Balance',
+    # parser.add_argument('--target_enterprise', nargs='?', default='NIKE',
     #                     help='Input target enterprise to be transferred.')
-    # parser.add_argument('--enterprise', nargs='?', default=['肯德基', '麦当劳', '汉堡王'],
-    #                     help='Input enterprise to be selected.')
-    # parser.add_argument('--target_enterprise', nargs='?', default='肯德基',
-    #                     help='Input target enterprise to be transferred.')
+    parser.add_argument('--enterprise', nargs='?', default=['肯德基', '麦当劳', '汉堡王'],
+                        help='Input enterprise to be selected.')
+    parser.add_argument('--target_enterprise', nargs='?', default='肯德基',
+                        help='Input target enterprise to be transferred.')
 
     parser.add_argument('--batch_size', type=int, default=32,
                         help='Training batch size.')

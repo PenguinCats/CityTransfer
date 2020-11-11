@@ -158,8 +158,8 @@ if __name__ == '__main__':
     plt.xlabel("epoch")
     plt.ylabel("mse")
     plt.plot(range(len(mse_list)), mse_list)
-    plt.show()
     plt.savefig('ndcg.png')
+    plt.show()
 
     # testing
     logging.info("[!]-----------start testing.")

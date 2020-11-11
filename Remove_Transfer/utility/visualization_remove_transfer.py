@@ -15,7 +15,7 @@ class VisualizationTool(object):
                 color='#ff0000',
                 fill=True,
                 fill_color='#ff0000',
-                fill_opacity=0.2
+                fill_opacity=0.1
             ).add_to(self.visual_map)
         for pred_circle in pred_circles:
             folium.Circle(
@@ -25,7 +25,7 @@ class VisualizationTool(object):
                 color='#004080',
                 fill=True,
                 fill_color='#004080',
-                fill_opacity=0.2
+                fill_opacity=0.1
             ).add_to(self.visual_map)
         for pred_circle in pred_back_circles:
             folium.Circle(
@@ -35,14 +35,14 @@ class VisualizationTool(object):
                 color='#FFFF00',
                 fill=True,
                 fill_color='#FFFF00',
-                fill_opacity=0.2
+                fill_opacity=0.1
             ).add_to(self.visual_map)
-        for other_bound in other_shops_bounds:
-            folium.Polygon(
-                locations=other_bound,
-                color='#00FF00',
-                fill=True,
-                fill_color='#00FF00',
-                fill_opacity=0.2
-            ).add_to(self.visual_map)
+        # for other_bound in other_shops_bounds:
+        #     folium.Polygon(
+        #         locations=other_bound,
+        #         color='#00FF00',
+        #         fill=True,
+        #         fill_color='#00FF00',
+        #         fill_opacity=0.2
+        #     ).add_to(self.visual_map)
         self.visual_map.save("mp_remove_transfer.html")

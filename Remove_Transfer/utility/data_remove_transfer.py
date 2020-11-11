@@ -176,46 +176,64 @@ class DataLoader(object):
             #  columns = ['shop_id', 'name', 'big_category', 'small_category',
             #             'longitude', 'latitude', 'review_count', 'branchname']
 
-            n_grid_POI = len(grid_info)
+            n_grid_POI = np.zeros(len(self.args.enterprise))
+            grid_feature = np.zeros((len(self.args.enterprise), 3+self.n_big_category))
 
-            human_flow = 0
-            traffic_convenience = 0
-            POI_count = np.zeros(self.n_big_category)
+            # human_flow = 0
+            # traffic_convenience = 0
+            # POI_count = np.zeros(self.n_big_category)
 
             for POI in grid_info:
+                n_grid_POI += 1
+
                 # Equation (3)
                 if POI[3] in traffic_convenience_corresponding_ids:
-                    traffic_convenience -= 1
+                    # traffic_convenience -= 1
+                    grid_feature[:, 2] += 1
+
                 # Equation (4)
-                POI_count[POI[2]] += 1
+                # POI_count[POI[2]] += 1
+                grid_feature[:, 3+POI[2]] += 1
+
                 # Equation (2)
-                human_flow -= POI[6]
+                # human_flow -= POI[6]
+                grid_feature[:, 1] += POI[6]
+
+                for idx, name in enumerate(self.args.enterprise):
+                    if POI[1] == name:
+                        grid_feature[idx, 3+POI[2]] -= 1
+                        grid_feature[idx, 1] -= POI[6]
+                        n_grid_POI[idx] -= 1
+                        break
 
             # Equation (1)
-            diversity = -1 * np.sum([(v / (1.0 * n_grid_POI)) * np.log(v / (1.0 * n_grid_POI))
-                                     if v != 0 else 0 for v in POI_count])
+            # diversity = -1 * np.sum([(v / (1.0 * n_grid_POI)) * np.log(v / (1.0 * n_grid_POI))
+            #                          if v != 0 else 0 for v in POI_count])
+            for idx, _ in enumerate(self.args.enterprise):
+                grid_feature[idx, 0] = -1 * np.sum([(v / (1.0 * n_grid_POI[idx])) * np.log(v / (1.0 * n_grid_POI[idx]))
+                                                   if v != 0 else 0 for v in grid_feature[idx, 3:]])
 
-            return np.concatenate(([diversity, human_flow, traffic_convenience], POI_count))
+            return grid_feature
 
         geographic_features = []
         for index in range(self.n_grid):
             geographic_features.append(get_feature(data_dict[index]))
 
-        geographic_features = np.array(geographic_features)
+        geographic_features = np.swapaxes(np.array(geographic_features), 0, 1)
 
-        diversity_max = np.max(geographic_features[:, 0])
-        diversity_min = np.min(geographic_features[:, 0])
-        human_flow_max = np.max(geographic_features[:, 1])
-        human_flow_min = np.min(geographic_features[:, 1])
-        traffic_conv_max = np.max(geographic_features[:, 2])
-        traffic_conv_min = np.min(geographic_features[:, 2])
-        POI_cnt_max = np.max(geographic_features[:, 3:])
-        POI_cnt_min = np.min(geographic_features[:, 3:])
+        diversity_max = np.max(geographic_features[:, :, 0])
+        diversity_min = np.min(geographic_features[:, :, 0])
+        human_flow_max = np.max(geographic_features[:, :, 1])
+        human_flow_min = np.min(geographic_features[:, :, 1])
+        traffic_conv_max = np.max(geographic_features[:, :, 2])
+        traffic_conv_min = np.min(geographic_features[:, :, 2])
+        POI_cnt_max = np.max(geographic_features[:, :, 3:])
+        POI_cnt_min = np.min(geographic_features[:, :, 3:])
 
-        geographic_features[:, 0] = _norm(geographic_features[:, 0], diversity_max, diversity_min)
-        geographic_features[:, 1] = _norm(geographic_features[:, 1], human_flow_max, human_flow_min)
-        geographic_features[:, 2] = _norm(geographic_features[:, 2], traffic_conv_max, traffic_conv_min)
-        geographic_features[:, 3:] = _norm(geographic_features[:, 3:], POI_cnt_max, POI_cnt_min)
+        geographic_features[:, :, 0] = _norm(geographic_features[:, :, 0], diversity_max, diversity_min)
+        geographic_features[:, :, 1] = _norm(geographic_features[:, :, 1], human_flow_max, human_flow_min)
+        geographic_features[:, :, 2] = _norm(geographic_features[:, :, 2], traffic_conv_max, traffic_conv_min)
+        geographic_features[:, :, 3:] = _norm(geographic_features[:, :, 3:], POI_cnt_max, POI_cnt_min)
 
         return geographic_features
 
@@ -269,7 +287,7 @@ class DataLoader(object):
         return commercial_features
 
     def combine_features(self, geographic_features, commercial_features):
-        geographic_features = np.expand_dims(geographic_features, 0).repeat(len(self.args.enterprise), axis=0)
+        # geographic_features = np.expand_dims(geographic_features, 0).repeat(len(self.args.enterprise), axis=0)
         feature = np.concatenate((geographic_features, commercial_features), axis=2)
 
         feature_dim = feature.shape[2]
@@ -380,4 +398,3 @@ class DataLoader(object):
                 other_shops_draw_info.append(self.get_grid_coordinate_rhombus_by_grid_id(grid))
 
         return other_shops_draw_info
-
